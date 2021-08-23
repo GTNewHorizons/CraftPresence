@@ -28,7 +28,7 @@ import com.gitlab.cdagaming.craftpresence.CraftPresence;
 import com.gitlab.cdagaming.craftpresence.impl.Pair;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.google.common.collect.Lists;
-import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.client.gui.GuiPlayerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -196,7 +196,7 @@ public class EntityUtils {
             NEW_CURRENT_TARGET_NAME = StringUtils.stripColors(NEW_CURRENT_PLAYER_TARGET.getGameProfile().getId().toString());
         } else {
             NEW_CURRENT_TARGET_NAME = NEW_CURRENT_TARGET != null ?
-                    StringUtils.stripColors(NEW_CURRENT_TARGET.getDisplayName().getFormattedText()) : "";
+                    StringUtils.stripColors(NEW_CURRENT_TARGET.getFormattedCommandSenderName().getFormattedText()) : "";
         }
 
         if (NEW_CURRENT_ATTACKING instanceof EntityPlayer) {
@@ -204,7 +204,7 @@ public class EntityUtils {
             NEW_CURRENT_ATTACKING_NAME = StringUtils.stripColors(NEW_CURRENT_PLAYER_ATTACKING.getGameProfile().getId().toString());
         } else {
             NEW_CURRENT_ATTACKING_NAME = NEW_CURRENT_ATTACKING != null ?
-                    StringUtils.stripColors(NEW_CURRENT_ATTACKING.getDisplayName().getFormattedText()) : "";
+                    StringUtils.stripColors(NEW_CURRENT_ATTACKING.getFormattedCommandSenderName().getFormattedText()) : "";
         }
 
         if (NEW_CURRENT_RIDING instanceof EntityPlayer) {
@@ -212,7 +212,7 @@ public class EntityUtils {
             NEW_CURRENT_RIDING_NAME = StringUtils.stripColors(NEW_CURRENT_PLAYER_RIDING.getGameProfile().getId().toString());
         } else {
             NEW_CURRENT_RIDING_NAME = NEW_CURRENT_RIDING != null ?
-                    StringUtils.stripColors(NEW_CURRENT_RIDING.getDisplayName().getFormattedText()) : "";
+                    StringUtils.stripColors(NEW_CURRENT_RIDING.getFormattedCommandSenderName().getFormattedText()) : "";
         }
 
         final boolean hasTargetChanged = (NEW_CURRENT_TARGET != null &&
@@ -227,7 +227,7 @@ public class EntityUtils {
 
         if (hasTargetChanged) {
             CURRENT_TARGET = NEW_CURRENT_TARGET;
-            CURRENT_TARGET_TAG = CURRENT_TARGET != null ? CURRENT_TARGET.serializeNBT() : null;
+            CURRENT_TARGET_TAG = CURRENT_TARGET != null ? CURRENT_TARGET.getEntityData() : null;
             final List<String> NEW_CURRENT_TARGET_TAGS = CURRENT_TARGET_TAG != null ? Lists.newArrayList(CURRENT_TARGET_TAG.getKeySet()) : Lists.newArrayList();
 
             if (!NEW_CURRENT_TARGET_TAGS.equals(CURRENT_TARGET_TAGS)) {
@@ -238,7 +238,7 @@ public class EntityUtils {
 
         if (hasAttackingChanged) {
             CURRENT_ATTACKING = NEW_CURRENT_ATTACKING;
-            CURRENT_ATTACKING_TAG = CURRENT_ATTACKING != null ? CURRENT_ATTACKING.serializeNBT() : null;
+            CURRENT_ATTACKING_TAG = CURRENT_ATTACKING != null ? CURRENT_ATTACKING.getEntityData() : null;
             final List<String> NEW_CURRENT_ATTACKING_TAGS = CURRENT_ATTACKING_TAG != null ? Lists.newArrayList(CURRENT_ATTACKING_TAG.getKeySet()) : Lists.newArrayList();
 
             if (!NEW_CURRENT_ATTACKING_TAGS.equals(CURRENT_ATTACKING_TAGS)) {
@@ -249,7 +249,7 @@ public class EntityUtils {
 
         if (hasRidingChanged) {
             CURRENT_RIDING = NEW_CURRENT_RIDING;
-            CURRENT_RIDING_TAG = CURRENT_RIDING != null ? CURRENT_RIDING.serializeNBT() : null;
+            CURRENT_RIDING_TAG = CURRENT_RIDING != null ? CURRENT_RIDING.getEntityData() : null;
             final List<String> NEW_CURRENT_RIDING_TAGS = CURRENT_RIDING_TAG != null ? Lists.newArrayList(CURRENT_RIDING_TAG.getKeySet()) : Lists.newArrayList();
 
             if (!NEW_CURRENT_RIDING_TAGS.equals(CURRENT_RIDING_TAGS)) {
@@ -382,11 +382,12 @@ public class EntityUtils {
      * Retrieves and Synchronizes detected Entities
      */
     public void getEntities() {
-        if (!EntityList.getEntityNameList().isEmpty()) {
-            for (String entityLocation : EntityList.getEntityNameList()) {
+        if (!EntityList.func_151515_b().isEmpty()) {
+            for (Object entityLocationObj : EntityList.func_151515_b()) {
+                final String entityLocation = (String) entityLocationObj;
                 if (entityLocation != null) {
                     final String entityName = !StringUtils.isNullOrEmpty(entityLocation) ? entityLocation : "generic";
-                    final Class<?> entityClass = EntityList.stringToClassMapping.get(entityLocation);
+                    final Class<?> entityClass = (Class<?>) EntityList.stringToClassMapping.get(entityLocation);
                     if (entityClass != null) {
                         if (!ENTITY_NAMES.contains(entityName)) {
                             ENTITY_NAMES.add(entityName);
@@ -401,8 +402,8 @@ public class EntityUtils {
 
         // If Server Data is enabled, allow Uuid's to count as entities
         if (CraftPresence.SERVER.enabled) {
-            for (NetworkPlayerInfo playerInfo : CraftPresence.SERVER.currentPlayerList) {
-                final String uuidString = playerInfo.getGameProfile().getId().toString();
+            for (GuiPlayerInfo playerInfo : CraftPresence.SERVER.currentPlayerList) {
+                final String uuidString = playerInfo.name;
                 if (!StringUtils.isNullOrEmpty(uuidString) && !ENTITY_NAMES.contains(uuidString)) {
                     ENTITY_NAMES.add(uuidString);
                 }

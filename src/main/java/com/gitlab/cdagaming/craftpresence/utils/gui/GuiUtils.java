@@ -27,7 +27,6 @@ package com.gitlab.cdagaming.craftpresence.utils.gui;
 import com.gitlab.cdagaming.craftpresence.CraftPresence;
 import com.gitlab.cdagaming.craftpresence.ModUtils;
 import com.gitlab.cdagaming.craftpresence.impl.Pair;
-import com.gitlab.cdagaming.craftpresence.impl.Tuple;
 import com.gitlab.cdagaming.craftpresence.utils.FileUtils;
 import com.gitlab.cdagaming.craftpresence.utils.ImageUtils;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
@@ -40,8 +39,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -132,13 +129,12 @@ public class GuiUtils {
         final float uScale = 1f / 0x100;
         final float vScale = 1f / 0x100;
 
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer buffer = tessellator.getWorldRenderer();
-        buffer.func_181668_a(GL11.GL_QUADS, DefaultVertexFormats.field_181707_g);
-        buffer.func_181662_b(x, y + height, zLevel).func_181673_a(u * uScale, ((v + height) * vScale)).func_181675_d();
-        buffer.func_181662_b(x + width, y + height, zLevel).func_181673_a((u + width) * uScale, ((v + height) * vScale)).func_181675_d();
-        buffer.func_181662_b(x + width, y, zLevel).func_181673_a((u + width) * uScale, (v * vScale)).func_181675_d();
-        buffer.func_181662_b(x, y, zLevel).func_181673_a(u * uScale, (v * vScale)).func_181675_d();
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(x, y + height, zLevel, u * uScale, ((v + height) * vScale));
+        tessellator.addVertexWithUV(x + width, y + height, zLevel, (u + width) * uScale, ((v + height) * vScale));
+        tessellator.addVertexWithUV(x + width, y, zLevel, (u + width) * uScale, (v * vScale));
+        tessellator.addVertexWithUV(x, y, zLevel, u * uScale, (v * vScale));
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         tessellator.draw();
     }
@@ -712,15 +708,13 @@ public class GuiUtils {
         GL11.glDisable(GL11.GL_FOG);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        final Tuple<Integer, Integer, Integer> rgbData = new Tuple<>(shouldBeDark ? 64 : 255, shouldBeDark ? 64 : 255, shouldBeDark ? 64 : 255);
-
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer buffer = tessellator.getWorldRenderer();
-        buffer.func_181668_a(GL11.GL_QUADS, DefaultVertexFormats.field_181709_i);
-        buffer.func_181662_b(xPos, yPos + height, zLevel).func_181673_a(0.0D, (height / heightDivider + tint)).func_181669_b(rgbData.getFirst(), rgbData.getSecond(), rgbData.getSecond(), 255).func_181675_d();
-        buffer.func_181662_b(xPos + width, yPos + height, zLevel).func_181673_a((width / widthDivider), (height / heightDivider + tint)).func_181669_b(rgbData.getFirst(), rgbData.getSecond(), rgbData.getSecond(), 255).func_181675_d();
-        buffer.func_181662_b(xPos + width, yPos, zLevel).func_181673_a((width / widthDivider), tint).func_181669_b(rgbData.getFirst(), rgbData.getSecond(), rgbData.getSecond(), 255).func_181675_d();
-        buffer.func_181662_b(xPos, yPos, zLevel).func_181673_a(0.0D, tint).func_181669_b(rgbData.getFirst(), rgbData.getSecond(), rgbData.getSecond(), 255).func_181675_d();
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.setColorOpaque_I(shouldBeDark ? 4210752 : 16777215);
+        tessellator.addVertexWithUV(xPos, yPos + height, zLevel, 0.0D, (height / heightDivider + tint));
+        tessellator.addVertexWithUV(xPos + width, yPos + height, zLevel, (width / widthDivider), (height / heightDivider + tint));
+        tessellator.addVertexWithUV(xPos + width, yPos, zLevel, (width / widthDivider), tint);
+        tessellator.addVertexWithUV(xPos, yPos, zLevel, 0.0D, tint);
         tessellator.draw();
     }
 
@@ -778,13 +772,14 @@ public class GuiUtils {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glShadeModel(GL11.GL_SMOOTH);
 
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer buffer = tessellator.getWorldRenderer();
-        buffer.func_181668_a(GL11.GL_QUADS, DefaultVertexFormats.field_181706_f);
-        buffer.func_181662_b(right, top, zLevel).func_181666_a(startRed, startGreen, startBlue, startAlpha).func_181675_d();
-        buffer.func_181662_b(left, top, zLevel).func_181666_a(startRed, startGreen, startBlue, startAlpha).func_181675_d();
-        buffer.func_181662_b(left, bottom, zLevel).func_181666_a(endRed, endGreen, endBlue, endAlpha).func_181675_d();
-        buffer.func_181662_b(right, bottom, zLevel).func_181666_a(endRed, endGreen, endBlue, endAlpha).func_181675_d();
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.setColorRGBA_F(startRed, startGreen, startBlue, startAlpha);
+        tessellator.addVertex(right, top, zLevel);
+        tessellator.addVertex(left, top, zLevel);
+        tessellator.setColorRGBA_F(endRed, endGreen, endBlue, endAlpha);
+        tessellator.addVertex(left, bottom, zLevel);
+        tessellator.addVertex(right, bottom, zLevel);
         tessellator.draw();
 
         GL11.glShadeModel(GL11.GL_FLAT);

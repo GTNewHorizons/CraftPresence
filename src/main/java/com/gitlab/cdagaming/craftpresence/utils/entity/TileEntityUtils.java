@@ -307,7 +307,7 @@ public class TileEntityUtils {
             if (itemStack.stackSize <= 0) {
                 return true;
             } else {
-                return itemStack.getItemDamage() < -32768 || itemStack.getItemDamage() > 65535;
+                return itemStack.getMetadata() < -32768 || itemStack.getMetadata() > 65535;
             }
         } else {
             return true;
@@ -551,7 +551,8 @@ public class TileEntityUtils {
      * Retrieves and Synchronizes detected Entities
      */
     public void getEntities() {
-        for (Block block : Block.blockRegistry) {
+        for (Object blockObj : Block.blockRegistry) {
+            final Block block = Block.getBlockById(Block.blockRegistry.getIDForObject(blockObj));
             if (!isEmpty(block)) {
                 if (!BLOCK_NAMES.contains(block.getLocalizedName())) {
                     BLOCK_NAMES.add(block.getLocalizedName());
@@ -561,7 +562,7 @@ public class TileEntityUtils {
                 }
 
                 if (!TILE_ENTITY_RESOURCES.containsKey(block.getLocalizedName())) {
-                    final ResourceLocation initialData = Block.blockRegistry.getNameForObject(block);
+                    final ResourceLocation initialData = new ResourceLocation(Block.blockRegistry.getNameForObject(block));
                     TILE_ENTITY_RESOURCES.put(block.getLocalizedName(),
                             new ResourceLocation(initialData.getResourceDomain(),
                                     (ModUtils.MCProtocolID > 340 ? "textures/block/" : "textures/blocks/") + initialData.getResourcePath() + ".png"));
@@ -569,7 +570,8 @@ public class TileEntityUtils {
             }
         }
 
-        for (Item item : Item.itemRegistry) {
+        for (Object itemObj : Item.itemRegistry) {
+            final Item item = Item.getItemById(Item.itemRegistry.getIDForObject(itemObj));
             if (!isEmpty(item)) {
                 if (!ITEM_NAMES.contains(item.getItemStackDisplayName(getDefaultInstance(item)))) {
                     ITEM_NAMES.add(item.getItemStackDisplayName(getDefaultInstance(item)));
@@ -579,7 +581,7 @@ public class TileEntityUtils {
                 }
 
                 if (!TILE_ENTITY_RESOURCES.containsKey(item.getItemStackDisplayName(getDefaultInstance(item)))) {
-                    final ResourceLocation initialData = Item.itemRegistry.getNameForObject(item);
+                    final ResourceLocation initialData = new ResourceLocation(Item.itemRegistry.getNameForObject(item));
                     TILE_ENTITY_RESOURCES.put(item.getItemStackDisplayName(getDefaultInstance(item)),
                             new ResourceLocation(initialData.getResourceDomain(),
                                     (ModUtils.MCProtocolID > 340 ? "textures/item/" : "textures/items/") + initialData.getResourcePath() + ".png"));

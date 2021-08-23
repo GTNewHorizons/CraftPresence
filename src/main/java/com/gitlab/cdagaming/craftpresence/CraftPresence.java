@@ -39,9 +39,9 @@ import com.gitlab.cdagaming.craftpresence.utils.gui.GuiUtils;
 import com.gitlab.cdagaming.craftpresence.utils.server.ServerUtils;
 import com.gitlab.cdagaming.craftpresence.utils.world.BiomeUtils;
 import com.gitlab.cdagaming.craftpresence.utils.world.DimensionUtils;
+import cpw.mods.fml.common.Mod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.fml.common.Mod;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
@@ -53,7 +53,7 @@ import java.util.TimerTask;
  *
  * @author CDAGaming
  */
-@Mod(modid = ModUtils.MOD_ID, name = "@MOD_NAME@", version = "@VERSION_ID@", clientSideOnly = true, guiFactory = ModUtils.GUI_FACTORY, canBeDeactivated = true, updateJSON = ModUtils.UPDATE_JSON, certificateFingerprint = ModUtils.FINGERPRINT, acceptedMinecraftVersions = "*")
+@Mod(modid = ModUtils.MOD_ID, name = "@MOD_NAME@", version = "@VERSION_ID@", guiFactory = ModUtils.GUI_FACTORY, canBeDeactivated = true, certificateFingerprint = ModUtils.FINGERPRINT, acceptedMinecraftVersions = "*")
 public class CraftPresence {
     /**
      * Whether Pack Data was able to be Found and Parsed
