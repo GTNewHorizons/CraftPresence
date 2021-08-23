@@ -78,7 +78,7 @@ public class CraftPresence {
     /**
      * The Current Player detected from the Minecraft Instance
      */
-    public static EntityPlayer player = instance.player;
+    public static EntityPlayer player = instance.thePlayer;
 
     /**
      * The {@link ConfigUtils} Instance for this Mod
@@ -239,7 +239,7 @@ public class CraftPresence {
         if (!closing) {
             if (initialized) {
                 instance = Minecraft.getMinecraft();
-                player = instance.player;
+                player = instance.thePlayer;
 
                 // Synchronize Developer and Verbose Modes with Config Options, if they were not overridden pre-setup
                 ModUtils.IS_DEV = !isDevStatusOverridden ? CONFIG.debugMode : ModUtils.IS_DEV;

@@ -228,7 +228,7 @@ public class EntityUtils {
 
         if (hasTargetChanged) {
             CURRENT_TARGET = NEW_CURRENT_TARGET;
-            CURRENT_TARGET_TAG = CURRENT_TARGET != null ? CURRENT_TARGET.writeToNBT(new NBTTagCompound()) : null;
+            CURRENT_TARGET_TAG = CURRENT_TARGET != null ? CURRENT_TARGET.func_189511_e(new NBTTagCompound()) : null;
             final List<String> NEW_CURRENT_TARGET_TAGS = CURRENT_TARGET_TAG != null ? Lists.newArrayList(CURRENT_TARGET_TAG.getKeySet()) : Lists.newArrayList();
 
             if (!NEW_CURRENT_TARGET_TAGS.equals(CURRENT_TARGET_TAGS)) {
@@ -239,7 +239,7 @@ public class EntityUtils {
 
         if (hasAttackingChanged) {
             CURRENT_ATTACKING = NEW_CURRENT_ATTACKING;
-            CURRENT_ATTACKING_TAG = CURRENT_ATTACKING != null ? CURRENT_ATTACKING.writeToNBT(new NBTTagCompound()) : null;
+            CURRENT_ATTACKING_TAG = CURRENT_ATTACKING != null ? CURRENT_ATTACKING.func_189511_e(new NBTTagCompound()) : null;
             final List<String> NEW_CURRENT_ATTACKING_TAGS = CURRENT_ATTACKING_TAG != null ? Lists.newArrayList(CURRENT_ATTACKING_TAG.getKeySet()) : Lists.newArrayList();
 
             if (!NEW_CURRENT_ATTACKING_TAGS.equals(CURRENT_ATTACKING_TAGS)) {
@@ -250,7 +250,7 @@ public class EntityUtils {
 
         if (hasRidingChanged) {
             CURRENT_RIDING = NEW_CURRENT_RIDING;
-            CURRENT_RIDING_TAG = CURRENT_RIDING != null ? CURRENT_RIDING.writeToNBT(new NBTTagCompound()) : null;
+            CURRENT_RIDING_TAG = CURRENT_RIDING != null ? CURRENT_RIDING.func_189511_e(new NBTTagCompound()) : null;
             final List<String> NEW_CURRENT_RIDING_TAGS = CURRENT_RIDING_TAG != null ? Lists.newArrayList(CURRENT_RIDING_TAG.getKeySet()) : Lists.newArrayList();
 
             if (!NEW_CURRENT_RIDING_TAGS.equals(CURRENT_RIDING_TAGS)) {

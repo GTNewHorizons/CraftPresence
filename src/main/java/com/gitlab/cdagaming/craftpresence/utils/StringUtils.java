@@ -1056,7 +1056,7 @@ public class StringUtils {
             final List<String> lines = splitTextByNewLine(message);
             if (lines != null && !lines.isEmpty()) {
                 for (String line : lines) {
-                    player.sendMessage(new TextComponentString(line));
+                    player.addChatMessage(new TextComponentString(line));
                 }
             }
         }

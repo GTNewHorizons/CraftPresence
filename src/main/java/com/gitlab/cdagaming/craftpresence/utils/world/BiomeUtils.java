@@ -109,7 +109,7 @@ public class BiomeUtils {
      * Synchronizes Data related to this module, if needed
      */
     private void updateBiomeData() {
-        final Biome newBiome = CraftPresence.player.world.getBiome(CraftPresence.player.getPosition());
+        final Biome newBiome = CraftPresence.player.worldObj.getBiomeGenForCoords(CraftPresence.player.getPosition());
         final String newBiomeName = newBiome.getBiomeName();
 
         if (!newBiomeName.equals(CURRENT_BIOME_NAME)) {
