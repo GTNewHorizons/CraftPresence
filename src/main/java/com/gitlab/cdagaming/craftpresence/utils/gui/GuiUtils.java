@@ -105,7 +105,7 @@ public class GuiUtils {
      * @return The Default/Global Font Renderer
      */
     public static FontRenderer getDefaultFontRenderer() {
-        return CraftPresence.instance.fontRenderer;
+        return CraftPresence.instance.fontRendererObj;
     }
 
     /**
