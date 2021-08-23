@@ -6,7 +6,7 @@ buildscript {
         maven { url = "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT"
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT"
         classpath "com.github.CDAGaming:CurseGradle:master-SNAPSHOT"
         classpath "gradle.plugin.org.cadixdev.gradle:licenser:0.5.1"
     }

@@ -239,13 +239,13 @@ public class ServerUtils {
      */
     private void updateServerData() {
         final ServerData newServerData = CraftPresence.instance.getCurrentServerData();
-        final NetHandlerPlayClient newConnection = CraftPresence.instance.getConnection();
+        final NetHandlerPlayClient newConnection = CraftPresence.instance.getNetHandler();
 
         if (!joinInProgress) {
             final List<NetworkPlayerInfo> newPlayerList = newConnection != null ? Lists.newArrayList(newConnection.getPlayerInfoMap()) : Lists.newArrayList();
             final int newCurrentPlayers = newConnection != null ? newConnection.getPlayerInfoMap().size() : 1;
             final int newMaxPlayers = newConnection != null && newConnection.currentServerMaxPlayers >= newCurrentPlayers ? newConnection.currentServerMaxPlayers : newCurrentPlayers + 1;
-            final boolean newLANStatus = (CraftPresence.instance.isSingleplayer() && newCurrentPlayers > 1) || (newServerData != null && newServerData.isOnLAN());
+            final boolean newLANStatus = (CraftPresence.instance.isSingleplayer() && newCurrentPlayers > 1) || (newServerData != null && newServerData.func_181041_d());
 
             final String newServer_IP = newServerData != null && !StringUtils.isNullOrEmpty(newServerData.serverIP) ? newServerData.serverIP : "127.0.0.1";
             final String newServer_Name = newServerData != null && !StringUtils.isNullOrEmpty(newServerData.serverName) ? newServerData.serverName : CraftPresence.CONFIG.defaultServerName;

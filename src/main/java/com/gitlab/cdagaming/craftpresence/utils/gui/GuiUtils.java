@@ -40,7 +40,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -133,12 +133,12 @@ public class GuiUtils {
         final float vScale = 1f / 0x100;
 
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        buffer.pos(x, y + height, zLevel).tex(u * uScale, ((v + height) * vScale)).endVertex();
-        buffer.pos(x + width, y + height, zLevel).tex((u + width) * uScale, ((v + height) * vScale)).endVertex();
-        buffer.pos(x + width, y, zLevel).tex((u + width) * uScale, (v * vScale)).endVertex();
-        buffer.pos(x, y, zLevel).tex(u * uScale, (v * vScale)).endVertex();
+        WorldRenderer buffer = tessellator.getWorldRenderer();
+        buffer.func_181668_a(GL11.GL_QUADS, DefaultVertexFormats.field_181707_g);
+        buffer.func_181662_b(x, y + height, zLevel).func_181673_a(u * uScale, ((v + height) * vScale)).func_181675_d();
+        buffer.func_181662_b(x + width, y + height, zLevel).func_181673_a((u + width) * uScale, ((v + height) * vScale)).func_181675_d();
+        buffer.func_181662_b(x + width, y, zLevel).func_181673_a((u + width) * uScale, (v * vScale)).func_181675_d();
+        buffer.func_181662_b(x, y, zLevel).func_181673_a(u * uScale, (v * vScale)).func_181675_d();
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         tessellator.draw();
     }
@@ -715,12 +715,12 @@ public class GuiUtils {
         final Tuple<Integer, Integer, Integer> rgbData = new Tuple<>(shouldBeDark ? 64 : 255, shouldBeDark ? 64 : 255, shouldBeDark ? 64 : 255);
 
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-        buffer.pos(xPos, yPos + height, zLevel).tex(0.0D, (height / heightDivider + tint)).color(rgbData.getFirst(), rgbData.getSecond(), rgbData.getSecond(), 255).endVertex();
-        buffer.pos(xPos + width, yPos + height, zLevel).tex((width / widthDivider), (height / heightDivider + tint)).color(rgbData.getFirst(), rgbData.getSecond(), rgbData.getSecond(), 255).endVertex();
-        buffer.pos(xPos + width, yPos, zLevel).tex((width / widthDivider), tint).color(rgbData.getFirst(), rgbData.getSecond(), rgbData.getSecond(), 255).endVertex();
-        buffer.pos(xPos, yPos, zLevel).tex(0.0D, tint).color(rgbData.getFirst(), rgbData.getSecond(), rgbData.getSecond(), 255).endVertex();
+        WorldRenderer buffer = tessellator.getWorldRenderer();
+        buffer.func_181668_a(GL11.GL_QUADS, DefaultVertexFormats.field_181709_i);
+        buffer.func_181662_b(xPos, yPos + height, zLevel).func_181673_a(0.0D, (height / heightDivider + tint)).func_181669_b(rgbData.getFirst(), rgbData.getSecond(), rgbData.getSecond(), 255).func_181675_d();
+        buffer.func_181662_b(xPos + width, yPos + height, zLevel).func_181673_a((width / widthDivider), (height / heightDivider + tint)).func_181669_b(rgbData.getFirst(), rgbData.getSecond(), rgbData.getSecond(), 255).func_181675_d();
+        buffer.func_181662_b(xPos + width, yPos, zLevel).func_181673_a((width / widthDivider), tint).func_181669_b(rgbData.getFirst(), rgbData.getSecond(), rgbData.getSecond(), 255).func_181675_d();
+        buffer.func_181662_b(xPos, yPos, zLevel).func_181673_a(0.0D, tint).func_181669_b(rgbData.getFirst(), rgbData.getSecond(), rgbData.getSecond(), 255).func_181675_d();
         tessellator.draw();
     }
 
@@ -779,12 +779,12 @@ public class GuiUtils {
         GL11.glShadeModel(GL11.GL_SMOOTH);
 
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer buffer = tessellator.getBuffer();
-        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        buffer.pos(right, top, zLevel).color(startRed, startGreen, startBlue, startAlpha).endVertex();
-        buffer.pos(left, top, zLevel).color(startRed, startGreen, startBlue, startAlpha).endVertex();
-        buffer.pos(left, bottom, zLevel).color(endRed, endGreen, endBlue, endAlpha).endVertex();
-        buffer.pos(right, bottom, zLevel).color(endRed, endGreen, endBlue, endAlpha).endVertex();
+        WorldRenderer buffer = tessellator.getWorldRenderer();
+        buffer.func_181668_a(GL11.GL_QUADS, DefaultVertexFormats.field_181706_f);
+        buffer.func_181662_b(right, top, zLevel).func_181666_a(startRed, startGreen, startBlue, startAlpha).func_181675_d();
+        buffer.func_181662_b(left, top, zLevel).func_181666_a(startRed, startGreen, startBlue, startAlpha).func_181675_d();
+        buffer.func_181662_b(left, bottom, zLevel).func_181666_a(endRed, endGreen, endBlue, endAlpha).func_181675_d();
+        buffer.func_181662_b(right, bottom, zLevel).func_181666_a(endRed, endGreen, endBlue, endAlpha).func_181675_d();
         tessellator.draw();
 
         GL11.glShadeModel(GL11.GL_FLAT);

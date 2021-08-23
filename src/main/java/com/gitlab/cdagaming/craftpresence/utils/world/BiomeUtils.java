@@ -30,7 +30,7 @@ import com.gitlab.cdagaming.craftpresence.impl.Pair;
 import com.gitlab.cdagaming.craftpresence.utils.FileUtils;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.google.common.collect.Lists;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeGenBase;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class BiomeUtils {
     /**
      * A List of the detected Biome Type's
      */
-    private final List<Biome> BIOME_TYPES = Lists.newArrayList();
+    private final List<BiomeGenBase> BIOME_TYPES = Lists.newArrayList();
     /**
      * Whether this module is active and currently in use
      */
@@ -109,8 +109,8 @@ public class BiomeUtils {
      * Synchronizes Data related to this module, if needed
      */
     private void updateBiomeData() {
-        final Biome newBiome = CraftPresence.player.worldObj.getBiomeGenForCoords(CraftPresence.player.getPosition());
-        final String newBiomeName = newBiome.getBiomeName();
+        final BiomeGenBase newBiome = CraftPresence.player.worldObj.getBiomeGenForCoords(CraftPresence.player.getPosition());
+        final String newBiomeName = newBiome.biomeName;
 
         if (!newBiomeName.equals(CURRENT_BIOME_NAME)) {
             CURRENT_BIOME_NAME = newBiomeName;
@@ -157,11 +157,11 @@ public class BiomeUtils {
      *
      * @return The detected Biome Types found
      */
-    private List<Biome> getBiomeTypes() {
-        List<Biome> biomeTypes = Lists.newArrayList();
+    private List<BiomeGenBase> getBiomeTypes() {
+        List<BiomeGenBase> biomeTypes = Lists.newArrayList();
 
-        if (Biome.REGISTRY != null) {
-            for (Biome biome : Biome.REGISTRY) {
+        if (BiomeGenBase.getBiomeGenArray() != null) {
+            for (BiomeGenBase biome : BiomeGenBase.getBiomeGenArray()) {
                 if (biome != null && !biomeTypes.contains(biome)) {
                     biomeTypes.add(biome);
                 }
@@ -170,11 +170,11 @@ public class BiomeUtils {
 
         if (biomeTypes.isEmpty()) {
             // Fallback: Use Manual Class Lookup
-            for (Class<?> classObj : FileUtils.getClassNamesMatchingSuperType(Biome.class, true, "net.minecraft", "com.gitlab.cdagaming.craftpresence")) {
+            for (Class<?> classObj : FileUtils.getClassNamesMatchingSuperType(BiomeGenBase.class, true, "net.minecraft", "com.gitlab.cdagaming.craftpresence")) {
                 if (classObj != null) {
                     try {
-                        Biome biomeObj = (Biome) classObj.newInstance();
-                        if (!biomeTypes.contains(biomeObj)) {
+                        BiomeGenBase biomeObj = (BiomeGenBase) classObj.newInstance();
+                        if (biomeObj != null && !biomeTypes.contains(biomeObj)) {
                             biomeTypes.add(biomeObj);
                         }
                     } catch (Exception | Error ex) {
@@ -193,10 +193,10 @@ public class BiomeUtils {
      * Updates and Initializes Module Data, based on found Information
      */
     public void getBiomes() {
-        for (Biome biome : getBiomeTypes()) {
+        for (BiomeGenBase biome : getBiomeTypes()) {
             if (biome != null) {
-                if (!BIOME_NAMES.contains(biome.getBiomeName())) {
-                    BIOME_NAMES.add(biome.getBiomeName());
+                if (!BIOME_NAMES.contains(biome.biomeName)) {
+                    BIOME_NAMES.add(biome.biomeName);
                 }
                 if (!BIOME_TYPES.contains(biome)) {
                     BIOME_TYPES.add(biome);
