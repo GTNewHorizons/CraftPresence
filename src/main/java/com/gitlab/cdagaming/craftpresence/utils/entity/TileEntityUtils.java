@@ -617,8 +617,8 @@ public class TileEntityUtils {
                 if (!TILE_ENTITY_RESOURCES.containsKey(block.getLocalizedName())) {
                     final ResourceLocation initialData = Block.REGISTRY.getNameForObject(block);
                     TILE_ENTITY_RESOURCES.put(block.getLocalizedName(),
-                            new ResourceLocation(initialData.getNamespace(),
-                                    (ModUtils.MCProtocolID > 340 ? "textures/block/" : "textures/blocks/") + initialData.getPath() + ".png"));
+                            new ResourceLocation(initialData.getResourceDomain(),
+                                    (ModUtils.MCProtocolID > 340 ? "textures/block/" : "textures/blocks/") + initialData.getResourcePath() + ".png"));
                 }
             }
         }
@@ -635,8 +635,8 @@ public class TileEntityUtils {
                 if (!TILE_ENTITY_RESOURCES.containsKey(item.getItemStackDisplayName(getDefaultInstance(item)))) {
                     final ResourceLocation initialData = Item.REGISTRY.getNameForObject(item);
                     TILE_ENTITY_RESOURCES.put(item.getItemStackDisplayName(getDefaultInstance(item)),
-                            new ResourceLocation(initialData.getNamespace(),
-                                    (ModUtils.MCProtocolID > 340 ? "textures/item/" : "textures/items/") + initialData.getPath() + ".png"));
+                            new ResourceLocation(initialData.getResourceDomain(),
+                                    (ModUtils.MCProtocolID > 340 ? "textures/item/" : "textures/items/") + initialData.getResourcePath() + ".png"));
                 }
             }
         }

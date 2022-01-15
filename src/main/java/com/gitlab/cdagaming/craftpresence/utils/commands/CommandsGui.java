@@ -81,7 +81,7 @@ public class CommandsGui extends ExtendedScreen {
         List<String> list = Lists.newArrayList();
 
         if (!possibleCompletions.isEmpty()) {
-            for (String s1 : possibleCompletions.stream().map(Functions.toStringFunction()).collect(Collectors.toList())) {
+            for (String s1 : possibleCompletions.stream().map(Functions.toStringFunction()::apply).collect(Collectors.toList())) {
                 if (doesStringStartWith(s, s1)) {
                     list.add(s1);
                 }
