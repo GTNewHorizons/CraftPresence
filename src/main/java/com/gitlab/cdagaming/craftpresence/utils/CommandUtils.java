@@ -60,7 +60,7 @@ public class CommandUtils {
     public static void reloadData(final boolean forceUpdateRPC) {
         ModUtils.TRANSLATOR.onTick();
         CraftPresence.SYSTEM.onTick();
-        CraftPresence.instance.addScheduledTask(() -> CraftPresence.KEYBINDINGS.onTick());
+        CraftPresence.instance.func_152344_a(() -> CraftPresence.KEYBINDINGS.onTick());
         CraftPresence.GUIS.onTick();
 
         if (CraftPresence.SYSTEM.HAS_LOADED && CraftPresence.SYSTEM.HAS_GAME_LOADED) {

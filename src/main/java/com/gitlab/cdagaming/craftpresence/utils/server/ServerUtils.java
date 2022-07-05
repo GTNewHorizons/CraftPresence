@@ -230,7 +230,7 @@ public class ServerUtils {
         }
 
         if (joinInProgress && requestedServerData != null) {
-            CraftPresence.instance.addScheduledTask(() -> joinServer(requestedServerData));
+            CraftPresence.instance.func_152344_a(() -> joinServer(requestedServerData));
         }
     }
 
@@ -238,14 +238,14 @@ public class ServerUtils {
      * Synchronizes Data related to this module, if needed
      */
     private void updateServerData() {
-        final ServerData newServerData = CraftPresence.instance.getCurrentServerData();
+        final ServerData newServerData = CraftPresence.instance.func_147104_D();
         final NetHandlerPlayClient newConnection = CraftPresence.instance.getNetHandler();
 
         if (!joinInProgress) {
             final List<GuiPlayerInfo> newPlayerList = newConnection != null ? Lists.newArrayList(newConnection.playerInfoList) : Lists.newArrayList();
             final int newCurrentPlayers = newConnection != null ? newConnection.playerInfoList.size() : 1;
             final int newMaxPlayers = newConnection != null && newConnection.currentServerMaxPlayers >= newCurrentPlayers ? newConnection.currentServerMaxPlayers : newCurrentPlayers + 1;
-            final boolean newLANStatus = (CraftPresence.instance.isSingleplayer() && newCurrentPlayers > 1) || (newServerData != null && newServerData.isLanServer());
+            final boolean newLANStatus = (CraftPresence.instance.isSingleplayer() && newCurrentPlayers > 1) || (newServerData != null && newServerData.func_152585_d());
 
             final String newServer_IP = newServerData != null && !StringUtils.isNullOrEmpty(newServerData.serverIP) ? newServerData.serverIP : "127.0.0.1";
             final String newServer_Name = newServerData != null && !StringUtils.isNullOrEmpty(newServerData.serverName) ? newServerData.serverName : CraftPresence.CONFIG.defaultServerName;

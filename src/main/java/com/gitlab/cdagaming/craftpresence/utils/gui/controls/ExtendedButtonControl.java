@@ -185,10 +185,10 @@ public class ExtendedButtonControl extends GuiButton {
 
     @Override
     public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY) {
-        setCurrentFontRender(mc.fontRendererObj);
+        setCurrentFontRender(mc.fontRenderer);
         if (visible) {
-            hovered = CraftPresence.GUIS.isMouseOver(mouseX, mouseY, this);
-            final int hoverState = getHoverState(hovered);
+            field_146123_n = CraftPresence.GUIS.isMouseOver(mouseX, mouseY, this);
+            final int hoverState = getHoverState(field_146123_n);
 
             String backgroundCode = CraftPresence.CONFIG.buttonBackgroundColor;
             ResourceLocation texLocation;
@@ -224,7 +224,7 @@ public class ExtendedButtonControl extends GuiButton {
 
             if (!enabled) {
                 color = 10526880;
-            } else if (hovered) {
+            } else if (field_146123_n) {
                 color = 16777120;
             } else {
                 color = 14737632;
