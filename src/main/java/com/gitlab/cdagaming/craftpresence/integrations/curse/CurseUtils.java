@@ -30,7 +30,6 @@ import com.gitlab.cdagaming.craftpresence.integrations.curse.impl.CurseInstance;
 import com.gitlab.cdagaming.craftpresence.integrations.curse.impl.Manifest;
 import com.gitlab.cdagaming.craftpresence.utils.FileUtils;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -86,7 +85,8 @@ public class CurseUtils {
 
                 if (!StringUtils.isNullOrEmpty(INSTANCE_NAME)) {
                     CraftPresence.packFound = true;
-                    ModUtils.LOG.info(ModUtils.TRANSLATOR.translate("craftpresence.logger.info.manifest.loaded", INSTANCE_NAME));
+                    ModUtils.LOG.info(
+                            ModUtils.TRANSLATOR.translate("craftpresence.logger.info.manifest.loaded", INSTANCE_NAME));
                 }
             }
         }

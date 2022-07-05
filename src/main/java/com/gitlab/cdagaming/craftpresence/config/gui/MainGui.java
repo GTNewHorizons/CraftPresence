@@ -35,10 +35,9 @@ import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ExtendedButtonContr
 import com.gitlab.cdagaming.craftpresence.utils.gui.impl.ControlsGui;
 import com.gitlab.cdagaming.craftpresence.utils.gui.integrations.ExtendedScreen;
 import com.google.common.collect.Lists;
+import java.util.List;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
-
-import java.util.List;
 
 public class MainGui extends ExtendedScreen {
     private ExtendedButtonControl biomeSet, dimensionSet, serverSet, controlsButton, proceedButton, commandGUIButton;
@@ -55,202 +54,195 @@ public class MainGui extends ExtendedScreen {
         final int calc2 = (width / 2) + 3;
 
         // Added General Settings Button
-        addControl(
-                new ExtendedButtonControl(
-                        calc1, CraftPresence.GUIS.getButtonY(1),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.title.general"),
-                        () -> CraftPresence.GUIS.openScreen(new GeneralSettingsGui(currentScreen)),
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.title.general")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
+        addControl(new ExtendedButtonControl(
+                calc1,
+                CraftPresence.GUIS.getButtonY(1),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.title.general"),
+                () -> CraftPresence.GUIS.openScreen(new GeneralSettingsGui(currentScreen)),
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.title.general")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        biomeSet = addControl(new ExtendedButtonControl(
+                calc2,
+                CraftPresence.GUIS.getButtonY(1),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.title.biome_messages"),
+                () -> CraftPresence.GUIS.openScreen(new BiomeSettingsGui(currentScreen)),
+                () -> {
+                    if (!biomeSet.isControlEnabled()) {
+                        CraftPresence.GUIS.drawMultiLineString(
+                                StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate(
+                                        "gui.config.message.hover.access",
+                                        ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_biome_data"))),
+                                getMouseX(),
+                                getMouseY(),
+                                width,
+                                height,
                                 getWrapWidth(),
                                 getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        biomeSet = addControl(
-                new ExtendedButtonControl(
-                        calc2, CraftPresence.GUIS.getButtonY(1),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.title.biome_messages"),
-                        () -> CraftPresence.GUIS.openScreen(new BiomeSettingsGui(currentScreen)),
-                        () -> {
-                            if (!biomeSet.isControlEnabled()) {
-                                CraftPresence.GUIS.drawMultiLineString(
-                                        StringUtils.splitTextByNewLine(
-                                                ModUtils.TRANSLATOR.translate("gui.config.message.hover.access",
-                                                        ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_biome_data"))
-                                        ),
-                                        getMouseX(), getMouseY(),
-                                        width, height,
-                                        getWrapWidth(),
-                                        getFontRenderer(),
-                                        true
-                                );
-                            } else {
-                                CraftPresence.GUIS.drawMultiLineString(
-                                        StringUtils.splitTextByNewLine(
-                                                ModUtils.TRANSLATOR.translate("gui.config.comment.title.biome_messages")
-                                        ),
-                                        getMouseX(), getMouseY(),
-                                        width, height,
-                                        getWrapWidth(),
-                                        getFontRenderer(),
-                                        true
-                                );
-                            }
-                        }
-                )
-        );
-        dimensionSet = addControl(
-                new ExtendedButtonControl(
-                        calc1, CraftPresence.GUIS.getButtonY(2),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.title.dimension_messages"),
-                        () -> CraftPresence.GUIS.openScreen(new DimensionSettingsGui(currentScreen)),
-                        () -> {
-                            if (!dimensionSet.isControlEnabled()) {
-                                CraftPresence.GUIS.drawMultiLineString(
-                                        StringUtils.splitTextByNewLine(
-                                                ModUtils.TRANSLATOR.translate("gui.config.message.hover.access",
-                                                        ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_dimension_data"))
-                                        ),
-                                        getMouseX(), getMouseY(),
-                                        width, height,
-                                        getWrapWidth(),
-                                        getFontRenderer(),
-                                        true
-                                );
-                            } else {
-                                CraftPresence.GUIS.drawMultiLineString(
-                                        StringUtils.splitTextByNewLine(
-                                                ModUtils.TRANSLATOR.translate("gui.config.comment.title.dimension_messages")
-                                        ),
-                                        getMouseX(), getMouseY(),
-                                        width, height,
-                                        getWrapWidth(),
-                                        getFontRenderer(),
-                                        true
-                                );
-                            }
-                        }
-                )
-        );
-        serverSet = addControl(
-                new ExtendedButtonControl(
-                        calc2, CraftPresence.GUIS.getButtonY(2),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.title.server_messages"),
-                        () -> CraftPresence.GUIS.openScreen(new ServerSettingsGui(currentScreen)),
-                        () -> {
-                            if (!serverSet.isControlEnabled()) {
-                                CraftPresence.GUIS.drawMultiLineString(
-                                        StringUtils.splitTextByNewLine(
-                                                ModUtils.TRANSLATOR.translate("gui.config.message.hover.access",
-                                                        ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_world_data"))
-                                        ),
-                                        getMouseX(), getMouseY(),
-                                        width, height,
-                                        getWrapWidth(),
-                                        getFontRenderer(),
-                                        true
-                                );
-                            } else {
-                                CraftPresence.GUIS.drawMultiLineString(
-                                        StringUtils.splitTextByNewLine(
-                                                ModUtils.TRANSLATOR.translate("gui.config.comment.title.server_messages")
-                                        ),
-                                        getMouseX(), getMouseY(),
-                                        width, height,
-                                        getWrapWidth(),
-                                        getFontRenderer(),
-                                        true
-                                );
-                            }
-                        }
-                )
-        );
+                                true);
+                    } else {
+                        CraftPresence.GUIS.drawMultiLineString(
+                                StringUtils.splitTextByNewLine(
+                                        ModUtils.TRANSLATOR.translate("gui.config.comment.title.biome_messages")),
+                                getMouseX(),
+                                getMouseY(),
+                                width,
+                                height,
+                                getWrapWidth(),
+                                getFontRenderer(),
+                                true);
+                    }
+                }));
+        dimensionSet = addControl(new ExtendedButtonControl(
+                calc1,
+                CraftPresence.GUIS.getButtonY(2),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.title.dimension_messages"),
+                () -> CraftPresence.GUIS.openScreen(new DimensionSettingsGui(currentScreen)),
+                () -> {
+                    if (!dimensionSet.isControlEnabled()) {
+                        CraftPresence.GUIS.drawMultiLineString(
+                                StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate(
+                                        "gui.config.message.hover.access",
+                                        ModUtils.TRANSLATOR.translate(
+                                                "gui.config.name.general.detect_dimension_data"))),
+                                getMouseX(),
+                                getMouseY(),
+                                width,
+                                height,
+                                getWrapWidth(),
+                                getFontRenderer(),
+                                true);
+                    } else {
+                        CraftPresence.GUIS.drawMultiLineString(
+                                StringUtils.splitTextByNewLine(
+                                        ModUtils.TRANSLATOR.translate("gui.config.comment.title.dimension_messages")),
+                                getMouseX(),
+                                getMouseY(),
+                                width,
+                                height,
+                                getWrapWidth(),
+                                getFontRenderer(),
+                                true);
+                    }
+                }));
+        serverSet = addControl(new ExtendedButtonControl(
+                calc2,
+                CraftPresence.GUIS.getButtonY(2),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.title.server_messages"),
+                () -> CraftPresence.GUIS.openScreen(new ServerSettingsGui(currentScreen)),
+                () -> {
+                    if (!serverSet.isControlEnabled()) {
+                        CraftPresence.GUIS.drawMultiLineString(
+                                StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate(
+                                        "gui.config.message.hover.access",
+                                        ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_world_data"))),
+                                getMouseX(),
+                                getMouseY(),
+                                width,
+                                height,
+                                getWrapWidth(),
+                                getFontRenderer(),
+                                true);
+                    } else {
+                        CraftPresence.GUIS.drawMultiLineString(
+                                StringUtils.splitTextByNewLine(
+                                        ModUtils.TRANSLATOR.translate("gui.config.comment.title.server_messages")),
+                                getMouseX(),
+                                getMouseY(),
+                                width,
+                                height,
+                                getWrapWidth(),
+                                getFontRenderer(),
+                                true);
+                    }
+                }));
         // Added Status Settings Button
-        addControl(
-                new ExtendedButtonControl(
-                        calc1, CraftPresence.GUIS.getButtonY(3),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.title.status_messages"),
-                        () -> CraftPresence.GUIS.openScreen(new StatusMessagesGui(currentScreen)),
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.title.status_messages")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
+        addControl(new ExtendedButtonControl(
+                calc1,
+                CraftPresence.GUIS.getButtonY(3),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.title.status_messages"),
+                () -> CraftPresence.GUIS.openScreen(new StatusMessagesGui(currentScreen)),
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.title.status_messages")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
         // Added Advanced Settings Button
-        addControl(
-                new ExtendedButtonControl(
-                        calc2, CraftPresence.GUIS.getButtonY(3),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.title.advanced"),
-                        () -> CraftPresence.GUIS.openScreen(new AdvancedSettingsGui(currentScreen)),
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.title.advanced")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
+        addControl(new ExtendedButtonControl(
+                calc2,
+                CraftPresence.GUIS.getButtonY(3),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.title.advanced"),
+                () -> CraftPresence.GUIS.openScreen(new AdvancedSettingsGui(currentScreen)),
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.title.advanced")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
         // Added Accessibility Settings Button
-        addControl(
-                new ExtendedButtonControl(
-                        calc1, CraftPresence.GUIS.getButtonY(4),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.title.accessibility"),
-                        () -> CraftPresence.GUIS.openScreen(new AccessibilitySettingsGui(currentScreen)),
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.title.accessibility")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
+        addControl(new ExtendedButtonControl(
+                calc1,
+                CraftPresence.GUIS.getButtonY(4),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.title.accessibility"),
+                () -> CraftPresence.GUIS.openScreen(new AccessibilitySettingsGui(currentScreen)),
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.title.accessibility")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
         // Added Presence Settings Button
-        addControl(
-                new ExtendedButtonControl(
-                        calc2, CraftPresence.GUIS.getButtonY(4),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.title.presence_settings"),
-                        () -> CraftPresence.GUIS.openScreen(new PresenceSettingsGui(currentScreen)),
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.presence_settings")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
+        addControl(new ExtendedButtonControl(
+                calc2,
+                CraftPresence.GUIS.getButtonY(4),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.title.presence_settings"),
+                () -> CraftPresence.GUIS.openScreen(new PresenceSettingsGui(currentScreen)),
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.presence_settings")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
         // Adding Controls Button
         final List<String> controlInfo = Lists.newArrayList("key.craftpresence.category");
         KeyUtils.FilterMode controlMode = KeyUtils.FilterMode.Category;
@@ -262,105 +254,90 @@ public class MainGui extends ExtendedScreen {
         }
 
         final KeyUtils.FilterMode finalControlMode = controlMode;
-        controlsButton = addControl(
-                new ExtendedButtonControl(
-                        (width / 2) - 90, (height - 55),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.controls"),
-                        () -> CraftPresence.GUIS.openScreen(
-                                new ControlsGui(
-                                        currentScreen, finalControlMode,
-                                        controlInfo
-                                )
-                        )
-                )
-        );
-        proceedButton = addControl(
-                new ExtendedButtonControl(
-                        (width / 2) - 90, (height - 30),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
-                        () -> {
-                            if (CraftPresence.CONFIG.hasChanged) {
-                                CraftPresence.CONFIG.updateConfig(false);
-                                CraftPresence.CONFIG.read(false, "UTF-8");
-                                if (CraftPresence.CONFIG.hasClientPropertiesChanged) {
-                                    CommandUtils.rebootRPC();
-                                    CraftPresence.CONFIG.hasClientPropertiesChanged = false;
-                                }
-                                CommandUtils.reloadData(true);
-                                CraftPresence.CONFIG.hasChanged = false;
-                            }
-
-                            CraftPresence.GUIS.configGUIOpened = false;
-                            if (mc.thePlayer != null) {
-                                mc.thePlayer.closeScreen();
-                            } else {
-                                CraftPresence.GUIS.openScreen(parentScreen);
-                            }
+        controlsButton = addControl(new ExtendedButtonControl(
+                (width / 2) - 90,
+                (height - 55),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.controls"),
+                () -> CraftPresence.GUIS.openScreen(new ControlsGui(currentScreen, finalControlMode, controlInfo))));
+        proceedButton = addControl(new ExtendedButtonControl(
+                (width / 2) - 90,
+                (height - 30),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
+                () -> {
+                    if (CraftPresence.CONFIG.hasChanged) {
+                        CraftPresence.CONFIG.updateConfig(false);
+                        CraftPresence.CONFIG.read(false, "UTF-8");
+                        if (CraftPresence.CONFIG.hasClientPropertiesChanged) {
+                            CommandUtils.rebootRPC();
+                            CraftPresence.CONFIG.hasClientPropertiesChanged = false;
                         }
-                )
-        );
+                        CommandUtils.reloadData(true);
+                        CraftPresence.CONFIG.hasChanged = false;
+                    }
+
+                    CraftPresence.GUIS.configGUIOpened = false;
+                    if (mc.thePlayer != null) {
+                        mc.thePlayer.closeScreen();
+                    } else {
+                        CraftPresence.GUIS.openScreen(parentScreen);
+                    }
+                }));
         // Added About Button
-        addControl(
-                new ExtendedButtonControl(
-                        (width - 105), (height - 55),
-                        95, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.about"),
-                        () -> CraftPresence.GUIS.openScreen(new AboutGui(currentScreen))
-                )
-        );
-        commandGUIButton = addControl(
-                new ExtendedButtonControl(
-                        (width - 105), (height - 30),
-                        95, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.commands"),
-                        () -> CraftPresence.GUIS.openScreen(new CommandsGui(currentScreen))
-                )
-        );
+        addControl(new ExtendedButtonControl(
+                (width - 105),
+                (height - 55),
+                95,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.about"),
+                () -> CraftPresence.GUIS.openScreen(new AboutGui(currentScreen))));
+        commandGUIButton = addControl(new ExtendedButtonControl(
+                (width - 105),
+                (height - 30),
+                95,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.commands"),
+                () -> CraftPresence.GUIS.openScreen(new CommandsGui(currentScreen))));
         // Added Reset Config Button
-        addControl(
-                new ExtendedButtonControl(
-                        10, (height - 30),
-                        95, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.reset"),
-                        () -> {
-                            CraftPresence.CONFIG.setupInitialValues();
-                            CraftPresence.CONFIG.hasChanged = true;
-                            CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                            syncRenderStates();
-                        }
-                )
-        );
+        addControl(new ExtendedButtonControl(
+                10, (height - 30), 95, 20, ModUtils.TRANSLATOR.translate("gui.config.message.button.reset"), () -> {
+                    CraftPresence.CONFIG.setupInitialValues();
+                    CraftPresence.CONFIG.hasChanged = true;
+                    CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                    syncRenderStates();
+                }));
         // Added Sync Config Button
-        addControl(
-                new ExtendedButtonControl(
-                        10, (height - 55),
-                        95, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.sync.config"),
-                        () -> {
-                            final List<Pair<String, Object>> currentConfigDataMappings = CraftPresence.CONFIG.configDataMappings;
-                            CraftPresence.CONFIG.read(false, "UTF-8");
+        addControl(new ExtendedButtonControl(
+                10,
+                (height - 55),
+                95,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.sync.config"),
+                () -> {
+                    final List<Pair<String, Object>> currentConfigDataMappings =
+                            CraftPresence.CONFIG.configDataMappings;
+                    CraftPresence.CONFIG.read(false, "UTF-8");
 
-                            // Only Mark to Save if there have been Changes in the File
-                            if (!CraftPresence.CONFIG.configDataMappings.equals(currentConfigDataMappings)) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                syncRenderStates();
-                            }
-                        },
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.button.sync.config")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
+                    // Only Mark to Save if there have been Changes in the File
+                    if (!CraftPresence.CONFIG.configDataMappings.equals(currentConfigDataMappings)) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        syncRenderStates();
+                    }
+                },
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.button.sync.config")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
 
         super.initializeUi();
     }
@@ -368,12 +345,18 @@ public class MainGui extends ExtendedScreen {
     @Override
     public void preRender() {
         final String mainTitle = ModUtils.TRANSLATOR.translate("gui.config.title");
-        final String releaseNotice = ModUtils.TRANSLATOR.translate("gui.config.message.tentative", ModUtils.VERSION_ID + " - " + StringUtils.formatWord(ModUtils.VERSION_LABEL));
+        final String releaseNotice = ModUtils.TRANSLATOR.translate(
+                "gui.config.message.tentative",
+                ModUtils.VERSION_ID + " - " + StringUtils.formatWord(ModUtils.VERSION_LABEL));
 
         renderString(mainTitle, (width / 2f) - (StringUtils.getStringWidth(mainTitle) / 2f), 15, 0xFFFFFF);
 
         if (!ModUtils.VERSION_TYPE.equalsIgnoreCase("release")) {
-            renderString(releaseNotice, (width / 2f) - (StringUtils.getStringWidth(releaseNotice) / 2f), height - 85, 0xFFFFFF);
+            renderString(
+                    releaseNotice,
+                    (width / 2f) - (StringUtils.getStringWidth(releaseNotice) / 2f),
+                    height - 85,
+                    0xFFFFFF);
         }
 
         syncRenderStates();
@@ -384,8 +367,23 @@ public class MainGui extends ExtendedScreen {
         final String mainTitle = ModUtils.TRANSLATOR.translate("gui.config.title");
 
         // Hovering over Title Label
-        if (CraftPresence.GUIS.isMouseOver(getMouseX(), getMouseY(), (width / 2f) - (StringUtils.getStringWidth(mainTitle) / 2f), 15, StringUtils.getStringWidth(mainTitle), getFontHeight())) {
-            CraftPresence.GUIS.drawMultiLineString(StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate("gui.config.comment.title", ModUtils.VERSION_ID, ModUtils.MOD_SCHEMA_VERSION)), getMouseX(), getMouseY(), width, height, getWrapWidth(), getFontRenderer(), true);
+        if (CraftPresence.GUIS.isMouseOver(
+                getMouseX(),
+                getMouseY(),
+                (width / 2f) - (StringUtils.getStringWidth(mainTitle) / 2f),
+                15,
+                StringUtils.getStringWidth(mainTitle),
+                getFontHeight())) {
+            CraftPresence.GUIS.drawMultiLineString(
+                    StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate(
+                            "gui.config.comment.title", ModUtils.VERSION_ID, ModUtils.MOD_SCHEMA_VERSION)),
+                    getMouseX(),
+                    getMouseY(),
+                    width,
+                    height,
+                    getWrapWidth(),
+                    getFontRenderer(),
+                    true);
         }
     }
 
@@ -404,11 +402,22 @@ public class MainGui extends ExtendedScreen {
     }
 
     private void syncRenderStates() {
-        biomeSet.setControlEnabled(!CraftPresence.CONFIG.hasChanged ? CraftPresence.CONFIG.detectBiomeData : biomeSet.isControlEnabled());
-        dimensionSet.setControlEnabled(!CraftPresence.CONFIG.hasChanged ? CraftPresence.CONFIG.detectDimensionData : dimensionSet.isControlEnabled());
-        serverSet.setControlEnabled(!CraftPresence.CONFIG.hasChanged ? CraftPresence.CONFIG.detectWorldData : serverSet.isControlEnabled());
-        commandGUIButton.setControlEnabled(!CraftPresence.CONFIG.hasChanged ? CraftPresence.CONFIG.enableCommands : commandGUIButton.isControlEnabled());
+        biomeSet.setControlEnabled(
+                !CraftPresence.CONFIG.hasChanged ? CraftPresence.CONFIG.detectBiomeData : biomeSet.isControlEnabled());
+        dimensionSet.setControlEnabled(
+                !CraftPresence.CONFIG.hasChanged
+                        ? CraftPresence.CONFIG.detectDimensionData
+                        : dimensionSet.isControlEnabled());
+        serverSet.setControlEnabled(
+                !CraftPresence.CONFIG.hasChanged ? CraftPresence.CONFIG.detectWorldData : serverSet.isControlEnabled());
+        commandGUIButton.setControlEnabled(
+                !CraftPresence.CONFIG.hasChanged
+                        ? CraftPresence.CONFIG.enableCommands
+                        : commandGUIButton.isControlEnabled());
 
-        proceedButton.setControlMessage(CraftPresence.CONFIG.hasChanged ? ModUtils.TRANSLATOR.translate("gui.config.message.button.save") : ModUtils.TRANSLATOR.translate("gui.config.message.button.back"));
+        proceedButton.setControlMessage(
+                CraftPresence.CONFIG.hasChanged
+                        ? ModUtils.TRANSLATOR.translate("gui.config.message.button.save")
+                        : ModUtils.TRANSLATOR.translate("gui.config.message.button.back"));
     }
 }

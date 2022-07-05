@@ -35,11 +35,10 @@ import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ExtendedTextControl;
 import com.gitlab.cdagaming.craftpresence.utils.gui.controls.SliderControl;
 import com.gitlab.cdagaming.craftpresence.utils.gui.integrations.PaginatedScreen;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.ResourceLocation;
-
 import java.awt.*;
 import java.io.File;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ResourceLocation;
 
 @SuppressWarnings("DuplicatedCode")
 public class ColorEditorGui extends PaginatedScreen {
@@ -60,7 +59,11 @@ public class ColorEditorGui extends PaginatedScreen {
     private boolean isModified = false;
     private ResourceLocation currentTexture;
 
-    public ColorEditorGui(GuiScreen parentScreen, String configValueName, PairConsumer<Integer, ColorEditorGui> onAdjustEntry, DataConsumer<ColorEditorGui> onInit) {
+    public ColorEditorGui(
+            GuiScreen parentScreen,
+            String configValueName,
+            PairConsumer<Integer, ColorEditorGui> onAdjustEntry,
+            DataConsumer<ColorEditorGui> onInit) {
         super(parentScreen);
         this.configValueName = configValueName;
         this.onAdjustEntry = onAdjustEntry;
@@ -79,110 +82,83 @@ public class ColorEditorGui extends PaginatedScreen {
         final String alphaTitle = ModUtils.TRANSLATOR.translate("gui.config.message.editor.color.value.alpha");
 
         hexText = addControl(
-                new ExtendedTextControl(
-                        getFontRenderer(),
-                        calc2, CraftPresence.GUIS.getButtonY(1),
-                        180, 20
-                ), startPage
-        );
+                new ExtendedTextControl(getFontRenderer(), calc2, CraftPresence.GUIS.getButtonY(1), 180, 20),
+                startPage);
         hexText.setMaxStringLength(10);
 
         redText = addControl(
                 new SliderControl(
                         new Pair<>(calc1, CraftPresence.GUIS.getButtonY(2)),
                         new Pair<>(180, 20),
-                        1.0f, 0.0f,
-                        255.0f, 1.0f,
+                        1.0f,
+                        0.0f,
+                        255.0f,
+                        1.0f,
                         redTitle,
-                        new Tuple<>(
-                                this::syncValues,
-                                () -> {
-                                },
-                                this::syncValues
-                        )
-                ), startPage
-        );
+                        new Tuple<>(this::syncValues, () -> {}, this::syncValues)),
+                startPage);
         greenText = addControl(
                 new SliderControl(
                         new Pair<>(calc2, CraftPresence.GUIS.getButtonY(2)),
                         new Pair<>(180, 20),
-                        1.0f, 0.0f,
-                        255.0f, 1.0f,
+                        1.0f,
+                        0.0f,
+                        255.0f,
+                        1.0f,
                         greenTitle,
-                        new Tuple<>(
-                                this::syncValues,
-                                () -> {
-                                },
-                                this::syncValues
-                        )
-                ), startPage
-        );
+                        new Tuple<>(this::syncValues, () -> {}, this::syncValues)),
+                startPage);
         blueText = addControl(
                 new SliderControl(
                         new Pair<>(calc1, CraftPresence.GUIS.getButtonY(3)),
                         new Pair<>(180, 20),
-                        1.0f, 0.0f,
-                        255.0f, 1.0f,
+                        1.0f,
+                        0.0f,
+                        255.0f,
+                        1.0f,
                         blueTitle,
-                        new Tuple<>(
-                                this::syncValues,
-                                () -> {
-                                },
-                                this::syncValues
-                        )
-                ), startPage
-        );
+                        new Tuple<>(this::syncValues, () -> {}, this::syncValues)),
+                startPage);
         alphaText = addControl(
                 new SliderControl(
                         new Pair<>(calc2, CraftPresence.GUIS.getButtonY(3)),
                         new Pair<>(180, 20),
-                        1.0f, 0.0f,
-                        255.0f, 1.0f,
+                        1.0f,
+                        0.0f,
+                        255.0f,
+                        1.0f,
                         alphaTitle,
-                        new Tuple<>(
-                                this::syncValues,
-                                () -> {
-                                },
-                                this::syncValues
-                        )
-                ), startPage
-        );
+                        new Tuple<>(this::syncValues, () -> {}, this::syncValues)),
+                startPage);
 
         // Page 2 Items
         textureText = addControl(
                 new ExtendedTextControl(
-                        getFontRenderer(),
-                        calc2, CraftPresence.GUIS.getButtonY(1),
-                        180, 20,
-                        this::syncValues
-                ), startPage + 1
-        );
+                        getFontRenderer(), calc2, CraftPresence.GUIS.getButtonY(1), 180, 20, this::syncValues),
+                startPage + 1);
         textureText.setMaxStringLength(32767);
 
         initValues();
         syncValues();
         super.initializeUi();
 
-        backButton.setOnClick(
-                () -> {
-                    syncValues();
-                    if (isModified && onAdjustEntry != null) {
-                        onAdjustEntry.accept(currentPage, this);
-                    }
-                    CraftPresence.GUIS.openScreen(parentScreen);
-                }
-        );
-        setOnPageChange(
-                () -> {
-                    initValues();
-                    syncValues();
-                }
-        );
+        backButton.setOnClick(() -> {
+            syncValues();
+            if (isModified && onAdjustEntry != null) {
+                onAdjustEntry.accept(currentPage, this);
+            }
+            CraftPresence.GUIS.openScreen(parentScreen);
+        });
+        setOnPageChange(() -> {
+            initValues();
+            syncValues();
+        });
     }
 
     @Override
     public void preRender() {
-        final String mainTitle = ModUtils.TRANSLATOR.translate("gui.config.title.editor.color", configValueName.replaceAll("_", " "));
+        final String mainTitle =
+                ModUtils.TRANSLATOR.translate("gui.config.title.editor.color", configValueName.replaceAll("_", " "));
         final String previewTitle = ModUtils.TRANSLATOR.translate("gui.config.message.editor.preview");
 
         renderString(mainTitle, (width / 2f) - (StringUtils.getStringWidth(mainTitle) / 2f), 10, 0xFFFFFF);
@@ -207,7 +183,14 @@ public class ColorEditorGui extends PaginatedScreen {
             backButton.setControlEnabled(!StringUtils.isNullOrEmpty(hexText.getText()));
 
             // Draw Preview Box
-            CraftPresence.GUIS.drawGradientRect(300, tooltipX - 3, tooltipY - 3, width - 2, height - 2, currentConvertedHexValue, currentConvertedHexValue);
+            CraftPresence.GUIS.drawGradientRect(
+                    300,
+                    tooltipX - 3,
+                    tooltipY - 3,
+                    width - 2,
+                    height - 2,
+                    currentConvertedHexValue,
+                    currentConvertedHexValue);
         }
 
         // Page 2 Items
@@ -228,23 +211,59 @@ public class ColorEditorGui extends PaginatedScreen {
                 final String formattedConvertedName = currentConvertedTexturePath.replaceFirst("file://", "");
                 final String[] urlBits = formattedConvertedName.split("/");
                 final String textureName = urlBits[urlBits.length - 1].trim();
-                currentTexture = ImageUtils.getTextureFromUrl(textureName, currentConvertedTexturePath.toLowerCase().startsWith("file://") ? new File(formattedConvertedName) : formattedConvertedName);
+                currentTexture = ImageUtils.getTextureFromUrl(
+                        textureName,
+                        currentConvertedTexturePath.toLowerCase().startsWith("file://")
+                                ? new File(formattedConvertedName)
+                                : formattedConvertedName);
 
                 widthDivider = 44;
                 heightDivider = 43;
             }
 
             // Draw Preview Box
-            CraftPresence.GUIS.drawTextureRect(0.0D, width - 47, height - 47, 44, 44, 0, widthDivider, heightDivider, false, currentTexture);
+            CraftPresence.GUIS.drawTextureRect(
+                    0.0D, width - 47, height - 47, 44, 44, 0, widthDivider, heightDivider, false, currentTexture);
         }
 
         // Draw Border around Preview Box
-        CraftPresence.GUIS.drawGradientRect(300, tooltipX - 3, tooltipY - 3 + 1, tooltipX - 3 + 1, tooltipY + tooltipHeight + 3 - 1, borderColor, borderColorEnd);
-        CraftPresence.GUIS.drawGradientRect(300, tooltipX + tooltipTextWidth + 2, tooltipY - 3 + 1, tooltipX + tooltipTextWidth + 3, tooltipY + tooltipHeight + 3 - 1, borderColor, borderColorEnd);
-        CraftPresence.GUIS.drawGradientRect(300, tooltipX - 3, tooltipY - 3, tooltipX + tooltipTextWidth + 3, tooltipY - 3 + 1, borderColor, borderColor);
-        CraftPresence.GUIS.drawGradientRect(300, tooltipX - 3, tooltipY + tooltipHeight + 2, tooltipX + tooltipTextWidth + 3, tooltipY + tooltipHeight + 3, borderColorEnd, borderColorEnd);
+        CraftPresence.GUIS.drawGradientRect(
+                300,
+                tooltipX - 3,
+                tooltipY - 3 + 1,
+                tooltipX - 3 + 1,
+                tooltipY + tooltipHeight + 3 - 1,
+                borderColor,
+                borderColorEnd);
+        CraftPresence.GUIS.drawGradientRect(
+                300,
+                tooltipX + tooltipTextWidth + 2,
+                tooltipY - 3 + 1,
+                tooltipX + tooltipTextWidth + 3,
+                tooltipY + tooltipHeight + 3 - 1,
+                borderColor,
+                borderColorEnd);
+        CraftPresence.GUIS.drawGradientRect(
+                300,
+                tooltipX - 3,
+                tooltipY - 3,
+                tooltipX + tooltipTextWidth + 3,
+                tooltipY - 3 + 1,
+                borderColor,
+                borderColor);
+        CraftPresence.GUIS.drawGradientRect(
+                300,
+                tooltipX - 3,
+                tooltipY + tooltipHeight + 2,
+                tooltipX + tooltipTextWidth + 3,
+                tooltipY + tooltipHeight + 3,
+                borderColorEnd,
+                borderColorEnd);
 
-        backButton.setControlMessage(isModified ? ModUtils.TRANSLATOR.translate("gui.config.message.button.save") : ModUtils.TRANSLATOR.translate("gui.config.message.button.back"));
+        backButton.setControlMessage(
+                isModified
+                        ? ModUtils.TRANSLATOR.translate("gui.config.message.button.save")
+                        : ModUtils.TRANSLATOR.translate("gui.config.message.button.back"));
     }
 
     /**
@@ -261,7 +280,8 @@ public class ColorEditorGui extends PaginatedScreen {
                 currentConvertedTexturePath = null;
                 currentTexture = new ResourceLocation("");
                 currentPage = startPage;
-            } else if (StringUtils.isNullOrEmpty(textureText.getText()) && !StringUtils.isNullOrEmpty(startingTexturePath)) {
+            } else if (StringUtils.isNullOrEmpty(textureText.getText())
+                    && !StringUtils.isNullOrEmpty(startingTexturePath)) {
                 textureText.setText(startingTexturePath);
                 currentNormalHexValue = null;
                 currentConvertedHexValue = null;
@@ -326,7 +346,8 @@ public class ColorEditorGui extends PaginatedScreen {
                     currentNormalHexValue = StringUtils.getHexFromColor(localColor);
                     hexText.setText(currentNormalHexValue);
 
-                    currentConvertedHexValue = Long.toString(Long.decode(currentNormalHexValue).intValue());
+                    currentConvertedHexValue =
+                            Long.toString(Long.decode(currentNormalHexValue).intValue());
                 }
             }
             isModified = !hexText.getText().equals(startingHexValue);
@@ -344,7 +365,8 @@ public class ColorEditorGui extends PaginatedScreen {
                         textureText.setText(textureText.getText().replace(CraftPresence.CONFIG.splitCharacter, ":"));
                     }
 
-                    if (textureText.getText().contains(":") && !textureText.getText().startsWith(":")) {
+                    if (textureText.getText().contains(":")
+                            && !textureText.getText().startsWith(":")) {
                         currentNormalTexturePath = textureText.getText();
                     } else if (textureText.getText().startsWith(":")) {
                         currentNormalTexturePath = textureText.getText().substring(1);
@@ -373,12 +395,19 @@ public class ColorEditorGui extends PaginatedScreen {
                     final String formattedConvertedName = currentConvertedTexturePath.replaceFirst("file://", "");
                     final String[] urlBits = formattedConvertedName.trim().split("/");
                     final String textureName = urlBits[urlBits.length - 1].trim();
-                    currentTexture = ImageUtils.getTextureFromUrl(textureName, currentConvertedTexturePath.toLowerCase().startsWith("file://") ? new File(formattedConvertedName) : formattedConvertedName);
+                    currentTexture = ImageUtils.getTextureFromUrl(
+                            textureName,
+                            currentConvertedTexturePath.toLowerCase().startsWith("file://")
+                                    ? new File(formattedConvertedName)
+                                    : formattedConvertedName);
                 }
             } else {
                 currentTexture = new ResourceLocation("");
             }
-            isModified = !StringUtils.isNullOrEmpty(startingTexturePath) && !textureText.getText().equals(startingTexturePath.replace(CraftPresence.CONFIG.splitCharacter, ":"));
+            isModified = !StringUtils.isNullOrEmpty(startingTexturePath)
+                    && !textureText
+                            .getText()
+                            .equals(startingTexturePath.replace(CraftPresence.CONFIG.splitCharacter, ":"));
         }
     }
 }

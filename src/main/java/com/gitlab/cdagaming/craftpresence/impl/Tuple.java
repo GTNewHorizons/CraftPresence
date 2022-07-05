@@ -145,16 +145,23 @@ public class Tuple<T, U, V> {
     public boolean equals(final Tuple<?, ?, ?> obj) {
         try {
             // Case 1: Attempt ToString Conversion Checking
-            return (this.getFirst().toString().equals(obj.getFirst().toString())) && (this.getSecond().toString().equals(obj.getSecond().toString())) && this.getThird().toString().equals(obj.getThird().toString());
+            return (this.getFirst().toString().equals(obj.getFirst().toString()))
+                    && (this.getSecond().toString().equals(obj.getSecond().toString()))
+                    && this.getThird().toString().equals(obj.getThird().toString());
         } catch (Exception ex) {
             // Case 2: Automated Checking
             // Note: Can Likely return false positives depending on conditions
-            return ((this.getFirst() == obj.getFirst()) && (this.getSecond() == obj.getSecond()) && this.getThird() == obj.getThird()) || (this == obj);
+            return ((this.getFirst() == obj.getFirst())
+                            && (this.getSecond() == obj.getSecond())
+                            && this.getThird() == obj.getThird())
+                    || (this == obj);
         }
     }
 
     @Override
     public String toString() {
-        return "Tuple[T=" + (this.getFirst() != null ? this.getFirst().toString() : "N/A") + "; U=" + (this.getSecond() != null ? this.getSecond().toString() : "N/A") + "; V=" + (this.getThird() != null ? this.getThird().toString() : "N/A") + "]";
+        return "Tuple[T=" + (this.getFirst() != null ? this.getFirst().toString() : "N/A") + "; U="
+                + (this.getSecond() != null ? this.getSecond().toString() : "N/A") + "; V="
+                + (this.getThird() != null ? this.getThird().toString() : "N/A") + "]";
     }
 }

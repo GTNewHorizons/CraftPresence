@@ -35,17 +35,16 @@ import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ExtendedButtonContr
 import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ExtendedTextControl;
 import com.gitlab.cdagaming.craftpresence.utils.gui.integrations.ExtendedScreen;
 import com.google.common.collect.Lists;
+import java.awt.*;
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Gui Utilities used to Parse Gui Data and handle related RPC Events, and rendering tasks
@@ -150,8 +149,17 @@ public class GuiUtils {
      * @param elementHeight The total height of the object
      * @return {@code true} if the Mouse Position is within the bounds of the object, and thus is over it
      */
-    public boolean isMouseOver(final double mouseX, final double mouseY, final double elementX, final double elementY, final double elementWidth, final double elementHeight) {
-        return mouseX >= elementX && mouseX <= elementX + elementWidth && mouseY >= elementY && mouseY <= elementY + elementHeight;
+    public boolean isMouseOver(
+            final double mouseX,
+            final double mouseY,
+            final double elementX,
+            final double elementY,
+            final double elementWidth,
+            final double elementHeight) {
+        return mouseX >= elementX
+                && mouseX <= elementX + elementWidth
+                && mouseY >= elementY
+                && mouseY <= elementY + elementHeight;
     }
 
     /**
@@ -163,7 +171,13 @@ public class GuiUtils {
      * @return {@code true} if the Mouse Position is within the bounds of the object, and thus is over it
      */
     public boolean isMouseOver(final double mouseX, final double mouseY, final ExtendedButtonControl button) {
-        return isMouseOver(mouseX, mouseY, button.getControlPosX(), button.getControlPosY(), button.getControlWidth() - 1, button.getControlHeight() - 1);
+        return isMouseOver(
+                mouseX,
+                mouseY,
+                button.getControlPosX(),
+                button.getControlPosY(),
+                button.getControlWidth() - 1,
+                button.getControlHeight() - 1);
     }
 
     /**
@@ -175,7 +189,13 @@ public class GuiUtils {
      * @return {@code true} if the Mouse Position is within the bounds of the object, and thus is over it
      */
     public boolean isMouseOver(final double mouseX, final double mouseY, final ExtendedTextControl textControl) {
-        return isMouseOver(mouseX, mouseY, textControl.getControlPosX(), textControl.getControlPosY(), textControl.getControlWidth() - 1, textControl.getControlHeight() - 1);
+        return isMouseOver(
+                mouseX,
+                mouseY,
+                textControl.getControlPosX(),
+                textControl.getControlPosY(),
+                textControl.getControlWidth() - 1,
+                textControl.getControlHeight() - 1);
     }
 
     /**
@@ -187,7 +207,13 @@ public class GuiUtils {
      * @return {@code true} if the Mouse Position is within the bounds of the object, and thus is over it
      */
     public boolean isMouseOver(final double mouseX, final double mouseY, final CheckBoxControl checkBox) {
-        return isMouseOver(mouseX, mouseY, checkBox.getControlPosX(), checkBox.getControlPosY(), checkBox.boxWidth - 1, checkBox.getControlHeight() - 1);
+        return isMouseOver(
+                mouseX,
+                mouseY,
+                checkBox.getControlPosX(),
+                checkBox.getControlPosY(),
+                checkBox.boxWidth - 1,
+                checkBox.getControlHeight() - 1);
     }
 
     /**
@@ -278,7 +304,9 @@ public class GuiUtils {
             final Class<?> newScreenClass = newScreen.getClass();
             final String newScreenName = newScreenClass.getSimpleName();
 
-            if (!newScreen.equals(CURRENT_SCREEN) || !newScreenClass.equals(CURRENT_GUI_CLASS) || !newScreenName.equals(CURRENT_GUI_NAME)) {
+            if (!newScreen.equals(CURRENT_SCREEN)
+                    || !newScreenClass.equals(CURRENT_GUI_CLASS)
+                    || !newScreenName.equals(CURRENT_GUI_NAME)) {
                 CURRENT_SCREEN = newScreen;
                 CURRENT_GUI_CLASS = newScreenClass;
                 CURRENT_GUI_NAME = newScreenName;
@@ -300,11 +328,13 @@ public class GuiUtils {
      * Retrieves and Synchronizes detected Gui Screen Classes
      */
     public void getScreens() {
-        final Class<?>[] searchClasses = new Class[]{
-                GuiScreen.class, GuiContainer.class
-        };
+        final Class<?>[] searchClasses = new Class[] {GuiScreen.class, GuiContainer.class};
 
-        for (Class<?> classObj : FileUtils.getClassNamesMatchingSuperType(Arrays.asList(searchClasses), CraftPresence.CONFIG.includeExtraGuiClasses, "net.minecraft", "com.gitlab.cdagaming.craftpresence")) {
+        for (Class<?> classObj : FileUtils.getClassNamesMatchingSuperType(
+                Arrays.asList(searchClasses),
+                CraftPresence.CONFIG.includeExtraGuiClasses,
+                "net.minecraft",
+                "com.gitlab.cdagaming.craftpresence")) {
             if (!GUI_NAMES.contains(classObj.getSimpleName())) {
                 GUI_NAMES.add(classObj.getSimpleName());
             }
@@ -338,8 +368,15 @@ public class GuiUtils {
             guiArgs.addAll(CraftPresence.CLIENT.generalArgs);
         }
 
-        final String defaultGuiMessage = StringUtils.getConfigPart(CraftPresence.CONFIG.guiMessages, "default", 0, 1, CraftPresence.CONFIG.splitCharacter, null);
-        final String currentGuiMessage = StringUtils.getConfigPart(CraftPresence.CONFIG.guiMessages, CURRENT_GUI_NAME, 0, 1, CraftPresence.CONFIG.splitCharacter, defaultGuiMessage);
+        final String defaultGuiMessage = StringUtils.getConfigPart(
+                CraftPresence.CONFIG.guiMessages, "default", 0, 1, CraftPresence.CONFIG.splitCharacter, null);
+        final String currentGuiMessage = StringUtils.getConfigPart(
+                CraftPresence.CONFIG.guiMessages,
+                CURRENT_GUI_NAME,
+                0,
+                1,
+                CraftPresence.CONFIG.splitCharacter,
+                defaultGuiMessage);
 
         final String CURRENT_GUI_MESSAGE = StringUtils.sequentialReplaceAnyCase(currentGuiMessage, guiArgs);
 
@@ -359,8 +396,19 @@ public class GuiUtils {
      * @param fontRenderer   The font renderer to use to render the String
      * @param withBackground Whether a background should display around and under the String, like a tooltip
      */
-    public void drawMultiLineString(final List<String> textToInput, int posX, int posY, int screenWidth, int screenHeight, int maxTextWidth, FontRenderer fontRenderer, boolean withBackground) {
-        if (CraftPresence.CONFIG.renderTooltips && !ModUtils.forceBlockTooltipRendering && !textToInput.isEmpty() && fontRenderer != null) {
+    public void drawMultiLineString(
+            final List<String> textToInput,
+            int posX,
+            int posY,
+            int screenWidth,
+            int screenHeight,
+            int maxTextWidth,
+            FontRenderer fontRenderer,
+            boolean withBackground) {
+        if (CraftPresence.CONFIG.renderTooltips
+                && !ModUtils.forceBlockTooltipRendering
+                && !textToInput.isEmpty()
+                && fontRenderer != null) {
             List<String> textLines = textToInput;
             int tooltipTextWidth = 0;
 
@@ -399,7 +447,8 @@ public class GuiUtils {
                 List<String> wrappedTextLines = Lists.newArrayList();
                 for (int i = 0; i < textLines.size(); i++) {
                     String textLine = textLines.get(i);
-                    List<String> wrappedLine = StringUtils.splitTextByNewLine(StringUtils.wrapFormattedStringToWidth(textLine, tooltipTextWidth));
+                    List<String> wrappedLine = StringUtils.splitTextByNewLine(
+                            StringUtils.wrapFormattedStringToWidth(textLine, tooltipTextWidth));
                     if (i == 0) {
                         titleLinesCount = wrappedLine.size();
                     }
@@ -455,25 +504,64 @@ public class GuiUtils {
                     if (CraftPresence.CONFIG.tooltipBackgroundColor.length() == 6) {
                         backgroundColor = "#" + CraftPresence.CONFIG.tooltipBackgroundColor;
                     } else if (CraftPresence.CONFIG.tooltipBackgroundColor.startsWith("0x")) {
-                        backgroundColor = Long.toString(Long.decode(CraftPresence.CONFIG.tooltipBackgroundColor).intValue());
+                        backgroundColor = Long.toString(Long.decode(CraftPresence.CONFIG.tooltipBackgroundColor)
+                                .intValue());
                     } else {
                         backgroundColor = CraftPresence.CONFIG.tooltipBackgroundColor;
                     }
 
                     // Draw with Colors
-                    drawGradientRect(zLevel, tooltipX - 3, tooltipY - 4, tooltipX + tooltipTextWidth + 3, tooltipY - 3, backgroundColor, backgroundColor);
-                    drawGradientRect(zLevel, tooltipX - 3, tooltipY + tooltipHeight + 3, tooltipX + tooltipTextWidth + 3, tooltipY + tooltipHeight + 4, backgroundColor, backgroundColor);
-                    drawGradientRect(zLevel, tooltipX - 3, tooltipY - 3, tooltipX + tooltipTextWidth + 3, tooltipY + tooltipHeight + 3, backgroundColor, backgroundColor);
-                    drawGradientRect(zLevel, tooltipX - 4, tooltipY - 3, tooltipX - 3, tooltipY + tooltipHeight + 3, backgroundColor, backgroundColor);
-                    drawGradientRect(zLevel, tooltipX + tooltipTextWidth + 3, tooltipY - 3, tooltipX + tooltipTextWidth + 4, tooltipY + tooltipHeight + 3, backgroundColor, backgroundColor);
+                    drawGradientRect(
+                            zLevel,
+                            tooltipX - 3,
+                            tooltipY - 4,
+                            tooltipX + tooltipTextWidth + 3,
+                            tooltipY - 3,
+                            backgroundColor,
+                            backgroundColor);
+                    drawGradientRect(
+                            zLevel,
+                            tooltipX - 3,
+                            tooltipY + tooltipHeight + 3,
+                            tooltipX + tooltipTextWidth + 3,
+                            tooltipY + tooltipHeight + 4,
+                            backgroundColor,
+                            backgroundColor);
+                    drawGradientRect(
+                            zLevel,
+                            tooltipX - 3,
+                            tooltipY - 3,
+                            tooltipX + tooltipTextWidth + 3,
+                            tooltipY + tooltipHeight + 3,
+                            backgroundColor,
+                            backgroundColor);
+                    drawGradientRect(
+                            zLevel,
+                            tooltipX - 4,
+                            tooltipY - 3,
+                            tooltipX - 3,
+                            tooltipY + tooltipHeight + 3,
+                            backgroundColor,
+                            backgroundColor);
+                    drawGradientRect(
+                            zLevel,
+                            tooltipX + tooltipTextWidth + 3,
+                            tooltipY - 3,
+                            tooltipX + tooltipTextWidth + 4,
+                            tooltipY + tooltipHeight + 3,
+                            backgroundColor,
+                            backgroundColor);
                 } else {
-                    final boolean usingExternalTexture = ImageUtils.isExternalImage(CraftPresence.CONFIG.tooltipBackgroundColor);
+                    final boolean usingExternalTexture =
+                            ImageUtils.isExternalImage(CraftPresence.CONFIG.tooltipBackgroundColor);
                     double widthDivider = 32.0D, heightDivider = 32.0D;
 
                     if (!usingExternalTexture) {
                         if (CraftPresence.CONFIG.tooltipBackgroundColor.contains(CraftPresence.CONFIG.splitCharacter)) {
-                            backgroundColor = CraftPresence.CONFIG.tooltipBackgroundColor.replace(CraftPresence.CONFIG.splitCharacter, ":");
-                        } else if (CraftPresence.CONFIG.tooltipBackgroundColor.contains(":") && !CraftPresence.CONFIG.tooltipBackgroundColor.startsWith(":")) {
+                            backgroundColor = CraftPresence.CONFIG.tooltipBackgroundColor.replace(
+                                    CraftPresence.CONFIG.splitCharacter, ":");
+                        } else if (CraftPresence.CONFIG.tooltipBackgroundColor.contains(":")
+                                && !CraftPresence.CONFIG.tooltipBackgroundColor.startsWith(":")) {
                             backgroundColor = CraftPresence.CONFIG.tooltipBackgroundColor;
                         } else if (CraftPresence.CONFIG.tooltipBackgroundColor.startsWith(":")) {
                             backgroundColor = CraftPresence.CONFIG.tooltipBackgroundColor.substring(1);
@@ -488,42 +576,95 @@ public class GuiUtils {
                             backGroundTexture = new ResourceLocation(backgroundColor);
                         }
                     } else {
-                        final String formattedConvertedName = CraftPresence.CONFIG.tooltipBackgroundColor.replaceFirst("file://", "");
+                        final String formattedConvertedName =
+                                CraftPresence.CONFIG.tooltipBackgroundColor.replaceFirst("file://", "");
                         final String[] urlBits = formattedConvertedName.trim().split("/");
                         final String textureName = urlBits[urlBits.length - 1].trim();
-                        backGroundTexture = ImageUtils.getTextureFromUrl(textureName, CraftPresence.CONFIG.tooltipBackgroundColor.toLowerCase().startsWith("file://") ? new File(formattedConvertedName) : formattedConvertedName);
+                        backGroundTexture = ImageUtils.getTextureFromUrl(
+                                textureName,
+                                CraftPresence.CONFIG
+                                                .tooltipBackgroundColor
+                                                .toLowerCase()
+                                                .startsWith("file://")
+                                        ? new File(formattedConvertedName)
+                                        : formattedConvertedName);
 
                         widthDivider = tooltipTextWidth + 8;
                         heightDivider = tooltipHeight + 8;
                     }
 
-                    drawTextureRect(zLevel, tooltipX - 4, tooltipY - 4, tooltipTextWidth + 8, tooltipHeight + 8, 0, widthDivider, heightDivider, false, backGroundTexture);
+                    drawTextureRect(
+                            zLevel,
+                            tooltipX - 4,
+                            tooltipY - 4,
+                            tooltipTextWidth + 8,
+                            tooltipHeight + 8,
+                            0,
+                            widthDivider,
+                            heightDivider,
+                            false,
+                            backGroundTexture);
                 }
 
                 if (StringUtils.isValidColorCode(CraftPresence.CONFIG.tooltipBorderColor)) {
                     if (CraftPresence.CONFIG.tooltipBorderColor.length() == 6) {
                         borderColor = "#" + CraftPresence.CONFIG.tooltipBorderColor;
                     } else if (CraftPresence.CONFIG.tooltipBorderColor.startsWith("0x")) {
-                        borderColor = Long.toString(Long.decode(CraftPresence.CONFIG.tooltipBorderColor).intValue());
+                        borderColor = Long.toString(Long.decode(CraftPresence.CONFIG.tooltipBorderColor)
+                                .intValue());
                     } else {
                         borderColor = CraftPresence.CONFIG.tooltipBorderColor;
                     }
 
                     // Draw with Colors
-                    int borderColorCode = (borderColor.startsWith("#") ? StringUtils.getColorFromHex(borderColor).getRGB() : Integer.parseInt(borderColor));
-                    String borderColorEnd = Integer.toString((borderColorCode & 0xFEFEFE) >> 1 | borderColorCode & 0xFF000000);
+                    int borderColorCode = (borderColor.startsWith("#")
+                            ? StringUtils.getColorFromHex(borderColor).getRGB()
+                            : Integer.parseInt(borderColor));
+                    String borderColorEnd =
+                            Integer.toString((borderColorCode & 0xFEFEFE) >> 1 | borderColorCode & 0xFF000000);
 
-                    drawGradientRect(zLevel, tooltipX - 3, tooltipY - 3 + 1, tooltipX - 3 + 1, tooltipY + tooltipHeight + 3 - 1, borderColor, borderColorEnd);
-                    drawGradientRect(zLevel, tooltipX + tooltipTextWidth + 2, tooltipY - 3 + 1, tooltipX + tooltipTextWidth + 3, tooltipY + tooltipHeight + 3 - 1, borderColor, borderColorEnd);
-                    drawGradientRect(zLevel, tooltipX - 3, tooltipY - 3, tooltipX + tooltipTextWidth + 3, tooltipY - 3 + 1, borderColor, borderColor);
-                    drawGradientRect(zLevel, tooltipX - 3, tooltipY + tooltipHeight + 2, tooltipX + tooltipTextWidth + 3, tooltipY + tooltipHeight + 3, borderColorEnd, borderColorEnd);
+                    drawGradientRect(
+                            zLevel,
+                            tooltipX - 3,
+                            tooltipY - 3 + 1,
+                            tooltipX - 3 + 1,
+                            tooltipY + tooltipHeight + 3 - 1,
+                            borderColor,
+                            borderColorEnd);
+                    drawGradientRect(
+                            zLevel,
+                            tooltipX + tooltipTextWidth + 2,
+                            tooltipY - 3 + 1,
+                            tooltipX + tooltipTextWidth + 3,
+                            tooltipY + tooltipHeight + 3 - 1,
+                            borderColor,
+                            borderColorEnd);
+                    drawGradientRect(
+                            zLevel,
+                            tooltipX - 3,
+                            tooltipY - 3,
+                            tooltipX + tooltipTextWidth + 3,
+                            tooltipY - 3 + 1,
+                            borderColor,
+                            borderColor);
+                    drawGradientRect(
+                            zLevel,
+                            tooltipX - 3,
+                            tooltipY + tooltipHeight + 2,
+                            tooltipX + tooltipTextWidth + 3,
+                            tooltipY + tooltipHeight + 3,
+                            borderColorEnd,
+                            borderColorEnd);
                 } else {
-                    final boolean usingExternalTexture = ImageUtils.isExternalImage(CraftPresence.CONFIG.tooltipBorderColor);
+                    final boolean usingExternalTexture =
+                            ImageUtils.isExternalImage(CraftPresence.CONFIG.tooltipBorderColor);
 
                     if (!usingExternalTexture) {
                         if (CraftPresence.CONFIG.tooltipBorderColor.contains(CraftPresence.CONFIG.splitCharacter)) {
-                            borderColor = CraftPresence.CONFIG.tooltipBorderColor.replace(CraftPresence.CONFIG.splitCharacter, ":");
-                        } else if (CraftPresence.CONFIG.tooltipBorderColor.contains(":") && !CraftPresence.CONFIG.tooltipBorderColor.startsWith(":")) {
+                            borderColor = CraftPresence.CONFIG.tooltipBorderColor.replace(
+                                    CraftPresence.CONFIG.splitCharacter, ":");
+                        } else if (CraftPresence.CONFIG.tooltipBorderColor.contains(":")
+                                && !CraftPresence.CONFIG.tooltipBorderColor.startsWith(":")) {
                             borderColor = CraftPresence.CONFIG.tooltipBorderColor;
                         } else if (CraftPresence.CONFIG.tooltipBorderColor.startsWith(":")) {
                             borderColor = CraftPresence.CONFIG.tooltipBorderColor.substring(1);
@@ -538,16 +679,64 @@ public class GuiUtils {
                             borderTexture = new ResourceLocation(borderColor);
                         }
                     } else {
-                        final String formattedConvertedName = CraftPresence.CONFIG.tooltipBorderColor.replaceFirst("file://", "");
+                        final String formattedConvertedName =
+                                CraftPresence.CONFIG.tooltipBorderColor.replaceFirst("file://", "");
                         final String[] urlBits = formattedConvertedName.trim().split("/");
                         final String textureName = urlBits[urlBits.length - 1].trim();
-                        borderTexture = ImageUtils.getTextureFromUrl(textureName, CraftPresence.CONFIG.tooltipBorderColor.toLowerCase().startsWith("file://") ? new File(formattedConvertedName) : formattedConvertedName);
+                        borderTexture = ImageUtils.getTextureFromUrl(
+                                textureName,
+                                CraftPresence.CONFIG
+                                                .tooltipBorderColor
+                                                .toLowerCase()
+                                                .startsWith("file://")
+                                        ? new File(formattedConvertedName)
+                                        : formattedConvertedName);
                     }
 
-                    drawTextureRect(zLevel, tooltipX - 3, tooltipY - 3, tooltipTextWidth + 5, 1, 0, (usingExternalTexture ? tooltipTextWidth + 5 : 32.0D), (usingExternalTexture ? 1 : 32.0D), false, borderTexture); // Top Border
-                    drawTextureRect(zLevel, tooltipX - 3, tooltipY + tooltipHeight + 2, tooltipTextWidth + 5, 1, 0, (usingExternalTexture ? tooltipTextWidth + 5 : 32.0D), (usingExternalTexture ? 1 : 32.0D), false, borderTexture); // Bottom Border
-                    drawTextureRect(zLevel, tooltipX - 3, tooltipY - 3, 1, tooltipHeight + 5, 0, (usingExternalTexture ? 1 : 32.0D), (usingExternalTexture ? tooltipHeight + 5 : 32.0D), false, borderTexture); // Left Border
-                    drawTextureRect(zLevel, tooltipX + tooltipTextWidth + 2, tooltipY - 3, 1, tooltipHeight + 6, 0, (usingExternalTexture ? 1 : 32.0D), (usingExternalTexture ? tooltipHeight + 6 : 32.0D), false, borderTexture); // Right Border
+                    drawTextureRect(
+                            zLevel,
+                            tooltipX - 3,
+                            tooltipY - 3,
+                            tooltipTextWidth + 5,
+                            1,
+                            0,
+                            (usingExternalTexture ? tooltipTextWidth + 5 : 32.0D),
+                            (usingExternalTexture ? 1 : 32.0D),
+                            false,
+                            borderTexture); // Top Border
+                    drawTextureRect(
+                            zLevel,
+                            tooltipX - 3,
+                            tooltipY + tooltipHeight + 2,
+                            tooltipTextWidth + 5,
+                            1,
+                            0,
+                            (usingExternalTexture ? tooltipTextWidth + 5 : 32.0D),
+                            (usingExternalTexture ? 1 : 32.0D),
+                            false,
+                            borderTexture); // Bottom Border
+                    drawTextureRect(
+                            zLevel,
+                            tooltipX - 3,
+                            tooltipY - 3,
+                            1,
+                            tooltipHeight + 5,
+                            0,
+                            (usingExternalTexture ? 1 : 32.0D),
+                            (usingExternalTexture ? tooltipHeight + 5 : 32.0D),
+                            false,
+                            borderTexture); // Left Border
+                    drawTextureRect(
+                            zLevel,
+                            tooltipX + tooltipTextWidth + 2,
+                            tooltipY - 3,
+                            1,
+                            tooltipHeight + 6,
+                            0,
+                            (usingExternalTexture ? 1 : 32.0D),
+                            (usingExternalTexture ? tooltipHeight + 6 : 32.0D),
+                            false,
+                            borderTexture); // Right Border
                 }
             }
 
@@ -602,13 +791,27 @@ public class GuiUtils {
                     final String formattedConvertedName = backgroundCode.replaceFirst("file://", "");
                     final String[] urlBits = formattedConvertedName.trim().split("/");
                     final String textureName = urlBits[urlBits.length - 1].trim();
-                    texLocation = ImageUtils.getTextureFromUrl(textureName, backgroundCode.toLowerCase().startsWith("file://") ? new File(formattedConvertedName) : formattedConvertedName);
+                    texLocation = ImageUtils.getTextureFromUrl(
+                            textureName,
+                            backgroundCode.toLowerCase().startsWith("file://")
+                                    ? new File(formattedConvertedName)
+                                    : formattedConvertedName);
 
                     widthDivider = width;
                     heightDivider = height;
                 }
 
-                drawTextureRect(0.0D, 0.0D, 0.0D, width, height, 0, widthDivider, heightDivider, CraftPresence.CONFIG.showBackgroundAsDark, texLocation);
+                drawTextureRect(
+                        0.0D,
+                        0.0D,
+                        0.0D,
+                        width,
+                        height,
+                        0,
+                        widthDivider,
+                        heightDivider,
+                        CraftPresence.CONFIG.showBackgroundAsDark,
+                        texLocation);
             }
         }
     }
@@ -625,7 +828,8 @@ public class GuiUtils {
      * @param zLevel      The Z level position for the slider to render at
      * @param texLocation The game texture to render the slider as
      */
-    public void renderSlider(int x, int y, int u, int v, int width, int height, double zLevel, ResourceLocation texLocation) {
+    public void renderSlider(
+            int x, int y, int u, int v, int width, int height, double zLevel, ResourceLocation texLocation) {
         try {
             if (texLocation != null) {
                 CraftPresence.instance.getTextureManager().bindTexture(texLocation);
@@ -649,7 +853,8 @@ public class GuiUtils {
      * @param zLevel      The Z level position for the button to render at
      * @param texLocation The game texture to render the button as
      */
-    public void renderButton(int x, int y, int width, int height, int hoverState, double zLevel, ResourceLocation texLocation) {
+    public void renderButton(
+            int x, int y, int width, int height, int hoverState, double zLevel, ResourceLocation texLocation) {
         try {
             if (texLocation != null) {
                 CraftPresence.instance.getTextureManager().bindTexture(texLocation);
@@ -680,7 +885,14 @@ public class GuiUtils {
      * @param tint        The Tinting Level of the Object
      * @param texLocation The game texture to render the object as
      */
-    public void drawTextureRect(double zLevel, double xPos, double yPos, double width, double height, double tint, ResourceLocation texLocation) {
+    public void drawTextureRect(
+            double zLevel,
+            double xPos,
+            double yPos,
+            double width,
+            double height,
+            double tint,
+            ResourceLocation texLocation) {
         drawTextureRect(zLevel, xPos, yPos, width, height, tint, 32.0D, 32.0D, false, texLocation);
     }
 
@@ -696,7 +908,17 @@ public class GuiUtils {
      * @param shouldBeDark Whether the Texture should display in a darker format
      * @param texLocation  The game texture to render the object as
      */
-    public void drawTextureRect(double zLevel, double xPos, double yPos, double width, double height, double tint, double widthDivider, double heightDivider, boolean shouldBeDark, ResourceLocation texLocation) {
+    public void drawTextureRect(
+            double zLevel,
+            double xPos,
+            double yPos,
+            double width,
+            double height,
+            double tint,
+            double widthDivider,
+            double heightDivider,
+            boolean shouldBeDark,
+            ResourceLocation texLocation) {
         try {
             if (texLocation != null) {
                 CraftPresence.instance.getTextureManager().bindTexture(texLocation);
@@ -712,7 +934,8 @@ public class GuiUtils {
         tessellator.startDrawingQuads();
         tessellator.setColorOpaque_I(shouldBeDark ? 4210752 : 16777215);
         tessellator.addVertexWithUV(xPos, yPos + height, zLevel, 0.0D, (height / heightDivider + tint));
-        tessellator.addVertexWithUV(xPos + width, yPos + height, zLevel, (width / widthDivider), (height / heightDivider + tint));
+        tessellator.addVertexWithUV(
+                xPos + width, yPos + height, zLevel, (width / widthDivider), (height / heightDivider + tint));
         tessellator.addVertexWithUV(xPos + width, yPos, zLevel, (width / widthDivider), tint);
         tessellator.addVertexWithUV(xPos, yPos, zLevel, 0.0D, tint);
         tessellator.draw();
@@ -729,16 +952,24 @@ public class GuiUtils {
      * @param startColorCode The Starting Hexadecimal or RGBA Color Code
      * @param endColorCode   The ending Hexadecimal or RGBA Color Code
      */
-    public void drawGradientRect(float zLevel, double left, double top, double right, double bottom, String startColorCode, String endColorCode) {
+    public void drawGradientRect(
+            float zLevel,
+            double left,
+            double top,
+            double right,
+            double bottom,
+            String startColorCode,
+            String endColorCode) {
         Color startColorObj = null, endColorObj = null;
         int startColor = 0xFFFFFF, endColor = 0xFFFFFF;
-        float startAlpha, startRed, startGreen, startBlue,
-                endAlpha, endRed, endGreen, endBlue;
+        float startAlpha, startRed, startGreen, startBlue, endAlpha, endRed, endGreen, endBlue;
 
         if (!StringUtils.isNullOrEmpty(startColorCode)) {
             if (startColorCode.startsWith("#")) {
                 startColorObj = StringUtils.getColorFromHex(startColorCode);
-                endColorObj = (!StringUtils.isNullOrEmpty(endColorCode) && endColorCode.startsWith("#")) ? StringUtils.getColorFromHex(endColorCode) : startColorObj;
+                endColorObj = (!StringUtils.isNullOrEmpty(endColorCode) && endColorCode.startsWith("#"))
+                        ? StringUtils.getColorFromHex(endColorCode)
+                        : startColorObj;
             } else {
                 // Determine if Start Color Code is a Valid Number
                 Pair<Boolean, Integer> startColorData = StringUtils.getValidInteger(startColorCode),
@@ -801,8 +1032,15 @@ public class GuiUtils {
      * @param zLevel             The Z Level position of the Object
      * @param texLocation        The game texture to render the object as
      */
-    public void drawContinuousTexturedBox(Pair<Integer, Integer> positionData, Pair<Integer, Integer> uVLevels, Pair<Integer, Integer> screenDimensions, Pair<Integer, Integer> textureDimensions,
-                                          Pair<Integer, Integer> verticalBorderData, Pair<Integer, Integer> sideBorderData, double zLevel, ResourceLocation texLocation) {
+    public void drawContinuousTexturedBox(
+            Pair<Integer, Integer> positionData,
+            Pair<Integer, Integer> uVLevels,
+            Pair<Integer, Integer> screenDimensions,
+            Pair<Integer, Integer> textureDimensions,
+            Pair<Integer, Integer> verticalBorderData,
+            Pair<Integer, Integer> sideBorderData,
+            double zLevel,
+            ResourceLocation texLocation) {
         try {
             if (texLocation != null) {
                 CraftPresence.instance.getTextureManager().bindTexture(texLocation);
@@ -843,30 +1081,74 @@ public class GuiUtils {
         // Top Left
         drawTexturedModalRect(x, y, u, v, leftBorder, topBorder, zLevel);
         // Top Right
-        drawTexturedModalRect(x + leftBorder + canvasWidth, y, u + leftBorder + fillerWidth, v, rightBorder, topBorder, zLevel);
+        drawTexturedModalRect(
+                x + leftBorder + canvasWidth, y, u + leftBorder + fillerWidth, v, rightBorder, topBorder, zLevel);
         // Bottom Left
-        drawTexturedModalRect(x, y + topBorder + canvasHeight, u, v + topBorder + fillerHeight, leftBorder, bottomBorder, zLevel);
+        drawTexturedModalRect(
+                x, y + topBorder + canvasHeight, u, v + topBorder + fillerHeight, leftBorder, bottomBorder, zLevel);
         // Bottom Right
-        drawTexturedModalRect(x + leftBorder + canvasWidth, y + topBorder + canvasHeight, u + leftBorder + fillerWidth, v + topBorder + fillerHeight, rightBorder, bottomBorder, zLevel);
+        drawTexturedModalRect(
+                x + leftBorder + canvasWidth,
+                y + topBorder + canvasHeight,
+                u + leftBorder + fillerWidth,
+                v + topBorder + fillerHeight,
+                rightBorder,
+                bottomBorder,
+                zLevel);
 
         for (int i = 0; i < xPasses + (remainderWidth > 0 ? 1 : 0); i++) {
             // Top Border
-            drawTexturedModalRect(x + leftBorder + (i * fillerWidth), y, u + leftBorder, v, (i == xPasses ? remainderWidth : fillerWidth), topBorder, zLevel);
+            drawTexturedModalRect(
+                    x + leftBorder + (i * fillerWidth),
+                    y,
+                    u + leftBorder,
+                    v,
+                    (i == xPasses ? remainderWidth : fillerWidth),
+                    topBorder,
+                    zLevel);
             // Bottom Border
-            drawTexturedModalRect(x + leftBorder + (i * fillerWidth), y + topBorder + canvasHeight, u + leftBorder, v + topBorder + fillerHeight, (i == xPasses ? remainderWidth : fillerWidth), bottomBorder, zLevel);
+            drawTexturedModalRect(
+                    x + leftBorder + (i * fillerWidth),
+                    y + topBorder + canvasHeight,
+                    u + leftBorder,
+                    v + topBorder + fillerHeight,
+                    (i == xPasses ? remainderWidth : fillerWidth),
+                    bottomBorder,
+                    zLevel);
 
             // Throw in some filler for good measure
             for (int j = 0; j < yPasses + (remainderHeight > 0 ? 1 : 0); j++) {
-                drawTexturedModalRect(x + leftBorder + (i * fillerWidth), y + topBorder + (j * fillerHeight), u + leftBorder, v + topBorder, (i == xPasses ? remainderWidth : fillerWidth), (j == yPasses ? remainderHeight : fillerHeight), zLevel);
+                drawTexturedModalRect(
+                        x + leftBorder + (i * fillerWidth),
+                        y + topBorder + (j * fillerHeight),
+                        u + leftBorder,
+                        v + topBorder,
+                        (i == xPasses ? remainderWidth : fillerWidth),
+                        (j == yPasses ? remainderHeight : fillerHeight),
+                        zLevel);
             }
         }
 
         // Side Borders
         for (int j = 0; j < yPasses + (remainderHeight > 0 ? 1 : 0); j++) {
             // Left Border
-            drawTexturedModalRect(x, y + topBorder + (j * fillerHeight), u, v + topBorder, leftBorder, (j == yPasses ? remainderHeight : fillerHeight), zLevel);
+            drawTexturedModalRect(
+                    x,
+                    y + topBorder + (j * fillerHeight),
+                    u,
+                    v + topBorder,
+                    leftBorder,
+                    (j == yPasses ? remainderHeight : fillerHeight),
+                    zLevel);
             // Right Border
-            drawTexturedModalRect(x + leftBorder + canvasWidth, y + topBorder + (j * fillerHeight), u + leftBorder + fillerWidth, v + topBorder, rightBorder, (j == yPasses ? remainderHeight : fillerHeight), zLevel);
+            drawTexturedModalRect(
+                    x + leftBorder + canvasWidth,
+                    y + topBorder + (j * fillerHeight),
+                    u + leftBorder + fillerWidth,
+                    v + topBorder,
+                    rightBorder,
+                    (j == yPasses ? remainderHeight : fillerHeight),
+                    zLevel);
         }
     }
 

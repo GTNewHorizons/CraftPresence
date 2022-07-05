@@ -32,11 +32,12 @@ public class Module {
     @SerializedName("foldername")
     @Expose
     public String foldername;
+
     @SerializedName("fingerprint")
     @Expose
     public Integer fingerprint;
+
     @SerializedName("type")
     @Expose
     public Integer type;
-
 }

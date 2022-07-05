@@ -31,13 +31,12 @@ import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ExtendedTextControl
 import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ScrollableListControl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nonnull;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
-
-import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Map;
 
 public class PaginatedScreen extends ExtendedScreen {
     private final Map<Integer, List<Gui>> paginatedControls = Maps.newHashMap();
@@ -65,44 +64,31 @@ public class PaginatedScreen extends ExtendedScreen {
      */
     @Override
     public void initializeUi() {
-        backButton = addControl(
-                new ExtendedButtonControl(
-                        (width / 2) - 90, (height - 30),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
-                        () -> CraftPresence.GUIS.openScreen(parentScreen)
-                )
-        );
+        backButton = addControl(new ExtendedButtonControl(
+                (width / 2) - 90,
+                (height - 30),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
+                () -> CraftPresence.GUIS.openScreen(parentScreen)));
         previousPageButton = addControl(
-                new ExtendedButtonControl(
-                        backButton.getControlPosX() - 23, (height - 30),
-                        20, 20,
-                        "<",
-                        () -> {
-                            if (currentPage > startPage) {
-                                currentPage--;
-                                if (onPageChange != null) {
-                                    onPageChange.run();
-                                }
-                            }
+                new ExtendedButtonControl(backButton.getControlPosX() - 23, (height - 30), 20, 20, "<", () -> {
+                    if (currentPage > startPage) {
+                        currentPage--;
+                        if (onPageChange != null) {
+                            onPageChange.run();
                         }
-                )
-        );
-        nextPageButton = addControl(
-                new ExtendedButtonControl(
-                        (backButton.getControlPosX() + backButton.getControlWidth()) + 3, (height - 30),
-                        20, 20,
-                        ">",
-                        () -> {
-                            if (currentPage < maxPages) {
-                                currentPage++;
-                                if (onPageChange != null) {
-                                    onPageChange.run();
-                                }
-                            }
+                    }
+                }));
+        nextPageButton = addControl(new ExtendedButtonControl(
+                (backButton.getControlPosX() + backButton.getControlWidth()) + 3, (height - 30), 20, 20, ">", () -> {
+                    if (currentPage < maxPages) {
+                        currentPage++;
+                        if (onPageChange != null) {
+                            onPageChange.run();
                         }
-                )
-        );
+                    }
+                }));
 
         previousPageButton.setControlEnabled(currentPage > startPage);
         nextPageButton.setControlEnabled(currentPage < maxPages);
@@ -158,17 +144,26 @@ public class PaginatedScreen extends ExtendedScreen {
     public void preRender() {
         final List<Gui> defaultButtons = Lists.newArrayList(previousPageButton, nextPageButton, backButton);
         final List<Gui> elementsToRender = paginatedControls.getOrDefault(currentPage, defaultButtons);
-        final List<ScrollableListControl> listsToRender = paginatedLists.getOrDefault(currentPage, Lists.newArrayList());
+        final List<ScrollableListControl> listsToRender =
+                paginatedLists.getOrDefault(currentPage, Lists.newArrayList());
 
         for (Gui extendedControl : extendedControls) {
             // Toggle visibility/disable element is not on page
             if (extendedControl instanceof ExtendedButtonControl) {
-                ((ExtendedButtonControl) extendedControl).setControlVisible(elementsToRender.contains(extendedControl) || defaultButtons.contains(extendedControl));
-                ((ExtendedButtonControl) extendedControl).setControlEnabled(elementsToRender.contains(extendedControl) || defaultButtons.contains(extendedControl));
+                ((ExtendedButtonControl) extendedControl)
+                        .setControlVisible(
+                                elementsToRender.contains(extendedControl) || defaultButtons.contains(extendedControl));
+                ((ExtendedButtonControl) extendedControl)
+                        .setControlEnabled(
+                                elementsToRender.contains(extendedControl) || defaultButtons.contains(extendedControl));
             }
             if (extendedControl instanceof ExtendedTextControl) {
-                ((ExtendedTextControl) extendedControl).setVisible(elementsToRender.contains(extendedControl) || defaultButtons.contains(extendedControl));
-                ((ExtendedTextControl) extendedControl).setEnabled(elementsToRender.contains(extendedControl) || defaultButtons.contains(extendedControl));
+                ((ExtendedTextControl) extendedControl)
+                        .setVisible(
+                                elementsToRender.contains(extendedControl) || defaultButtons.contains(extendedControl));
+                ((ExtendedTextControl) extendedControl)
+                        .setEnabled(
+                                elementsToRender.contains(extendedControl) || defaultButtons.contains(extendedControl));
             }
         }
         for (ScrollableListControl listControl : extendedLists) {

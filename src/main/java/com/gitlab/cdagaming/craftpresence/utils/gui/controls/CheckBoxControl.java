@@ -27,9 +27,8 @@ package com.gitlab.cdagaming.craftpresence.utils.gui.controls;
 import com.gitlab.cdagaming.craftpresence.CraftPresence;
 import com.gitlab.cdagaming.craftpresence.impl.Pair;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
-import net.minecraft.client.Minecraft;
-
 import javax.annotation.Nonnull;
+import net.minecraft.client.Minecraft;
 
 /**
  * Gui Widget for a Clickable Checkbox-Style Button
@@ -90,7 +89,14 @@ public class CheckBoxControl extends ExtendedButtonControl {
      * @param onPushEvent   The Click Event to Occur when this control is clicked
      * @param onHoverEvent  The Hover Event to Occur when this control is clicked
      */
-    public CheckBoxControl(int id, int xPos, int yPos, String displayString, boolean isChecked, Runnable onPushEvent, Runnable onHoverEvent) {
+    public CheckBoxControl(
+            int id,
+            int xPos,
+            int yPos,
+            String displayString,
+            boolean isChecked,
+            Runnable onPushEvent,
+            Runnable onHoverEvent) {
         this(id, xPos, yPos, displayString, isChecked, onPushEvent);
         setOnHover(onHoverEvent);
     }
@@ -131,7 +137,8 @@ public class CheckBoxControl extends ExtendedButtonControl {
      * @param onPushEvent   The Click Event to Occur when this control is clicked
      * @param onHoverEvent  The Hover Event to Occur when this control is clicked
      */
-    public CheckBoxControl(int xPos, int yPos, String displayString, boolean isChecked, Runnable onPushEvent, Runnable onHoverEvent) {
+    public CheckBoxControl(
+            int xPos, int yPos, String displayString, boolean isChecked, Runnable onPushEvent, Runnable onHoverEvent) {
         this(xPos, yPos, displayString, isChecked, onPushEvent);
         setOnHover(onHoverEvent);
     }
@@ -144,14 +151,28 @@ public class CheckBoxControl extends ExtendedButtonControl {
         setCurrentFontRender(mc.fontRenderer);
         if (visible) {
             field_146123_n = CraftPresence.GUIS.isMouseOver(mouseX, mouseY, this);
-            CraftPresence.GUIS.drawContinuousTexturedBox(new Pair<>(getControlPosX(), getControlPosY()), new Pair<>(0, 46), new Pair<>(boxWidth, getControlHeight()), new Pair<>(200, 20), new Pair<>(2, 3), new Pair<>(2, 2), zLevel, buttonTextures);
+            CraftPresence.GUIS.drawContinuousTexturedBox(
+                    new Pair<>(getControlPosX(), getControlPosY()),
+                    new Pair<>(0, 46),
+                    new Pair<>(boxWidth, getControlHeight()),
+                    new Pair<>(200, 20),
+                    new Pair<>(2, 3),
+                    new Pair<>(2, 2),
+                    zLevel,
+                    buttonTextures);
             mouseDragged(mc, mouseX, mouseY);
             int color = !isControlEnabled() ? 10526880 : 14737632;
 
             if (is_Checked)
-                drawCenteredString(getFontRenderer(), "x", getControlPosX() + boxWidth / 2 + 1, getControlPosY() + 1, 14737632);
+                drawCenteredString(
+                        getFontRenderer(), "x", getControlPosX() + boxWidth / 2 + 1, getControlPosY() + 1, 14737632);
 
-            drawString(getFontRenderer(), getControlMessage(), getControlPosX() + boxWidth + 2, getControlPosY() + 2, color);
+            drawString(
+                    getFontRenderer(),
+                    getControlMessage(),
+                    getControlPosX() + boxWidth + 2,
+                    getControlPosY() + 2,
+                    color);
         }
     }
 

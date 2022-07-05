@@ -27,7 +27,6 @@ package com.gitlab.cdagaming.craftpresence.utils;
 import com.gitlab.cdagaming.craftpresence.CraftPresence;
 import com.gitlab.cdagaming.craftpresence.ModUtils;
 import com.google.common.collect.Maps;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -138,14 +137,16 @@ public class TranslationUtils {
 
         if (originalId.length() == 5 && originalId.contains("_")) {
             if (mode == ConversionMode.PackFormat2 || (mode == ConversionMode.None && ModUtils.MCProtocolID < 315)) {
-                resultId = resultId.substring(0, 3).toLowerCase() + resultId.substring(3).toUpperCase();
+                resultId = resultId.substring(0, 3).toLowerCase()
+                        + resultId.substring(3).toUpperCase();
             } else if (mode == ConversionMode.PackFormat3 || mode == ConversionMode.None) {
                 resultId = resultId.toLowerCase();
             }
         }
 
         if (resultId.equals(originalId) && mode != ConversionMode.None) {
-            ModUtils.LOG.debugWarn(ModUtils.TRANSLATOR.translate("craftpresence.logger.warning.convert.invalid", resultId, mode.name()));
+            ModUtils.LOG.debugWarn(ModUtils.TRANSLATOR.translate(
+                    "craftpresence.logger.warning.convert.invalid", resultId, mode.name()));
         }
 
         return resultId.trim();
@@ -157,14 +158,17 @@ public class TranslationUtils {
      * Comprises of Synchronizing Data, and Updating Translation Data as needed
      */
     void onTick() {
-        if (CraftPresence.CONFIG != null && !languageId.equals(CraftPresence.CONFIG.languageId) &&
-                (!requestMap.containsKey(CraftPresence.CONFIG.languageId) || requestMap.get(CraftPresence.CONFIG.languageId))) {
+        if (CraftPresence.CONFIG != null
+                && !languageId.equals(CraftPresence.CONFIG.languageId)
+                && (!requestMap.containsKey(CraftPresence.CONFIG.languageId)
+                        || requestMap.get(CraftPresence.CONFIG.languageId))) {
             setLanguage(CraftPresence.CONFIG.languageId);
             getTranslationMap(encoding);
             checkUnicode();
         }
 
-        if (CraftPresence.instance.gameSettings != null && isUnicode != CraftPresence.instance.gameSettings.forceUnicodeFont) {
+        if (CraftPresence.instance.gameSettings != null
+                && isUnicode != CraftPresence.instance.gameSettings.forceUnicodeFont) {
             checkUnicode();
         }
     }
@@ -189,7 +193,9 @@ public class TranslationUtils {
         }
 
         float f = (float) extendedCharCount / (float) totalLength;
-        isUnicode = (double) f > 0.1D || (CraftPresence.instance.gameSettings != null && CraftPresence.instance.gameSettings.forceUnicodeFont);
+        isUnicode = (double) f > 0.1D
+                || (CraftPresence.instance.gameSettings != null
+                        && CraftPresence.instance.gameSettings.forceUnicodeFont);
     }
 
     /**
@@ -246,9 +252,11 @@ public class TranslationUtils {
     private void getTranslationMap(final String encoding) {
         translationMap = Maps.newHashMap();
 
-        final InputStream in = FileUtils.getResourceAsStream(TranslationUtils.class, "/assets/"
-                + (!StringUtils.isNullOrEmpty(modId) ? modId + "/" : "") +
-                "lang/" + languageId + (usingJson ? ".json" : ".lang"));
+        final InputStream in = FileUtils.getResourceAsStream(
+                TranslationUtils.class,
+                "/assets/"
+                        + (!StringUtils.isNullOrEmpty(modId) ? modId + "/" : "") + "lang/"
+                        + languageId + (usingJson ? ".json" : ".lang"));
 
         if (in != null) {
             final BufferedReader reader = new BufferedReader(new InputStreamReader(in, Charset.forName(encoding)));
@@ -256,11 +264,22 @@ public class TranslationUtils {
                 String currentString;
                 while ((currentString = reader.readLine()) != null) {
                     currentString = currentString.trim();
-                    if (!currentString.startsWith("#") && !currentString.startsWith("[{}]") && (usingJson ? currentString.contains(":") : currentString.contains("="))) {
-                        final String[] splitTranslation = usingJson ? currentString.split(":", 2) : currentString.split("=", 2);
+                    if (!currentString.startsWith("#")
+                            && !currentString.startsWith("[{}]")
+                            && (usingJson ? currentString.contains(":") : currentString.contains("="))) {
+                        final String[] splitTranslation =
+                                usingJson ? currentString.split(":", 2) : currentString.split("=", 2);
                         if (usingJson) {
-                            String str1 = splitTranslation[0].substring(1, splitTranslation[0].length() - 1).replace("\\n", "\n").replace("\\", "").trim();
-                            String str2 = splitTranslation[1].substring(2, splitTranslation[1].length() - 2).replace("\\n", "\n").replace("\\", "").trim();
+                            String str1 = splitTranslation[0]
+                                    .substring(1, splitTranslation[0].length() - 1)
+                                    .replace("\\n", "\n")
+                                    .replace("\\", "")
+                                    .trim();
+                            String str2 = splitTranslation[1]
+                                    .substring(2, splitTranslation[1].length() - 2)
+                                    .replace("\\n", "\n")
+                                    .replace("\\", "")
+                                    .trim();
                             translationMap.put(str1, str2);
                         } else {
                             translationMap.put(splitTranslation[0].trim(), splitTranslation[1].trim());
@@ -270,7 +289,8 @@ public class TranslationUtils {
 
                 in.close();
             } catch (Exception ex) {
-                ModUtils.LOG.error("An Exception has occurred while Loading Translation Mappings, things may not work well...");
+                ModUtils.LOG.error(
+                        "An Exception has occurred while Loading Translation Mappings, things may not work well...");
                 ex.printStackTrace();
             }
         } else {
@@ -318,13 +338,19 @@ public class TranslationUtils {
      * @return The Localized Translated String
      */
     public String translate(final String translationKey, final Object... parameters) {
-        return translate(CraftPresence.CONFIG != null && CraftPresence.CONFIG.stripTranslationColors, translationKey, parameters);
+        return translate(
+                CraftPresence.CONFIG != null && CraftPresence.CONFIG.stripTranslationColors,
+                translationKey,
+                parameters);
     }
 
     /**
      * A Mapping storing the possible Conversion Modes for this module
      */
     public enum ConversionMode {
-        PackFormat2, PackFormat3, None, Unknown
+        PackFormat2,
+        PackFormat3,
+        None,
+        Unknown
     }
 }

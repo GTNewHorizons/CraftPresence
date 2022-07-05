@@ -27,7 +27,6 @@ package com.gitlab.cdagaming.craftpresence.utils;
 import com.gitlab.cdagaming.craftpresence.ModUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStream;

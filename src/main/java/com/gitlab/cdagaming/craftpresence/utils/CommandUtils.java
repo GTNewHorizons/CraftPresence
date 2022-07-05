@@ -33,7 +33,6 @@ import com.gitlab.cdagaming.craftpresence.integrations.multimc.MultiMCUtils;
 import com.gitlab.cdagaming.craftpresence.integrations.technic.TechnicUtils;
 import com.gitlab.cdagaming.craftpresence.utils.discord.assets.DiscordAssetUtils;
 import com.google.common.collect.Lists;
-
 import java.util.List;
 
 /**
@@ -145,8 +144,12 @@ public class CommandUtils {
 
         CraftPresence.CLIENT.clearPartyData(true, false);
 
-        CraftPresence.CLIENT.syncArgument("&MAINMENU&", StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.loadingMessage, loadingArgs), false);
-        CraftPresence.CLIENT.syncArgument("&MAINMENU&", CraftPresence.CLIENT.imageOf(CraftPresence.CONFIG.defaultIcon, "", false), true);
+        CraftPresence.CLIENT.syncArgument(
+                "&MAINMENU&",
+                StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.loadingMessage, loadingArgs),
+                false);
+        CraftPresence.CLIENT.syncArgument(
+                "&MAINMENU&", CraftPresence.CLIENT.imageOf(CraftPresence.CONFIG.defaultIcon, "", false), true);
 
         isLoadingGame = true;
     }
@@ -170,8 +173,12 @@ public class CommandUtils {
             isLoadingGame = false;
         }
 
-        CraftPresence.CLIENT.syncArgument("&MAINMENU&", StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.mainMenuMessage, mainMenuArgs), false);
-        CraftPresence.CLIENT.syncArgument("&MAINMENU&", CraftPresence.CLIENT.imageOf(CraftPresence.CONFIG.defaultIcon, "", false), true);
+        CraftPresence.CLIENT.syncArgument(
+                "&MAINMENU&",
+                StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.mainMenuMessage, mainMenuArgs),
+                false);
+        CraftPresence.CLIENT.syncArgument(
+                "&MAINMENU&", CraftPresence.CLIENT.imageOf(CraftPresence.CONFIG.defaultIcon, "", false), true);
 
         isInMainMenu = true;
     }

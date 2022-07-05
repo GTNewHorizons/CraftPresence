@@ -31,10 +31,9 @@ import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ExtendedButtonControl;
 import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ExtendedTextControl;
 import com.gitlab.cdagaming.craftpresence.utils.gui.integrations.ExtendedScreen;
-import net.minecraft.client.gui.GuiScreen;
-
 import java.util.Arrays;
 import java.util.List;
+import net.minecraft.client.gui.GuiScreen;
 
 public class CharacterEditorGui extends ExtendedScreen {
     private ExtendedButtonControl saveButton, syncSingleButton;
@@ -52,95 +51,91 @@ public class CharacterEditorGui extends ExtendedScreen {
     @Override
     public void initializeUi() {
         charInput = addControl(
-                new ExtendedTextControl(
-                        getFontRenderer(),
-                        (width / 2) + 3, CraftPresence.GUIS.getButtonY(1),
-                        180, 20
-                )
-        );
+                new ExtendedTextControl(getFontRenderer(), (width / 2) + 3, CraftPresence.GUIS.getButtonY(1), 180, 20));
         charWidth = addControl(
-                new ExtendedTextControl(
-                        getFontRenderer(),
-                        (width / 2) + 3, CraftPresence.GUIS.getButtonY(2),
-                        180, 20
-                )
-        );
+                new ExtendedTextControl(getFontRenderer(), (width / 2) + 3, CraftPresence.GUIS.getButtonY(2), 180, 20));
         charInput.setMaxStringLength(1);
         charWidth.setMaxStringLength(2);
 
-        final ExtendedButtonControl resetCharsButton = addControl(
-                new ExtendedButtonControl(
-                        (width / 2) - 90, (height - 30),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.reset"),
-                        () -> ModUtils.loadCharData(true, "UTF-8")
-                )
-        );
-        final ExtendedButtonControl syncAllButton = addControl(
-                new ExtendedButtonControl(
-                        (width / 2) - 90,
-                        resetCharsButton.getControlPosY() - 25,
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.sync.all"),
-                        () -> {
-                            // Sync ALL Values to FontRender Defaults
-                            for (int currentCharIndex = 0; currentCharIndex < StringUtils.MC_CHAR_WIDTH.length - 1; currentCharIndex++) {
-                                final char characterObj = (char) (currentCharIndex);
-                                StringUtils.MC_CHAR_WIDTH[currentCharIndex] = getFontRenderer().getStringWidth(Character.toString(characterObj));
-                            }
+        final ExtendedButtonControl resetCharsButton = addControl(new ExtendedButtonControl(
+                (width / 2) - 90,
+                (height - 30),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.reset"),
+                () -> ModUtils.loadCharData(true, "UTF-8")));
+        final ExtendedButtonControl syncAllButton = addControl(new ExtendedButtonControl(
+                (width / 2) - 90,
+                resetCharsButton.getControlPosY() - 25,
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.sync.all"),
+                () -> {
+                    // Sync ALL Values to FontRender Defaults
+                    for (int currentCharIndex = 0;
+                            currentCharIndex < StringUtils.MC_CHAR_WIDTH.length - 1;
+                            currentCharIndex++) {
+                        final char characterObj = (char) (currentCharIndex);
+                        StringUtils.MC_CHAR_WIDTH[currentCharIndex] =
+                                getFontRenderer().getStringWidth(Character.toString(characterObj));
+                    }
 
-                            for (int currentGlyphIndex = 0; currentGlyphIndex < StringUtils.MC_GLYPH_WIDTH.length - 1; currentGlyphIndex++) {
-                                final char glyphObj = (char) (currentGlyphIndex & 255);
-                                StringUtils.MC_GLYPH_WIDTH[currentGlyphIndex] = (byte) getFontRenderer().getStringWidth(Character.toString(glyphObj));
-                            }
-                        }
-                )
-        );
-        syncSingleButton = addControl(
-                new ExtendedButtonControl(
-                        (width / 2) - 90, syncAllButton.getControlPosY() - 25,
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.sync.single", charInput.getText()),
-                        () -> {
-                            // Sync Single Value to FontRender Defaults
-                            if (lastScannedChar > 0 && lastScannedChar < StringUtils.MC_CHAR_WIDTH.length && !ModUtils.TRANSLATOR.isUnicode) {
-                                StringUtils.MC_CHAR_WIDTH[lastScannedChar] = getFontRenderer().getStringWidth(Character.toString(lastScannedChar));
-                            } else if (StringUtils.MC_GLYPH_WIDTH[lastScannedChar] != 0) {
-                                StringUtils.MC_GLYPH_WIDTH[lastScannedChar & 255] = (byte) getFontRenderer().getStringWidth(Character.toString(lastScannedChar));
-                            }
-                        }
-                )
-        );
+                    for (int currentGlyphIndex = 0;
+                            currentGlyphIndex < StringUtils.MC_GLYPH_WIDTH.length - 1;
+                            currentGlyphIndex++) {
+                        final char glyphObj = (char) (currentGlyphIndex & 255);
+                        StringUtils.MC_GLYPH_WIDTH[currentGlyphIndex] =
+                                (byte) getFontRenderer().getStringWidth(Character.toString(glyphObj));
+                    }
+                }));
+        syncSingleButton = addControl(new ExtendedButtonControl(
+                (width / 2) - 90,
+                syncAllButton.getControlPosY() - 25,
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.sync.single", charInput.getText()),
+                () -> {
+                    // Sync Single Value to FontRender Defaults
+                    if (lastScannedChar > 0
+                            && lastScannedChar < StringUtils.MC_CHAR_WIDTH.length
+                            && !ModUtils.TRANSLATOR.isUnicode) {
+                        StringUtils.MC_CHAR_WIDTH[lastScannedChar] =
+                                getFontRenderer().getStringWidth(Character.toString(lastScannedChar));
+                    } else if (StringUtils.MC_GLYPH_WIDTH[lastScannedChar] != 0) {
+                        StringUtils.MC_GLYPH_WIDTH[lastScannedChar & 255] =
+                                (byte) getFontRenderer().getStringWidth(Character.toString(lastScannedChar));
+                    }
+                }));
 
         // Adding Back Button
-        addControl(
-                new ExtendedButtonControl(
-                        5, (height - 30),
-                        100, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
-                        () -> CraftPresence.GUIS.openScreen(parentScreen)
-                )
-        );
-        saveButton = addControl(
-                new ExtendedButtonControl(
-                        width - 105, (height - 30),
-                        100, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.save"),
-                        () -> {
-                            final Pair<Boolean, Integer> charData = StringUtils.getValidInteger(charWidth.getText());
+        addControl(new ExtendedButtonControl(
+                5,
+                (height - 30),
+                100,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
+                () -> CraftPresence.GUIS.openScreen(parentScreen)));
+        saveButton = addControl(new ExtendedButtonControl(
+                width - 105,
+                (height - 30),
+                100,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.save"),
+                () -> {
+                    final Pair<Boolean, Integer> charData = StringUtils.getValidInteger(charWidth.getText());
 
-                            if (charData.getFirst()) {
-                                // Save Single Value if Char Data is a Valid Number
-                                final int characterWidth = charData.getSecond();
-                                if (lastScannedChar > 0 && lastScannedChar <= StringUtils.MC_CHAR_WIDTH.length && !ModUtils.TRANSLATOR.isUnicode) {
-                                    StringUtils.MC_CHAR_WIDTH[lastScannedChar] = characterWidth;
-                                } else if (StringUtils.MC_GLYPH_WIDTH[lastScannedChar] != 0) {
-                                    StringUtils.MC_GLYPH_WIDTH[lastScannedChar & 255] = (byte) characterWidth;
-                                }
-                            }
+                    if (charData.getFirst()) {
+                        // Save Single Value if Char Data is a Valid Number
+                        final int characterWidth = charData.getSecond();
+                        if (lastScannedChar > 0
+                                && lastScannedChar <= StringUtils.MC_CHAR_WIDTH.length
+                                && !ModUtils.TRANSLATOR.isUnicode) {
+                            StringUtils.MC_CHAR_WIDTH[lastScannedChar] = characterWidth;
+                        } else if (StringUtils.MC_GLYPH_WIDTH[lastScannedChar] != 0) {
+                            StringUtils.MC_GLYPH_WIDTH[lastScannedChar & 255] = (byte) characterWidth;
                         }
-                )
-        );
+                    }
+                }));
 
         super.initializeUi();
     }
@@ -152,7 +147,8 @@ public class CharacterEditorGui extends ExtendedScreen {
         final String mainTitle = ModUtils.TRANSLATOR.translate("gui.config.title.editor.character");
         final String charInputTitle = ModUtils.TRANSLATOR.translate("gui.config.message.editor.char.input");
         final String charWidthTitle = ModUtils.TRANSLATOR.translate("gui.config.message.editor.char.width");
-        final List<String> notice = StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate("gui.config.message.character.notice"));
+        final List<String> notice =
+                StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate("gui.config.message.character.notice"));
 
         renderNotice(notice, 2, 2);
 
@@ -187,7 +183,8 @@ public class CharacterEditorGui extends ExtendedScreen {
             renderString(charWidthTitle, (width / 2f) - 130, CraftPresence.GUIS.getButtonY(2, 10), 0xFFFFFF);
         }
 
-        syncSingleButton.setControlMessage(ModUtils.TRANSLATOR.translate("gui.config.message.button.sync.single", charInput.getText()));
+        syncSingleButton.setControlMessage(
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.sync.single", charInput.getText()));
         saveButton.setControlEnabled(syncSingleButton.isControlEnabled());
         syncSingleButton.setControlVisible(syncSingleButton.isControlEnabled());
         saveButton.setControlVisible(syncSingleButton.isControlVisible());
@@ -197,7 +194,8 @@ public class CharacterEditorGui extends ExtendedScreen {
      * Checks and Modifies Character and Glyph Arrays, depending on conditions
      */
     private void checkValues() {
-        if (!Arrays.equals(originalCharArray, StringUtils.MC_CHAR_WIDTH) || !Arrays.equals(originalGlyphArray, StringUtils.MC_GLYPH_WIDTH)) {
+        if (!Arrays.equals(originalCharArray, StringUtils.MC_CHAR_WIDTH)
+                || !Arrays.equals(originalGlyphArray, StringUtils.MC_GLYPH_WIDTH)) {
             // Write to Char Data and Re-Set originalCharArray and originalGlyphArray
             ModUtils.writeToCharData("UTF-8");
             originalCharArray = StringUtils.MC_CHAR_WIDTH.clone();

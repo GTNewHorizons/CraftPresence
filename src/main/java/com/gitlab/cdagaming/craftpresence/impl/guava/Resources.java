@@ -14,17 +14,16 @@
 
 package com.gitlab.cdagaming.craftpresence.impl.guava;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Provides utility methods for working with resources in the classpath. Note that even though these
@@ -39,8 +38,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @since 1.0
  */
 public final class Resources {
-    private Resources() {
-    }
+    private Resources() {}
 
     /**
      * Returns a {@link ByteSource} that reads from the given URL.

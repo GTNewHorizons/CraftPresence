@@ -105,8 +105,10 @@ public class User {
      * @return The Users avatar URL.
      */
     public String getAvatarUrl() {
-        return getAvatarId() == null ? null : "https://cdn.discordapp.com/avatars/" + getId() + "/" + getAvatarId()
-                + (getAvatarId().startsWith("a_") ? ".gif" : ".png");
+        return getAvatarId() == null
+                ? null
+                : "https://cdn.discordapp.com/avatars/" + getId() + "/" + getAvatarId()
+                        + (getAvatarId().startsWith("a_") ? ".gif" : ".png");
     }
 
     /**
@@ -147,7 +149,7 @@ public class User {
      * @return False
      */
     public boolean isBot() {
-        return false; //bots cannot use RPC
+        return false; // bots cannot use RPC
     }
 
     /**
@@ -163,8 +165,7 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof User))
-            return false;
+        if (!(o instanceof User)) return false;
         User oUser = (User) o;
         return this == oUser || this.id == oUser.id;
     }

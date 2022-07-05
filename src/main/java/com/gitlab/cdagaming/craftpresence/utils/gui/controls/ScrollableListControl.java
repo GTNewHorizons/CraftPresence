@@ -30,14 +30,13 @@ import com.gitlab.cdagaming.craftpresence.utils.ImageUtils;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.gitlab.cdagaming.craftpresence.utils.discord.assets.DiscordAssetUtils;
 import com.gitlab.cdagaming.craftpresence.utils.gui.GuiUtils;
+import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.client.renderer.Tessellator;
-
-import java.util.List;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * Gui Widget for a Scrollable List
@@ -72,7 +71,15 @@ public class ScrollableListControl extends GuiSlot {
      * @param itemList     The List of items to allocate for the slots in the Gui
      * @param currentValue The current value, if any, to select upon initialization of the Gui
      */
-    public ScrollableListControl(Minecraft mc, int width, int height, int topIn, int bottomIn, int slotHeightIn, List<String> itemList, String currentValue) {
+    public ScrollableListControl(
+            Minecraft mc,
+            int width,
+            int height,
+            int topIn,
+            int bottomIn,
+            int slotHeightIn,
+            List<String> itemList,
+            String currentValue) {
         this(mc, width, height, topIn, bottomIn, slotHeightIn, itemList, currentValue, RenderType.None);
     }
 
@@ -89,7 +96,16 @@ public class ScrollableListControl extends GuiSlot {
      * @param currentValue The current value, if any, to select upon initialization of the Gui
      * @param renderType   The Rendering type for this Scroll List
      */
-    public ScrollableListControl(Minecraft mc, int width, int height, int topIn, int bottomIn, int slotHeightIn, List<String> itemList, String currentValue, RenderType renderType) {
+    public ScrollableListControl(
+            Minecraft mc,
+            int width,
+            int height,
+            int topIn,
+            int bottomIn,
+            int slotHeightIn,
+            List<String> itemList,
+            String currentValue,
+            RenderType renderType) {
         super(mc, width, height, topIn, bottomIn, slotHeightIn);
         this.itemList = itemList;
         this.currentValue = currentValue;
@@ -150,13 +166,15 @@ public class ScrollableListControl extends GuiSlot {
      * @param mouseYIn      The Mouse's Current Y Position
      */
     @Override
-    protected void drawSlot(int slotIndex, int xPos, int yPos, int heightIn, Tessellator tessellatorIn, int mouseXIn, int mouseYIn) {
+    protected void drawSlot(
+            int slotIndex, int xPos, int yPos, int heightIn, Tessellator tessellatorIn, int mouseXIn, int mouseYIn) {
         int xOffset = xPos;
         String displayName = getSelectedItem(slotIndex);
-        if (!CraftPresence.CONFIG.stripExtraGuiElements &&
-                (renderType == RenderType.DiscordAsset || (renderType == RenderType.ServerData && CraftPresence.SERVER.enabled) ||
-                        (renderType == RenderType.EntityData && CraftPresence.ENTITIES.enabled) ||
-                        (renderType == RenderType.ItemData && CraftPresence.TILE_ENTITIES.enabled))) {
+        if (!CraftPresence.CONFIG.stripExtraGuiElements
+                && (renderType == RenderType.DiscordAsset
+                        || (renderType == RenderType.ServerData && CraftPresence.SERVER.enabled)
+                        || (renderType == RenderType.EntityData && CraftPresence.ENTITIES.enabled)
+                        || (renderType == RenderType.ItemData && CraftPresence.TILE_ENTITIES.enabled))) {
             ResourceLocation texture = new ResourceLocation("");
             String assetUrl;
 
@@ -165,7 +183,8 @@ public class ScrollableListControl extends GuiSlot {
 
                 if (data != null) {
                     assetUrl = StringUtils.UNKNOWN_BASE64_ID + "," + data.getBase64EncodedIconData();
-                    texture = ImageUtils.getTextureFromUrl(displayName, new Pair<>(ImageUtils.InputType.ByteStream, assetUrl));
+                    texture = ImageUtils.getTextureFromUrl(
+                            displayName, new Pair<>(ImageUtils.InputType.ByteStream, assetUrl));
                 }
             } else if (renderType == RenderType.DiscordAsset) {
                 assetUrl = DiscordAssetUtils.getAssetUrl(CraftPresence.CONFIG.clientId, displayName, true);
@@ -174,7 +193,8 @@ public class ScrollableListControl extends GuiSlot {
                 if (StringUtils.isValidUuid(displayName)) {
                     // If the entity is classified via Uuid, assume it is a player's and get their altFace texture
                     displayName = displayName.replaceAll("-", "");
-                    texture = ImageUtils.getTextureFromUrl(displayName, String.format(CraftPresence.CONFIG.playerSkinEndpoint, displayName));
+                    texture = ImageUtils.getTextureFromUrl(
+                            displayName, String.format(CraftPresence.CONFIG.playerSkinEndpoint, displayName));
                 }
             } else if (renderType == RenderType.ItemData) {
                 texture = CraftPresence.TILE_ENTITIES.TILE_ENTITY_RESOURCES.getOrDefault(displayName, texture);
@@ -185,7 +205,9 @@ public class ScrollableListControl extends GuiSlot {
             // Note: 35 Added to xOffset to accommodate for Image Size
             xOffset += 35;
         }
-        getFontRenderer().drawStringWithShadow(displayName, xOffset, yPos + ((heightIn / 2) - (getFontRenderer().FONT_HEIGHT / 2)), 0xFFFFFF);
+        getFontRenderer()
+                .drawStringWithShadow(
+                        displayName, xOffset, yPos + ((heightIn / 2) - (getFontRenderer().FONT_HEIGHT / 2)), 0xFFFFFF);
     }
 
     /**
@@ -224,6 +246,10 @@ public class ScrollableListControl extends GuiSlot {
      * The Rendering Type for this Scroll List
      */
     public enum RenderType {
-        DiscordAsset, ServerData, EntityData, ItemData, None
+        DiscordAsset,
+        ServerData,
+        EntityData,
+        ItemData,
+        None
     }
 }

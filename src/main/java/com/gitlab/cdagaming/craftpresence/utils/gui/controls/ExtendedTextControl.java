@@ -76,7 +76,8 @@ public class ExtendedTextControl extends GuiTextField {
      * @param heightIn        The Height for this Control
      * @param keyEvent        The event to run when characters are typed in this control
      */
-    public ExtendedTextControl(FontRenderer fontRendererObj, int x, int y, int widthIn, int heightIn, Runnable keyEvent) {
+    public ExtendedTextControl(
+            FontRenderer fontRendererObj, int x, int y, int widthIn, int heightIn, Runnable keyEvent) {
         this(fontRendererObj, x, y, widthIn, heightIn);
         setOnKeyTyped(keyEvent);
     }

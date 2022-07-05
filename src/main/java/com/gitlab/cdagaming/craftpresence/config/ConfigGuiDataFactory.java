@@ -26,11 +26,10 @@ package com.gitlab.cdagaming.craftpresence.config;
 
 import com.gitlab.cdagaming.craftpresence.config.gui.MainGui;
 import cpw.mods.fml.client.IModGuiFactory;
+import java.util.Set;
+import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-
-import javax.annotation.Nullable;
-import java.util.Set;
 
 public class ConfigGuiDataFactory implements IModGuiFactory {
     @Override

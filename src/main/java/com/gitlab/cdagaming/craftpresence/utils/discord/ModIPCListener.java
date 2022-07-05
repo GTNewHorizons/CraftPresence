@@ -62,7 +62,8 @@ public class ModIPCListener implements IPCListener {
     @Override
     public void onActivityJoinRequest(IPCClient client, String secret, User user) {
         // On Receiving a New Join Request
-        if (CraftPresence.CLIENT.STATUS != DiscordStatus.JoinRequest || !CraftPresence.CLIENT.REQUESTER_USER.equals(user)) {
+        if (CraftPresence.CLIENT.STATUS != DiscordStatus.JoinRequest
+                || !CraftPresence.CLIENT.REQUESTER_USER.equals(user)) {
             CraftPresence.SYSTEM.TIMER = 30;
             CraftPresence.CLIENT.STATUS = DiscordStatus.JoinRequest;
             CraftPresence.CLIENT.REQUESTER_USER = user;
@@ -99,7 +100,10 @@ public class ModIPCListener implements IPCListener {
         if (CraftPresence.CLIENT.STATUS != DiscordStatus.Ready) {
             CraftPresence.CLIENT.STATUS = DiscordStatus.Ready;
             CraftPresence.CLIENT.CURRENT_USER = client.getCurrentUser();
-            ModUtils.LOG.info(ModUtils.TRANSLATOR.translate("craftpresence.logger.info.load", CraftPresence.CLIENT.CLIENT_ID, CraftPresence.CLIENT.CURRENT_USER != null ? CraftPresence.CLIENT.CURRENT_USER.getName() : "null"));
+            ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(
+                    "craftpresence.logger.info.load",
+                    CraftPresence.CLIENT.CLIENT_ID,
+                    CraftPresence.CLIENT.CURRENT_USER != null ? CraftPresence.CLIENT.CURRENT_USER.getName() : "null"));
         }
     }
 

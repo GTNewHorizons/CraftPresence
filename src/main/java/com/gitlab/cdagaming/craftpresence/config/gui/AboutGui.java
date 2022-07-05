@@ -31,9 +31,8 @@ import com.gitlab.cdagaming.craftpresence.utils.UrlUtils;
 import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ExtendedButtonControl;
 import com.gitlab.cdagaming.craftpresence.utils.gui.integrations.ExtendedScreen;
 import com.gitlab.cdagaming.craftpresence.utils.updater.UpdateInfoGui;
-import net.minecraft.client.gui.GuiScreen;
-
 import java.util.List;
+import net.minecraft.client.gui.GuiScreen;
 
 public class AboutGui extends ExtendedScreen {
     private static final String SOURCE_URL = "https://gitlab.com/CDAGaming/CraftPresence";
@@ -45,41 +44,38 @@ public class AboutGui extends ExtendedScreen {
     @Override
     public void initializeUi() {
         // Adding Version Check Button
-        addControl(
-                new ExtendedButtonControl(
-                        (width / 2) - 90, (height - 30),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.versionInfo"),
-                        () -> CraftPresence.GUIS.openScreen(new UpdateInfoGui(currentScreen, ModUtils.UPDATER))
-                )
-        );
+        addControl(new ExtendedButtonControl(
+                (width / 2) - 90,
+                (height - 30),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.versionInfo"),
+                () -> CraftPresence.GUIS.openScreen(new UpdateInfoGui(currentScreen, ModUtils.UPDATER))));
 
         // Adding Back Button
-        addControl(
-                new ExtendedButtonControl(
-                        10, (height - 30),
-                        95, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
-                        () -> CraftPresence.GUIS.openScreen(parentScreen)
-                )
-        );
+        addControl(new ExtendedButtonControl(
+                10,
+                (height - 30),
+                95,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
+                () -> CraftPresence.GUIS.openScreen(parentScreen)));
 
         // Adding View Source Button
-        addControl(
-                new ExtendedButtonControl(
-                        (width / 2) - 90, (height - 55),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.view_source"),
-                        () -> {
-                            try {
-                                UrlUtils.openUrl(SOURCE_URL);
-                            } catch (Exception ex) {
-                                ModUtils.LOG.error(ModUtils.TRANSLATOR.translate("craftpresence.logger.error.web", SOURCE_URL));
-                                ex.printStackTrace();
-                            }
-                        }
-                )
-        );
+        addControl(new ExtendedButtonControl(
+                (width / 2) - 90,
+                (height - 55),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.view_source"),
+                () -> {
+                    try {
+                        UrlUtils.openUrl(SOURCE_URL);
+                    } catch (Exception ex) {
+                        ModUtils.LOG.error(ModUtils.TRANSLATOR.translate("craftpresence.logger.error.web", SOURCE_URL));
+                        ex.printStackTrace();
+                    }
+                }));
 
         super.initializeUi();
     }
@@ -87,7 +83,8 @@ public class AboutGui extends ExtendedScreen {
     @Override
     public void preRender() {
         final String mainTitle = ModUtils.TRANSLATOR.translate("gui.config.title.about.config");
-        final List<String> notice = StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate("gui.config.message.credits"));
+        final List<String> notice =
+                StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate("gui.config.message.credits"));
 
         renderString(mainTitle, (width / 2f) - (StringUtils.getStringWidth(mainTitle) / 2f), 15, 0xFFFFFF);
         renderNotice(notice);

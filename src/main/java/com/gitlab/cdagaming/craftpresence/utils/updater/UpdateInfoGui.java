@@ -31,10 +31,9 @@ import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.gitlab.cdagaming.craftpresence.utils.UrlUtils;
 import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ExtendedButtonControl;
 import com.gitlab.cdagaming.craftpresence.utils.gui.integrations.ExtendedScreen;
-import net.minecraft.client.gui.GuiScreen;
-
 import java.lang.reflect.Modifier;
 import java.util.List;
+import net.minecraft.client.gui.GuiScreen;
 
 public class UpdateInfoGui extends ExtendedScreen {
     private final ModUpdaterUtils modUpdater;
@@ -47,65 +46,77 @@ public class UpdateInfoGui extends ExtendedScreen {
 
     @Override
     public void initializeUi() {
-        checkButton = addControl(
-                new ExtendedButtonControl(
-                        (width / 2) - 90, (height - 30),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.checkForUpdates"),
-                        () ->
-                                modUpdater.checkForUpdates(() -> {
-                                    if (modUpdater.isInvalidVersion) {
-                                        // If the Updater found our version to be an invalid one
-                                        // Then replace the Version ID, Name, and Type
-                                        StringUtils.updateField(ModUtils.class, null, new Tuple<>("VERSION_ID", "v" + modUpdater.targetVersion, ~Modifier.FINAL));
-                                        StringUtils.updateField(ModUtils.class, null, new Tuple<>("VERSION_TYPE", modUpdater.currentState.getDisplayName(), ~Modifier.FINAL));
-                                        StringUtils.updateField(ModUtils.class, null, new Tuple<>("VERSION_LABEL", modUpdater.currentState.getDisplayName(), ~Modifier.FINAL));
-                                        StringUtils.updateField(ModUtils.class, null, new Tuple<>("NAME", CraftPresence.class.getSimpleName(), ~Modifier.FINAL));
+        checkButton = addControl(new ExtendedButtonControl(
+                (width / 2) - 90,
+                (height - 30),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.checkForUpdates"),
+                () -> modUpdater.checkForUpdates(() -> {
+                    if (modUpdater.isInvalidVersion) {
+                        // If the Updater found our version to be an invalid one
+                        // Then replace the Version ID, Name, and Type
+                        StringUtils.updateField(
+                                ModUtils.class,
+                                null,
+                                new Tuple<>("VERSION_ID", "v" + modUpdater.targetVersion, ~Modifier.FINAL));
+                        StringUtils.updateField(
+                                ModUtils.class,
+                                null,
+                                new Tuple<>("VERSION_TYPE", modUpdater.currentState.getDisplayName(), ~Modifier.FINAL));
+                        StringUtils.updateField(
+                                ModUtils.class,
+                                null,
+                                new Tuple<>(
+                                        "VERSION_LABEL", modUpdater.currentState.getDisplayName(), ~Modifier.FINAL));
+                        StringUtils.updateField(
+                                ModUtils.class,
+                                null,
+                                new Tuple<>("NAME", CraftPresence.class.getSimpleName(), ~Modifier.FINAL));
 
-                                        modUpdater.currentVersion = modUpdater.targetVersion;
-                                        modUpdater.isInvalidVersion = false;
-                                    }
-                                })
-                )
-        );
+                        modUpdater.currentVersion = modUpdater.targetVersion;
+                        modUpdater.isInvalidVersion = false;
+                    }
+                })));
         // Adding Back Button
-        addControl(
-                new ExtendedButtonControl(
-                        10, (height - 30),
-                        95, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
-                        () -> CraftPresence.GUIS.openScreen(parentScreen)
-                )
-        );
-        downloadButton = addControl(
-                new ExtendedButtonControl(
-                        (width - 105), (height - 30),
-                        95, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.download"),
-                        () -> {
-                            try {
-                                UrlUtils.openUrl(modUpdater.downloadUrl);
-                            } catch (Exception ex) {
-                                ModUtils.LOG.error(ModUtils.TRANSLATOR.translate("craftpresence.logger.error.web", modUpdater.downloadUrl));
-                                ex.printStackTrace();
-                            }
-                        }
-                )
-        );
+        addControl(new ExtendedButtonControl(
+                10,
+                (height - 30),
+                95,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
+                () -> CraftPresence.GUIS.openScreen(parentScreen)));
+        downloadButton = addControl(new ExtendedButtonControl(
+                (width - 105),
+                (height - 30),
+                95,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.download"),
+                () -> {
+                    try {
+                        UrlUtils.openUrl(modUpdater.downloadUrl);
+                    } catch (Exception ex) {
+                        ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(
+                                "craftpresence.logger.error.web", modUpdater.downloadUrl));
+                        ex.printStackTrace();
+                    }
+                }));
 
         super.initializeUi();
     }
 
     @Override
     public void preRender() {
-        downloadButton.setControlEnabled(modUpdater.currentState == ModUpdaterUtils.UpdateState.OUTDATED ||
-                modUpdater.currentState == ModUpdaterUtils.UpdateState.BETA_OUTDATED);
+        downloadButton.setControlEnabled(modUpdater.currentState == ModUpdaterUtils.UpdateState.OUTDATED
+                || modUpdater.currentState == ModUpdaterUtils.UpdateState.BETA_OUTDATED);
 
         checkButton.setControlEnabled(modUpdater.currentState != ModUpdaterUtils.UpdateState.PENDING);
 
         final String mainTitle = ModUtils.TRANSLATOR.translate("gui.config.title");
-        final String subTitle = ModUtils.TRANSLATOR.translate("gui.config.title.changes", modUpdater.currentState.getDisplayName());
-        final List<String> notice = StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate("gui.config.message.changelog", modUpdater.targetVersion, modUpdater.targetChangelogData));
+        final String subTitle =
+                ModUtils.TRANSLATOR.translate("gui.config.title.changes", modUpdater.currentState.getDisplayName());
+        final List<String> notice = StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate(
+                "gui.config.message.changelog", modUpdater.targetVersion, modUpdater.targetChangelogData));
 
         renderString(mainTitle, (width / 2f) - (StringUtils.getStringWidth(mainTitle) / 2f), 10, 0xFFFFFF);
         renderString(subTitle, (width / 2f) - (StringUtils.getStringWidth(subTitle) / 2f), 20, 0xFFFFFF);

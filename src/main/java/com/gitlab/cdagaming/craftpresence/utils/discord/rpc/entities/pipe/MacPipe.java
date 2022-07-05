@@ -26,7 +26,6 @@ package com.gitlab.cdagaming.craftpresence.utils.discord.rpc.entities.pipe;
 
 import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.IPCClient;
 import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.entities.Callback;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -39,18 +38,15 @@ public class MacPipe extends UnixPipe {
 
     private void registerCommand(String applicationId, String command) {
         String home = System.getenv("HOME");
-        if (home == null)
-            throw new RuntimeException("Unable to find user HOME directory");
+        if (home == null) throw new RuntimeException("Unable to find user HOME directory");
 
         String path = home + "/Library/Application Support/discord";
 
-        if (!this.mkdir(path))
-            throw new RuntimeException("Failed to create directory '" + path + "'");
+        if (!this.mkdir(path)) throw new RuntimeException("Failed to create directory '" + path + "'");
 
         path += "/games";
 
-        if (!this.mkdir(path))
-            throw new RuntimeException("Failed to create directory '" + path + "'");
+        if (!this.mkdir(path)) throw new RuntimeException("Failed to create directory '" + path + "'");
 
         path += "/" + applicationId + ".json";
 
@@ -68,10 +64,8 @@ public class MacPipe extends UnixPipe {
     @Override
     public void registerApp(String applicationId, String command) {
         try {
-            if (command != null)
-                this.registerCommand(applicationId, command);
-            else
-                this.registerUrl(applicationId);
+            if (command != null) this.registerCommand(applicationId, command);
+            else this.registerUrl(applicationId);
         } catch (Exception ex) {
             throw new RuntimeException("Failed to register " + (command == null ? "url" : "command"), ex);
         }

@@ -28,13 +28,12 @@ import com.gitlab.cdagaming.craftpresence.CraftPresence;
 import com.gitlab.cdagaming.craftpresence.utils.ImageUtils;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.gitlab.cdagaming.craftpresence.utils.gui.GuiUtils;
+import java.io.File;
+import javax.annotation.Nonnull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nonnull;
-import java.io.File;
 
 /**
  * Extended Gui Widget for a Clickable Button
@@ -71,7 +70,8 @@ public class ExtendedButtonControl extends GuiButton {
      * @param buttonText   The display text, to display within this control
      * @param optionalArgs The optional Arguments, if any, to associate with this control
      */
-    public ExtendedButtonControl(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, String... optionalArgs) {
+    public ExtendedButtonControl(
+            int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, String... optionalArgs) {
         super(buttonId, x, y, widthIn, heightIn, buttonText);
 
         this.optionalArgs = optionalArgs;
@@ -89,7 +89,15 @@ public class ExtendedButtonControl extends GuiButton {
      * @param onPushEvent  The Click Event to Occur when this control is clicked
      * @param optionalArgs The optional Arguments, if any, to associate with this control
      */
-    public ExtendedButtonControl(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, Runnable onPushEvent, String... optionalArgs) {
+    public ExtendedButtonControl(
+            int buttonId,
+            int x,
+            int y,
+            int widthIn,
+            int heightIn,
+            String buttonText,
+            Runnable onPushEvent,
+            String... optionalArgs) {
         this(buttonId, x, y, widthIn, heightIn, buttonText, optionalArgs);
         this.onPushEvent = onPushEvent;
     }
@@ -107,7 +115,16 @@ public class ExtendedButtonControl extends GuiButton {
      * @param onHoverEvent The Hover Event to Occur when this control is clicked
      * @param optionalArgs The optional Arguments, if any, to associate with this control
      */
-    public ExtendedButtonControl(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, Runnable onPushEvent, Runnable onHoverEvent, String... optionalArgs) {
+    public ExtendedButtonControl(
+            int buttonId,
+            int x,
+            int y,
+            int widthIn,
+            int heightIn,
+            String buttonText,
+            Runnable onPushEvent,
+            Runnable onHoverEvent,
+            String... optionalArgs) {
         this(buttonId, x, y, widthIn, heightIn, buttonText, onPushEvent, optionalArgs);
         this.onHoverEvent = onHoverEvent;
     }
@@ -138,7 +155,8 @@ public class ExtendedButtonControl extends GuiButton {
      * @param onPushEvent  The Click Event to Occur when this control is clicked
      * @param optionalArgs The optional Arguments, if any, to associate with this control
      */
-    public ExtendedButtonControl(int x, int y, int widthIn, int heightIn, String buttonText, Runnable onPushEvent, String... optionalArgs) {
+    public ExtendedButtonControl(
+            int x, int y, int widthIn, int heightIn, String buttonText, Runnable onPushEvent, String... optionalArgs) {
         this(x, y, widthIn, heightIn, buttonText, optionalArgs);
         setOnClick(onPushEvent);
     }
@@ -155,7 +173,15 @@ public class ExtendedButtonControl extends GuiButton {
      * @param onHoverEvent The Hover Event to Occur when this control is clicked
      * @param optionalArgs The optional Arguments, if any, to associate with this control
      */
-    public ExtendedButtonControl(int x, int y, int widthIn, int heightIn, String buttonText, Runnable onPushEvent, Runnable onHoverEvent, String... optionalArgs) {
+    public ExtendedButtonControl(
+            int x,
+            int y,
+            int widthIn,
+            int heightIn,
+            String buttonText,
+            Runnable onPushEvent,
+            Runnable onHoverEvent,
+            String... optionalArgs) {
         this(x, y, widthIn, heightIn, buttonText, onPushEvent, optionalArgs);
         setOnHover(onHoverEvent);
     }
@@ -194,7 +220,14 @@ public class ExtendedButtonControl extends GuiButton {
             ResourceLocation texLocation;
 
             if (StringUtils.isValidColorCode(backgroundCode)) {
-                CraftPresence.GUIS.drawGradientRect(zLevel, getControlPosX(), getControlPosY(), getControlWidth(), getControlHeight(), backgroundCode, backgroundCode);
+                CraftPresence.GUIS.drawGradientRect(
+                        zLevel,
+                        getControlPosX(),
+                        getControlPosY(),
+                        getControlWidth(),
+                        getControlHeight(),
+                        backgroundCode,
+                        backgroundCode);
             } else {
                 final boolean usingExternalTexture = ImageUtils.isExternalImage(backgroundCode);
 
@@ -213,10 +246,21 @@ public class ExtendedButtonControl extends GuiButton {
                     final String formattedConvertedName = backgroundCode.replaceFirst("file://", "");
                     final String[] urlBits = formattedConvertedName.trim().split("/");
                     final String textureName = urlBits[urlBits.length - 1].trim();
-                    texLocation = ImageUtils.getTextureFromUrl(textureName, backgroundCode.toLowerCase().startsWith("file://") ? new File(formattedConvertedName) : formattedConvertedName);
+                    texLocation = ImageUtils.getTextureFromUrl(
+                            textureName,
+                            backgroundCode.toLowerCase().startsWith("file://")
+                                    ? new File(formattedConvertedName)
+                                    : formattedConvertedName);
                 }
 
-                CraftPresence.GUIS.renderButton(getControlPosX(), getControlPosY(), getControlWidth(), getControlHeight(), hoverState, zLevel, texLocation);
+                CraftPresence.GUIS.renderButton(
+                        getControlPosX(),
+                        getControlPosY(),
+                        getControlWidth(),
+                        getControlHeight(),
+                        hoverState,
+                        zLevel,
+                        texLocation);
             }
 
             mouseDragged(mc, mouseX, mouseY);
@@ -230,7 +274,12 @@ public class ExtendedButtonControl extends GuiButton {
                 color = 14737632;
             }
 
-            drawCenteredString(getFontRenderer(), getControlMessage(), getControlPosX() + getControlWidth() / 2, getControlPosY() + (getControlHeight() - 8) / 2, color);
+            drawCenteredString(
+                    getFontRenderer(),
+                    getControlMessage(),
+                    getControlPosX() + getControlWidth() / 2,
+                    getControlPosY() + (getControlHeight() - 8) / 2,
+                    color);
         }
     }
 

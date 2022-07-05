@@ -28,10 +28,6 @@ import com.gitlab.cdagaming.craftpresence.ModUtils;
 import com.gitlab.cdagaming.craftpresence.impl.Pair;
 import com.gitlab.cdagaming.craftpresence.impl.Tuple;
 import com.google.common.collect.Lists;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
-
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -39,6 +35,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
 
 /**
  * String Utilities for interpreting Strings and Basic Data Types
@@ -66,7 +65,8 @@ public class StringUtils {
     /**
      * Regex Pattern for Uuid Detection
      */
-    private static final Pattern UUID_PATTERN = Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}");
+    private static final Pattern UUID_PATTERN =
+            Pattern.compile("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}");
     /**
      * Regex Pattern for Brackets containing Digits
      */
@@ -153,7 +153,8 @@ public class StringUtils {
      * @return The converted hexadecimal String
      */
     public static String getHexFromColor(Color color) {
-        return "0x" + toSafeHexValue(color.getAlpha()) + toSafeHexValue(color.getRed()) + toSafeHexValue(color.getGreen()) + toSafeHexValue(color.getBlue());
+        return "0x" + toSafeHexValue(color.getAlpha()) + toSafeHexValue(color.getRed())
+                + toSafeHexValue(color.getGreen()) + toSafeHexValue(color.getBlue());
     }
 
     /**
@@ -211,7 +212,10 @@ public class StringUtils {
      * @param maxMatches      The maximum amount of matches to remove (Set to -1 to Remove All)
      * @return The original String from Match Data with the matches up to maxMatches removed
      */
-    public static String removeMatches(final Pair<String, List<String>> matchData, final List<Pair<String, String>> parsedMatchData, final int maxMatches) {
+    public static String removeMatches(
+            final Pair<String, List<String>> matchData,
+            final List<Pair<String, String>> parsedMatchData,
+            final int maxMatches) {
         String finalString = "";
 
         if (matchData != null) {
@@ -230,7 +234,8 @@ public class StringUtils {
                         for (Pair<String, String> parsedArgument : parsedMatchData) {
                             // If found a matching argument to the match, and the parsed argument is null
                             // Remove the match without counting it as a found match
-                            if (parsedArgument.getFirst().equalsIgnoreCase(match) && isNullOrEmpty(parsedArgument.getSecond())) {
+                            if (parsedArgument.getFirst().equalsIgnoreCase(match)
+                                    && isNullOrEmpty(parsedArgument.getSecond())) {
                                 finalString = finalString.replaceFirst(match, "");
                                 alreadyRemoved = true;
                                 break;
@@ -272,9 +277,12 @@ public class StringUtils {
      * @param allowMinified   Flag for whether or not to allow Minified Placeholders (Trimmed String down to a length of 4)
      * @return The completed and replaced String
      */
-    public static String replaceAnyCase(final String source, final String targetToReplace, final String replaceWith, final boolean allowMinified) {
+    public static String replaceAnyCase(
+            final String source, final String targetToReplace, final String replaceWith, final boolean allowMinified) {
         if (!isNullOrEmpty(source)) {
-            String finalString = Pattern.compile(targetToReplace, Pattern.LITERAL | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE).matcher(source)
+            String finalString = Pattern.compile(
+                            targetToReplace, Pattern.LITERAL | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)
+                    .matcher(source)
                     .replaceAll(Matcher.quoteReplacement(replaceWith));
 
             if (allowMinified) {
@@ -282,7 +290,9 @@ public class StringUtils {
                 if (!minifiedTarget.endsWith("&")) {
                     minifiedTarget += "&";
                 }
-                finalString = Pattern.compile(minifiedTarget, Pattern.LITERAL | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE).matcher(finalString)
+                finalString = Pattern.compile(
+                                minifiedTarget, Pattern.LITERAL | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE)
+                        .matcher(finalString)
                         .replaceAll(Matcher.quoteReplacement(replaceWith));
             }
             return finalString;
@@ -310,13 +320,15 @@ public class StringUtils {
      * @param allowMinified Flag for whether or not to allow Minified Placeholders (Trimmed String down to a length of 4)
      * @return The completed and replaced String
      */
-    public static String sequentialReplaceAnyCase(final String source, final List<Pair<String, String>> replaceData, final boolean allowMinified) {
+    public static String sequentialReplaceAnyCase(
+            final String source, final List<Pair<String, String>> replaceData, final boolean allowMinified) {
         if (!isNullOrEmpty(source)) {
             String finalResult = source;
 
             if (!replaceData.isEmpty()) {
                 for (Pair<String, String> replacementData : replaceData) {
-                    finalResult = replaceAnyCase(finalResult, replacementData.getFirst(), replacementData.getSecond(), allowMinified);
+                    finalResult = replaceAnyCase(
+                            finalResult, replacementData.getFirst(), replacementData.getSecond(), allowMinified);
                 }
             }
             return finalResult;
@@ -377,7 +389,10 @@ public class StringUtils {
      * @return {@code true} if Entry is classified as a valid Color Code
      */
     public static boolean isValidColorCode(final String entry) {
-        return !isNullOrEmpty(entry) && ((entry.startsWith("#") || entry.length() == 6) || entry.startsWith("0x") || getValidInteger(entry).getFirst());
+        return !isNullOrEmpty(entry)
+                && ((entry.startsWith("#") || entry.length() == 6)
+                        || entry.startsWith("0x")
+                        || getValidInteger(entry).getFirst());
     }
 
     /**
@@ -446,7 +461,9 @@ public class StringUtils {
     public static String formatAddress(final String input, final boolean returnPort) {
         if (!isNullOrEmpty(input)) {
             final String[] formatted = input.split(":", 2);
-            return !returnPort ? (elementExists(formatted, 0) ? formatted[0].trim() : "127.0.0.1") : (elementExists(formatted, 1) ? formatted[1].trim() : "25565");
+            return !returnPort
+                    ? (elementExists(formatted, 0) ? formatted[0].trim() : "127.0.0.1")
+                    : (elementExists(formatted, 1) ? formatted[1].trim() : "25565");
         } else {
             return !returnPort ? "127.0.0.1" : "25565";
         }
@@ -507,7 +524,8 @@ public class StringUtils {
                 imageIdentifier = splitData[0];
                 formattedKey = splitData[1];
             }
-            finalData.setFirst(BASE64_PATTERN.matcher(imageIdentifier + "," + formattedKey).find());
+            finalData.setFirst(
+                    BASE64_PATTERN.matcher(imageIdentifier + "," + formattedKey).find());
             finalData.setSecond(imageIdentifier);
             finalData.setThird(formattedKey);
         }
@@ -569,13 +587,15 @@ public class StringUtils {
      * @param splitCharacter The delimiter to split parts of the array at (Optional)
      * @return The evaluated array
      */
-    public static String[] removeFromArray(final String[] originalArray, final String searchTerm, final int searchIndex, final String splitCharacter) {
+    public static String[] removeFromArray(
+            final String[] originalArray, final String searchTerm, final int searchIndex, final String splitCharacter) {
         int indexNumber = 0;
         List<String> formatted = Lists.newLinkedList(Arrays.asList(originalArray));
         if (!isNullOrEmpty(formatted.toString())) {
             for (String part : formatted) {
                 String[] splitPart = part.split(splitCharacter);
-                if (!StringUtils.isNullOrEmpty(splitPart[searchIndex]) && splitPart[searchIndex].equalsIgnoreCase(searchTerm)) {
+                if (!StringUtils.isNullOrEmpty(splitPart[searchIndex])
+                        && splitPart[searchIndex].equalsIgnoreCase(searchTerm)) {
                     formatted.remove(indexNumber);
                     break;
                 }
@@ -597,7 +617,13 @@ public class StringUtils {
      * @param alternativeMessage The alternative value to return if no matches found in the target Array Element Index
      * @return The found or Alternative value from the search within the Array
      */
-    public static String getConfigPart(final String[] original, final String searchTerm, final int searchIndex, final int resultIndex, final String splitCharacter, final String alternativeMessage) {
+    public static String getConfigPart(
+            final String[] original,
+            final String searchTerm,
+            final int searchIndex,
+            final int resultIndex,
+            final String splitCharacter,
+            final String alternativeMessage) {
         String formattedKey = "";
         boolean matched = false;
         for (String part : original) {
@@ -623,7 +649,13 @@ public class StringUtils {
      * @param newMessage     The new value to insert into the target Array Element Index
      * @return The modified Array from the original
      */
-    public static String[] setConfigPart(final String[] original, final String searchTerm, final int searchIndex, final int resultIndex, final String splitCharacter, final String newMessage) {
+    public static String[] setConfigPart(
+            final String[] original,
+            final String searchTerm,
+            final int searchIndex,
+            final int resultIndex,
+            final String splitCharacter,
+            final String newMessage) {
         int indexNumber = -1;
         boolean replacing = false;
         String[] formatted = original;
@@ -692,7 +724,8 @@ public class StringUtils {
      * @param caseCheckTimes        Times to replace Parts of the String during Capitalization (Use -1 for Infinite)
      * @return The formatted and evaluated String
      */
-    public static String formatWord(final String original, final boolean avoid, final boolean skipSymbolReplacement, final int caseCheckTimes) {
+    public static String formatWord(
+            final String original, final boolean avoid, final boolean skipSymbolReplacement, final int caseCheckTimes) {
         String formattedKey = original;
         if (isNullOrEmpty(formattedKey) || avoid) {
             return formattedKey;
@@ -716,7 +749,8 @@ public class StringUtils {
                 }
             }
 
-            return removeRepeatWords(capitalizeWord(formattedKey, caseCheckTimes)).trim();
+            return removeRepeatWords(capitalizeWord(formattedKey, caseCheckTimes))
+                    .trim();
         }
     }
 
@@ -791,9 +825,11 @@ public class StringUtils {
 
             if (formattedKey.toString().equalsIgnoreCase("surface")) {
                 return "overworld";
-            } else if (formattedKey.toString().equalsIgnoreCase("hell") || formattedKey.toString().equalsIgnoreCase("nether")) {
+            } else if (formattedKey.toString().equalsIgnoreCase("hell")
+                    || formattedKey.toString().equalsIgnoreCase("nether")) {
                 return "the_nether";
-            } else if (formattedKey.toString().equalsIgnoreCase("end") || formattedKey.toString().equalsIgnoreCase("sky")) {
+            } else if (formattedKey.toString().equalsIgnoreCase("end")
+                    || formattedKey.toString().equalsIgnoreCase("sky")) {
                 return "the_end";
             } else {
                 if (formatToId) {
@@ -843,7 +879,9 @@ public class StringUtils {
             if (index < stringLength - 1) {
                 char currentCharacter = text.charAt(index + 1);
 
-                if (STRIP_COLOR_PATTERN.matcher(String.valueOf(currentCharacter)).find()) {
+                if (STRIP_COLOR_PATTERN
+                        .matcher(String.valueOf(currentCharacter))
+                        .find()) {
                     s = new StringBuilder("\u00a7" + currentCharacter);
                 }
             }
@@ -955,7 +993,11 @@ public class StringUtils {
                 currentCharacter = stringEntry.charAt(currentLine);
                 String stringOfCharacter = String.valueOf(currentCharacter);
 
-                flag = stringOfCharacter.equalsIgnoreCase("l") && !(stringOfCharacter.equalsIgnoreCase("r") || STRIP_COLOR_PATTERN.matcher(stringOfCharacter).find());
+                flag = stringOfCharacter.equalsIgnoreCase("l")
+                        && !(stringOfCharacter.equalsIgnoreCase("r")
+                                || STRIP_COLOR_PATTERN
+                                        .matcher(stringOfCharacter)
+                                        .find());
             }
 
             charWidth += getCharWidth(currentCharacter, ModUtils.TRANSLATOR.isUnicode);
@@ -968,8 +1010,9 @@ public class StringUtils {
             }
         }
 
-
-        return currentLine != stringLength && currentIndex != -1 && currentIndex < currentLine ? currentIndex : currentLine;
+        return currentLine != stringLength && currentIndex != -1 && currentIndex < currentLine
+                ? currentIndex
+                : currentLine;
     }
 
     /**
@@ -1137,18 +1180,25 @@ public class StringUtils {
     public static void updateField(Class<?> classToAccess, Object instance, Tuple<?, ?, ?>... fieldData) {
         for (Tuple<?, ?, ?> currentData : fieldData) {
             try {
-                Field lookupField = classToAccess.getDeclaredField(currentData.getFirst().toString());
+                Field lookupField =
+                        classToAccess.getDeclaredField(currentData.getFirst().toString());
                 lookupField.setAccessible(true);
 
                 if (currentData.getThird() != null) {
                     Field modifiersField = Field.class.getDeclaredField("modifiers");
                     modifiersField.setAccessible(true);
-                    modifiersField.setInt(lookupField, lookupField.getModifiers() & Integer.parseInt(currentData.getThird().toString()));
+                    modifiersField.setInt(
+                            lookupField,
+                            lookupField.getModifiers()
+                                    & Integer.parseInt(currentData.getThird().toString()));
                 }
 
                 lookupField.set(instance, currentData.getSecond());
                 if (ModUtils.IS_VERBOSE) {
-                    ModUtils.LOG.debugInfo(ModUtils.TRANSLATOR.translate("craftpresence.logger.info.update.dynamic", currentData.toString(), classToAccess.getName()));
+                    ModUtils.LOG.debugInfo(ModUtils.TRANSLATOR.translate(
+                            "craftpresence.logger.info.update.dynamic",
+                            currentData.toString(),
+                            classToAccess.getName()));
                 }
             } catch (Exception ex) {
                 if (ModUtils.IS_VERBOSE) {
@@ -1165,10 +1215,14 @@ public class StringUtils {
      * @param instance      An Instance of the Class, if needed
      * @param methodData    The Methods and Necessary Argument Data for execution, in the form of methodName:argsAndTypesForMethod
      */
-    public static void executeMethod(final Class<?> classToAccess, final Object instance, final List<Pair<String, Pair<Object[], Class<?>[]>>> methodData) {
+    public static void executeMethod(
+            final Class<?> classToAccess,
+            final Object instance,
+            final List<Pair<String, Pair<Object[], Class<?>[]>>> methodData) {
         for (Pair<String, Pair<Object[], Class<?>[]>> methodInstance : methodData) {
             try {
-                final Method lookupMethod = classToAccess.getDeclaredMethod(methodInstance.getFirst(), methodInstance.getSecond().getSecond());
+                final Method lookupMethod = classToAccess.getDeclaredMethod(
+                        methodInstance.getFirst(), methodInstance.getSecond().getSecond());
                 lookupMethod.setAccessible(true);
                 lookupMethod.invoke(instance, methodInstance.getSecond().getFirst());
             } catch (Exception | Error ex) {

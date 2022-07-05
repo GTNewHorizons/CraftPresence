@@ -34,7 +34,6 @@ import com.gitlab.cdagaming.craftpresence.utils.TranslationUtils;
 import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.entities.PartyPrivacy;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
@@ -52,10 +51,10 @@ public class ConfigUtils {
     // Config Property Mappings = Pair<propertyFieldName, valueFieldName>
     public final List<Pair<String, Object>> configDataMappings = Lists.newArrayList();
     // CONSTANTS
-    private final String[] blackListedCharacters = new String[]{",", "[", "]"},
-            keyCodeTriggers = new String[]{"keycode", "keybinding"},
-            languageTriggers = new String[]{"language", "lang", "langId", "languageId"},
-            globalTriggers = new String[]{"global", "last", "schema"};
+    private final String[] blackListedCharacters = new String[] {",", "[", "]"},
+            keyCodeTriggers = new String[] {"keycode", "keybinding"},
+            languageTriggers = new String[] {"language", "lang", "langId", "languageId"},
+            globalTriggers = new String[] {"global", "last", "schema"};
     // Config Data Mappings = Pair<propertyValue, value>
     private final List<Pair<String, String>> configPropertyMappings = Lists.newArrayList();
     private final String fileName;
@@ -63,34 +62,94 @@ public class ConfigUtils {
     // GLOBAL (NON-USER-ADJUSTABLE)
     public String NAME_schemaVersion, NAME_lastMcVersionId;
     // GENERAL
-    public String NAME_detectCurseManifest, NAME_detectMultiMCManifest, NAME_detectMCUpdaterInstance, NAME_detectTechnicPack,
-            NAME_showTime, NAME_detectBiomeData, NAME_detectDimensionData,
-            NAME_detectWorldData, NAME_clientId, NAME_defaultIcon, NAME_enableJoinRequest,
-            NAME_partyPrivacyLevel, NAME_resetTimeOnInit, NAME_autoRegister;
+    public String NAME_detectCurseManifest,
+            NAME_detectMultiMCManifest,
+            NAME_detectMCUpdaterInstance,
+            NAME_detectTechnicPack,
+            NAME_showTime,
+            NAME_detectBiomeData,
+            NAME_detectDimensionData,
+            NAME_detectWorldData,
+            NAME_clientId,
+            NAME_defaultIcon,
+            NAME_enableJoinRequest,
+            NAME_partyPrivacyLevel,
+            NAME_resetTimeOnInit,
+            NAME_autoRegister;
     // BIOME MESSAGES
     public String NAME_defaultBiomeIcon, NAME_biomeMessages;
     // DIMENSION MESSAGES
     public String NAME_defaultDimensionIcon, NAME_dimensionMessages;
     // SERVER MESSAGES
-    public String NAME_defaultServerIcon, NAME_defaultServerName,
-            NAME_defaultServerMotd, NAME_serverMessages;
+    public String NAME_defaultServerIcon, NAME_defaultServerName, NAME_defaultServerMotd, NAME_serverMessages;
     // STATUS MESSAGES
-    public String NAME_mainMenuMessage, NAME_loadingMessage, NAME_lanMessage, NAME_singlePlayerMessage, NAME_packPlaceholderMessage,
-            NAME_outerPlayerPlaceholderMessage, NAME_innerPlayerPlaceholderMessage, NAME_playerCoordinatePlaceholderMessage, NAME_playerHealthPlaceholderMessage,
-            NAME_playerAmountPlaceholderMessage, NAME_playerItemsPlaceholderMessage, NAME_worldPlaceholderMessage, NAME_modsPlaceholderMessage, NAME_vivecraftMessage, NAME_fallbackPackPlaceholderMessage;
+    public String NAME_mainMenuMessage,
+            NAME_loadingMessage,
+            NAME_lanMessage,
+            NAME_singlePlayerMessage,
+            NAME_packPlaceholderMessage,
+            NAME_outerPlayerPlaceholderMessage,
+            NAME_innerPlayerPlaceholderMessage,
+            NAME_playerCoordinatePlaceholderMessage,
+            NAME_playerHealthPlaceholderMessage,
+            NAME_playerAmountPlaceholderMessage,
+            NAME_playerItemsPlaceholderMessage,
+            NAME_worldPlaceholderMessage,
+            NAME_modsPlaceholderMessage,
+            NAME_vivecraftMessage,
+            NAME_fallbackPackPlaceholderMessage;
     // ADVANCED
-    public String NAME_enableCommands, NAME_enablePerGui, NAME_enablePerItem, NAME_enablePerEntity, NAME_renderTooltips, NAME_formatWords, NAME_debugMode, NAME_verboseMode,
-            NAME_splitCharacter, NAME_refreshRate, NAME_roundSize, NAME_includeExtraGuiClasses, NAME_guiMessages, NAME_itemMessages, NAME_entityTargetMessages, NAME_entityAttackingMessages, NAME_entityRidingMessages, NAME_playerSkinEndpoint;
+    public String NAME_enableCommands,
+            NAME_enablePerGui,
+            NAME_enablePerItem,
+            NAME_enablePerEntity,
+            NAME_renderTooltips,
+            NAME_formatWords,
+            NAME_debugMode,
+            NAME_verboseMode,
+            NAME_splitCharacter,
+            NAME_refreshRate,
+            NAME_roundSize,
+            NAME_includeExtraGuiClasses,
+            NAME_guiMessages,
+            NAME_itemMessages,
+            NAME_entityTargetMessages,
+            NAME_entityAttackingMessages,
+            NAME_entityRidingMessages,
+            NAME_playerSkinEndpoint;
     // ACCESSIBILITY
-    public String NAME_tooltipBackgroundColor, NAME_tooltipBorderColor, NAME_guiBackgroundColor, NAME_buttonBackgroundColor, NAME_showBackgroundAsDark, NAME_languageId, NAME_stripTranslationColors, NAME_showLoggingInChat, NAME_stripExtraGuiElements, NAME_configKeyCode;
+    public String NAME_tooltipBackgroundColor,
+            NAME_tooltipBorderColor,
+            NAME_guiBackgroundColor,
+            NAME_buttonBackgroundColor,
+            NAME_showBackgroundAsDark,
+            NAME_languageId,
+            NAME_stripTranslationColors,
+            NAME_showLoggingInChat,
+            NAME_stripExtraGuiElements,
+            NAME_configKeyCode;
     // DISPLAY MESSAGES
-    public String NAME_gameStateMessage_FORMAT, NAME_detailsMessage_FORMAT, NAME_largeImageMessage_FORMAT, NAME_smallImageMessage_FORMAT, NAME_largeImageKey_FORMAT, NAME_smallImageKey_FORMAT;
+    public String NAME_gameStateMessage_FORMAT,
+            NAME_detailsMessage_FORMAT,
+            NAME_largeImageMessage_FORMAT,
+            NAME_smallImageMessage_FORMAT,
+            NAME_largeImageKey_FORMAT,
+            NAME_smallImageKey_FORMAT;
     // Config Variables
     // GLOBAL (NON-USER-ADJUSTABLE)
     public String schemaVersion, lastMcVersionId;
     // GENERAL
-    public boolean detectCurseManifest, detectMultiMCManifest, detectMCUpdaterInstance, detectTechnicPack, showTime,
-            detectBiomeData, detectDimensionData, detectWorldData, enableJoinRequest, resetTimeOnInit, autoRegister;
+    public boolean detectCurseManifest,
+            detectMultiMCManifest,
+            detectMCUpdaterInstance,
+            detectTechnicPack,
+            showTime,
+            detectBiomeData,
+            detectDimensionData,
+            detectWorldData,
+            enableJoinRequest,
+            resetTimeOnInit,
+            autoRegister;
     public String clientId, defaultIcon;
     public int partyPrivacyLevel;
     // BIOME MESSAGES
@@ -103,11 +162,31 @@ public class ConfigUtils {
     public String defaultServerIcon, defaultServerName, defaultServerMotd;
     public String[] serverMessages;
     // STATUS MESSAGES
-    public String mainMenuMessage, loadingMessage, lanMessage, singlePlayerMessage, packPlaceholderMessage,
-            outerPlayerPlaceholderMessage, innerPlayerPlaceholderMessage, playerCoordinatePlaceholderMessage, playerHealthPlaceholderMessage,
-            playerAmountPlaceholderMessage, playerItemsPlaceholderMessage, worldPlaceholderMessage, modsPlaceholderMessage, vivecraftMessage, fallbackPackPlaceholderMessage;
+    public String mainMenuMessage,
+            loadingMessage,
+            lanMessage,
+            singlePlayerMessage,
+            packPlaceholderMessage,
+            outerPlayerPlaceholderMessage,
+            innerPlayerPlaceholderMessage,
+            playerCoordinatePlaceholderMessage,
+            playerHealthPlaceholderMessage,
+            playerAmountPlaceholderMessage,
+            playerItemsPlaceholderMessage,
+            worldPlaceholderMessage,
+            modsPlaceholderMessage,
+            vivecraftMessage,
+            fallbackPackPlaceholderMessage;
     // ADVANCED
-    public boolean enableCommands, enablePerGui, enablePerItem, enablePerEntity, renderTooltips, formatWords, debugMode, verboseMode, includeExtraGuiClasses;
+    public boolean enableCommands,
+            enablePerGui,
+            enablePerItem,
+            enablePerEntity,
+            renderTooltips,
+            formatWords,
+            debugMode,
+            verboseMode,
+            includeExtraGuiClasses;
     public String splitCharacter, playerSkinEndpoint;
     public int refreshRate, roundSize;
     public String[] guiMessages, itemMessages, entityTargetMessages, entityAttackingMessages, entityRidingMessages;
@@ -143,25 +222,57 @@ public class ConfigUtils {
     @SuppressWarnings("ConstantConditions")
     public void setupInitialValues() {
         // GLOBAL (NON-USER-ADJUSTABLE)
-        NAME_schemaVersion = ModUtils.TRANSLATOR.translate(true, "gui.config.name.global.schema_version").replaceAll(" ", "_");
+        NAME_schemaVersion = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.global.schema_version")
+                .replaceAll(" ", "_");
         schemaVersion = Integer.toString(ModUtils.MOD_SCHEMA_VERSION);
-        NAME_lastMcVersionId = ModUtils.TRANSLATOR.translate(true, "gui.config.name.global.last_mc_version_id").replaceAll(" ", "_");
+        NAME_lastMcVersionId = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.global.last_mc_version_id")
+                .replaceAll(" ", "_");
         lastMcVersionId = Integer.toString(ModUtils.MCProtocolID);
         // GENERAL
-        NAME_detectCurseManifest = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.detect_curse_manifest").replaceAll(" ", "_");
-        NAME_detectMultiMCManifest = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.detect_multimc_manifest").replaceAll(" ", "_");
-        NAME_detectMCUpdaterInstance = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.detect_mcupdater_instance").replaceAll(" ", "_");
-        NAME_detectTechnicPack = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.detect_technic_pack").replaceAll(" ", "_");
-        NAME_showTime = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.show_time").replaceAll(" ", "_");
-        NAME_detectBiomeData = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.detect_biome_data").replaceAll(" ", "_");
-        NAME_detectDimensionData = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.detect_dimension_data").replaceAll(" ", "_");
-        NAME_detectWorldData = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.detect_world_data").replaceAll(" ", "_");
-        NAME_clientId = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.client_id").replaceAll(" ", "_");
-        NAME_defaultIcon = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.default_icon").replaceAll(" ", "_");
-        NAME_enableJoinRequest = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.enable_join_request").replaceAll(" ", "_");
-        NAME_partyPrivacyLevel = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.party_privacy").replaceAll(" ", "_");
-        NAME_resetTimeOnInit = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.reset_time_on_init").replaceAll(" ", "_");
-        NAME_autoRegister = ModUtils.TRANSLATOR.translate(true, "gui.config.name.general.auto_register").replaceAll(" ", "_");
+        NAME_detectCurseManifest = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.detect_curse_manifest")
+                .replaceAll(" ", "_");
+        NAME_detectMultiMCManifest = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.detect_multimc_manifest")
+                .replaceAll(" ", "_");
+        NAME_detectMCUpdaterInstance = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.detect_mcupdater_instance")
+                .replaceAll(" ", "_");
+        NAME_detectTechnicPack = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.detect_technic_pack")
+                .replaceAll(" ", "_");
+        NAME_showTime = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.show_time")
+                .replaceAll(" ", "_");
+        NAME_detectBiomeData = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.detect_biome_data")
+                .replaceAll(" ", "_");
+        NAME_detectDimensionData = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.detect_dimension_data")
+                .replaceAll(" ", "_");
+        NAME_detectWorldData = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.detect_world_data")
+                .replaceAll(" ", "_");
+        NAME_clientId = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.client_id")
+                .replaceAll(" ", "_");
+        NAME_defaultIcon = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.default_icon")
+                .replaceAll(" ", "_");
+        NAME_enableJoinRequest = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.enable_join_request")
+                .replaceAll(" ", "_");
+        NAME_partyPrivacyLevel = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.party_privacy")
+                .replaceAll(" ", "_");
+        NAME_resetTimeOnInit = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.reset_time_on_init")
+                .replaceAll(" ", "_");
+        NAME_autoRegister = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.general.auto_register")
+                .replaceAll(" ", "_");
         detectCurseManifest = true;
         detectMultiMCManifest = true;
         detectMCUpdaterInstance = true;
@@ -177,74 +288,167 @@ public class ConfigUtils {
         resetTimeOnInit = false;
         autoRegister = false;
         // BIOME MESSAGES
-        NAME_defaultBiomeIcon = ModUtils.TRANSLATOR.translate(true, "gui.config.name.biome_messages.biome_icon".replaceAll(" ", "_"));
-        NAME_biomeMessages = ModUtils.TRANSLATOR.translate(true, "gui.config.name.biome_messages.biome_messages").replaceAll(" ", "_");
+        NAME_defaultBiomeIcon =
+                ModUtils.TRANSLATOR.translate(true, "gui.config.name.biome_messages.biome_icon".replaceAll(" ", "_"));
+        NAME_biomeMessages = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.biome_messages.biome_messages")
+                .replaceAll(" ", "_");
         defaultBiomeIcon = "unknown";
-        biomeMessages = new String[]{"default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "Playing in &biome&"};
+        biomeMessages = new String[] {
+            "default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "Playing in &biome&"
+        };
         // DIMENSION MESSAGES
-        NAME_defaultDimensionIcon = ModUtils.TRANSLATOR.translate(true, "gui.config.name.dimension_messages.dimension_icon").replaceAll(" ", "_");
-        NAME_dimensionMessages = ModUtils.TRANSLATOR.translate(true, "gui.config.name.dimension_messages.dimension_messages").replaceAll(" ", "_");
+        NAME_defaultDimensionIcon = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.dimension_messages.dimension_icon")
+                .replaceAll(" ", "_");
+        NAME_dimensionMessages = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.dimension_messages.dimension_messages")
+                .replaceAll(" ", "_");
         defaultDimensionIcon = "unknown";
-        dimensionMessages = new String[]{"default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "In the &dimension&"};
+        dimensionMessages = new String[] {
+            "default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "In the &dimension&"
+        };
         // SERVER MESSAGES
-        NAME_defaultServerIcon = ModUtils.TRANSLATOR.translate(true, "gui.config.name.server_messages.server_icon").replaceAll(" ", "_");
-        NAME_defaultServerName = ModUtils.TRANSLATOR.translate(true, "gui.config.name.server_messages.server_name").replaceAll(" ", "_");
-        NAME_defaultServerMotd = ModUtils.TRANSLATOR.translate(true, "gui.config.name.server_messages.server_motd").replaceAll(" ", "_");
-        NAME_serverMessages = ModUtils.TRANSLATOR.translate(true, "gui.config.name.server_messages.server_messages").replaceAll(" ", "_");
+        NAME_defaultServerIcon = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.server_messages.server_icon")
+                .replaceAll(" ", "_");
+        NAME_defaultServerName = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.server_messages.server_name")
+                .replaceAll(" ", "_");
+        NAME_defaultServerMotd = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.server_messages.server_motd")
+                .replaceAll(" ", "_");
+        NAME_serverMessages = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.server_messages.server_messages")
+                .replaceAll(" ", "_");
         defaultServerIcon = "default";
         defaultServerName = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.server_messages.server_name");
         defaultServerMotd = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.server_messages.server_motd");
-        serverMessages = new String[]{"default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "Playing on &motd&"};
+        serverMessages = new String[] {
+            "default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "Playing on &motd&"
+        };
         // STATUS MESSAGES
-        NAME_mainMenuMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.main_menu_message").replaceAll(" ", "_");
-        NAME_loadingMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.loading_message").replaceAll(" ", "_");
-        NAME_lanMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.lan_message").replaceAll(" ", "_");
-        NAME_singlePlayerMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.single_player_message").replaceAll(" ", "_");
-        NAME_packPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.placeholder.pack_message").replaceAll(" ", "_");
-        NAME_outerPlayerPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.placeholder.player_message.out").replaceAll(" ", "_");
-        NAME_innerPlayerPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.placeholder.player_message.in").replaceAll(" ", "_");
-        NAME_playerCoordinatePlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.placeholder.player_coordinate_message").replaceAll(" ", "_");
-        NAME_playerHealthPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.placeholder.player_health_message").replaceAll(" ", "_");
-        NAME_playerAmountPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.placeholder.player_amount_message").replaceAll(" ", "_");
-        NAME_playerItemsPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.placeholder.player_item_message").replaceAll(" ", "_");
-        NAME_worldPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.placeholder.world_message").replaceAll(" ", "_");
-        NAME_modsPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.placeholder.mods_message").replaceAll(" ", "_");
-        NAME_vivecraftMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.special.vivecraft_message").replaceAll(" ", "_");
-        NAME_fallbackPackPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "gui.config.name.status_messages.fallback.pack_placeholder_message").replaceAll(" ", "_");
+        NAME_mainMenuMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.main_menu_message")
+                .replaceAll(" ", "_");
+        NAME_loadingMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.loading_message")
+                .replaceAll(" ", "_");
+        NAME_lanMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.lan_message")
+                .replaceAll(" ", "_");
+        NAME_singlePlayerMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.single_player_message")
+                .replaceAll(" ", "_");
+        NAME_packPlaceholderMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.placeholder.pack_message")
+                .replaceAll(" ", "_");
+        NAME_outerPlayerPlaceholderMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.placeholder.player_message.out")
+                .replaceAll(" ", "_");
+        NAME_innerPlayerPlaceholderMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.placeholder.player_message.in")
+                .replaceAll(" ", "_");
+        NAME_playerCoordinatePlaceholderMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.placeholder.player_coordinate_message")
+                .replaceAll(" ", "_");
+        NAME_playerHealthPlaceholderMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.placeholder.player_health_message")
+                .replaceAll(" ", "_");
+        NAME_playerAmountPlaceholderMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.placeholder.player_amount_message")
+                .replaceAll(" ", "_");
+        NAME_playerItemsPlaceholderMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.placeholder.player_item_message")
+                .replaceAll(" ", "_");
+        NAME_worldPlaceholderMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.placeholder.world_message")
+                .replaceAll(" ", "_");
+        NAME_modsPlaceholderMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.placeholder.mods_message")
+                .replaceAll(" ", "_");
+        NAME_vivecraftMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.special.vivecraft_message")
+                .replaceAll(" ", "_");
+        NAME_fallbackPackPlaceholderMessage = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.status_messages.fallback.pack_placeholder_message")
+                .replaceAll(" ", "_");
         mainMenuMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.state.main_menu");
         loadingMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.state.loading");
         lanMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.state.lan");
         singlePlayerMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.state.single_player");
         packPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.pack");
-        outerPlayerPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.player_info.out");
-        innerPlayerPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.player_info.in");
-        playerCoordinatePlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.player_info.coordinate");
-        playerHealthPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.player_info.health");
-        playerAmountPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.players");
-        playerItemsPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.player_info.items");
+        outerPlayerPlaceholderMessage =
+                ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.player_info.out");
+        innerPlayerPlaceholderMessage =
+                ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.player_info.in");
+        playerCoordinatePlaceholderMessage =
+                ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.player_info.coordinate");
+        playerHealthPlaceholderMessage =
+                ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.player_info.health");
+        playerAmountPlaceholderMessage =
+                ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.players");
+        playerItemsPlaceholderMessage =
+                ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.player_info.items");
         worldPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.world_info");
         modsPlaceholderMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.placeholder.mods");
         vivecraftMessage = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.special.vivecraft");
         fallbackPackPlaceholderMessage = "";
         // ADVANCED
-        NAME_enableCommands = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.enable_commands").replaceAll(" ", "_");
-        NAME_enablePerGui = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.enable_per_gui").replaceAll(" ", "_");
-        NAME_enablePerItem = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.enable_per_item").replaceAll(" ", "_");
-        NAME_enablePerEntity = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.enable_per_entity").replaceAll(" ", "_");
-        NAME_renderTooltips = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.render_tooltips").replaceAll(" ", "_");
-        NAME_formatWords = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.format_words").replaceAll(" ", "_");
-        NAME_debugMode = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.debug_mode").replaceAll(" ", "_");
-        NAME_verboseMode = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.verbose_mode").replaceAll(" ", "_");
-        NAME_splitCharacter = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.split_character").replaceAll(" ", "_");
-        NAME_refreshRate = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.refresh_rate").replaceAll(" ", "_");
-        NAME_roundSize = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.round_size").replaceAll(" ", "_");
-        NAME_includeExtraGuiClasses = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.include_extra_gui_classes").replaceAll(" ", "_");
-        NAME_guiMessages = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.gui_messages").replaceAll(" ", "_");
-        NAME_itemMessages = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.item_messages").replaceAll(" ", "_");
-        NAME_entityTargetMessages = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.entity_target_messages").replaceAll(" ", "_");
-        NAME_entityAttackingMessages = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.entity_attacking_messages").replaceAll(" ", "_");
-        NAME_entityRidingMessages = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.entity_riding_messages").replaceAll(" ", "_");
-        NAME_playerSkinEndpoint = ModUtils.TRANSLATOR.translate(true, "gui.config.name.advanced.player_skin_endpoint").replaceAll(" ", "_");
+        NAME_enableCommands = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.enable_commands")
+                .replaceAll(" ", "_");
+        NAME_enablePerGui = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.enable_per_gui")
+                .replaceAll(" ", "_");
+        NAME_enablePerItem = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.enable_per_item")
+                .replaceAll(" ", "_");
+        NAME_enablePerEntity = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.enable_per_entity")
+                .replaceAll(" ", "_");
+        NAME_renderTooltips = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.render_tooltips")
+                .replaceAll(" ", "_");
+        NAME_formatWords = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.format_words")
+                .replaceAll(" ", "_");
+        NAME_debugMode = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.debug_mode")
+                .replaceAll(" ", "_");
+        NAME_verboseMode = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.verbose_mode")
+                .replaceAll(" ", "_");
+        NAME_splitCharacter = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.split_character")
+                .replaceAll(" ", "_");
+        NAME_refreshRate = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.refresh_rate")
+                .replaceAll(" ", "_");
+        NAME_roundSize = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.round_size")
+                .replaceAll(" ", "_");
+        NAME_includeExtraGuiClasses = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.include_extra_gui_classes")
+                .replaceAll(" ", "_");
+        NAME_guiMessages = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.gui_messages")
+                .replaceAll(" ", "_");
+        NAME_itemMessages = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.item_messages")
+                .replaceAll(" ", "_");
+        NAME_entityTargetMessages = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.entity_target_messages")
+                .replaceAll(" ", "_");
+        NAME_entityAttackingMessages = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.entity_attacking_messages")
+                .replaceAll(" ", "_");
+        NAME_entityRidingMessages = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.entity_riding_messages")
+                .replaceAll(" ", "_");
+        NAME_playerSkinEndpoint = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.advanced.player_skin_endpoint")
+                .replaceAll(" ", "_");
         enableCommands = true;
         enablePerGui = false;
         enablePerItem = false;
@@ -257,27 +461,64 @@ public class ConfigUtils {
         refreshRate = 2;
         roundSize = 3;
         includeExtraGuiClasses = false;
-        guiMessages = new String[]{"default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "In &screen&"};
-        itemMessages = new String[]{"default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "Holding &item&"};
-        entityTargetMessages = new String[]{"default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "Targeting &entity&"};
-        entityAttackingMessages = new String[]{"default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "Attacking &entity&"};
-        entityRidingMessages = new String[]{"default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "Riding &entity&"};
-        playerSkinEndpoint = ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.advanced.player_skin_endpoint");
+        guiMessages = new String[] {
+            "default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "In &screen&"
+        };
+        itemMessages = new String[] {
+            "default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "Holding &item&"
+        };
+        entityTargetMessages = new String[] {
+            "default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "Targeting &entity&"
+        };
+        entityAttackingMessages = new String[] {
+            "default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "Attacking &entity&"
+        };
+        entityRidingMessages = new String[] {
+            "default" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + "Riding &entity&"
+        };
+        playerSkinEndpoint =
+                ModUtils.TRANSLATOR.translate(true, "craftpresence.defaults.advanced.player_skin_endpoint");
         // ACCESSIBILITY
-        NAME_tooltipBackgroundColor = ModUtils.TRANSLATOR.translate(true, "gui.config.name.accessibility.tooltip_background_color").replaceAll(" ", "_");
-        NAME_tooltipBorderColor = ModUtils.TRANSLATOR.translate(true, "gui.config.name.accessibility.tooltip_border_color").replaceAll(" ", "_");
-        NAME_guiBackgroundColor = ModUtils.TRANSLATOR.translate(true, "gui.config.name.accessibility.gui_background_color").replaceAll(" ", "_");
-        NAME_buttonBackgroundColor = ModUtils.TRANSLATOR.translate(true, "gui.config.name.accessibility.button_background_color").replaceAll(" ", "_");
-        NAME_languageId = ModUtils.TRANSLATOR.translate(true, "gui.config.name.accessibility.language_id").replaceAll(" ", "_");
-        NAME_showBackgroundAsDark = ModUtils.TRANSLATOR.translate(true, "gui.config.name.accessibility.show_background_as_dark").replaceAll(" ", "_");
-        NAME_stripTranslationColors = ModUtils.TRANSLATOR.translate(true, "gui.config.name.accessibility.strip_translation_colors").replaceAll(" ", "_");
-        NAME_showLoggingInChat = ModUtils.TRANSLATOR.translate(true, "gui.config.name.accessibility.show_logging_in_chat").replaceAll(" ", "_");
-        NAME_stripExtraGuiElements = ModUtils.TRANSLATOR.translate(true, "gui.config.name.accessibility.strip_extra_gui_elements").replaceAll(" ", "_");
-        NAME_configKeyCode = ModUtils.TRANSLATOR.translate(true, "key.craftpresence.config_keycode.name").replaceAll(" ", "_");
+        NAME_tooltipBackgroundColor = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.accessibility.tooltip_background_color")
+                .replaceAll(" ", "_");
+        NAME_tooltipBorderColor = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.accessibility.tooltip_border_color")
+                .replaceAll(" ", "_");
+        NAME_guiBackgroundColor = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.accessibility.gui_background_color")
+                .replaceAll(" ", "_");
+        NAME_buttonBackgroundColor = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.accessibility.button_background_color")
+                .replaceAll(" ", "_");
+        NAME_languageId = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.accessibility.language_id")
+                .replaceAll(" ", "_");
+        NAME_showBackgroundAsDark = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.accessibility.show_background_as_dark")
+                .replaceAll(" ", "_");
+        NAME_stripTranslationColors = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.accessibility.strip_translation_colors")
+                .replaceAll(" ", "_");
+        NAME_showLoggingInChat = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.accessibility.show_logging_in_chat")
+                .replaceAll(" ", "_");
+        NAME_stripExtraGuiElements = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.accessibility.strip_extra_gui_elements")
+                .replaceAll(" ", "_");
+        NAME_configKeyCode = ModUtils.TRANSLATOR
+                .translate(true, "key.craftpresence.config_keycode.name")
+                .replaceAll(" ", "_");
         tooltipBackgroundColor = "0xF0100010";
         tooltipBorderColor = "0x505000FF";
-        guiBackgroundColor = "minecraft" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + (ModUtils.MCProtocolID <= 61 && ModUtils.IS_LEGACY_SOFT ? "/gui/background.png" : "textures/gui/options_background.png");
-        buttonBackgroundColor = "minecraft" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";") + (ModUtils.MCProtocolID <= 61 && ModUtils.IS_LEGACY_SOFT ? "/gui/gui.png" : "textures/gui/widgets.png");
+        guiBackgroundColor = "minecraft" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";")
+                + (ModUtils.MCProtocolID <= 61 && ModUtils.IS_LEGACY_SOFT
+                        ? "/gui/background.png"
+                        : "textures/gui/options_background.png");
+        buttonBackgroundColor = "minecraft" + (!StringUtils.isNullOrEmpty(splitCharacter) ? splitCharacter : ";")
+                + (ModUtils.MCProtocolID <= 61 && ModUtils.IS_LEGACY_SOFT
+                        ? "/gui/gui.png"
+                        : "textures/gui/widgets.png");
         languageId = ModUtils.MCProtocolID >= 315 ? "en_us" : "en_US";
         showBackgroundAsDark = true;
         stripTranslationColors = false;
@@ -285,12 +526,24 @@ public class ConfigUtils {
         stripExtraGuiElements = ModUtils.IS_LEGACY_HARD;
         configKeyCode = ModUtils.MCProtocolID > 340 ? 96 : 41;
         // DISPLAY MESSAGES
-        NAME_gameStateMessage_FORMAT = ModUtils.TRANSLATOR.translate(true, "gui.config.name.display.game_state_message").replaceAll(" ", "_");
-        NAME_detailsMessage_FORMAT = ModUtils.TRANSLATOR.translate(true, "gui.config.name.display.details_message").replaceAll(" ", "_");
-        NAME_largeImageMessage_FORMAT = ModUtils.TRANSLATOR.translate(true, "gui.config.name.display.large_image_message").replaceAll(" ", "_");
-        NAME_smallImageMessage_FORMAT = ModUtils.TRANSLATOR.translate(true, "gui.config.name.display.small_image_message").replaceAll(" ", "_");
-        NAME_largeImageKey_FORMAT = ModUtils.TRANSLATOR.translate(true, "gui.config.name.display.large_image_key").replaceAll(" ", "_");
-        NAME_smallImageKey_FORMAT = ModUtils.TRANSLATOR.translate(true, "gui.config.name.display.small_image_key").replaceAll(" ", "_");
+        NAME_gameStateMessage_FORMAT = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.display.game_state_message")
+                .replaceAll(" ", "_");
+        NAME_detailsMessage_FORMAT = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.display.details_message")
+                .replaceAll(" ", "_");
+        NAME_largeImageMessage_FORMAT = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.display.large_image_message")
+                .replaceAll(" ", "_");
+        NAME_smallImageMessage_FORMAT = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.display.small_image_message")
+                .replaceAll(" ", "_");
+        NAME_largeImageKey_FORMAT = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.display.large_image_key")
+                .replaceAll(" ", "_");
+        NAME_smallImageKey_FORMAT = ModUtils.TRANSLATOR
+                .translate(true, "gui.config.name.display.small_image_key")
+                .replaceAll(" ", "_");
         gameStateMessage = "&SERVER& &PACK&";
         detailsMessage = "&MAINMENU&&DIMENSION&";
         largeImageMessage = "&MAINMENU&&DIMENSION&";
@@ -317,7 +570,8 @@ public class ConfigUtils {
             final boolean shouldAvoid = field.getName().endsWith("_FORMAT");
             if (isName) {
                 try {
-                    final Field valueField = getClass().getField(field.getName().replaceFirst("NAME_", "").replaceFirst("_FORMAT", ""));
+                    final Field valueField = getClass()
+                            .getField(field.getName().replaceFirst("NAME_", "").replaceFirst("_FORMAT", ""));
 
                     field.setAccessible(true);
                     valueField.setAccessible(true);
@@ -342,7 +596,8 @@ public class ConfigUtils {
         try {
             configFile = new File(fileName);
             parentDir = configFile.getParentFile();
-            isConfigNew = (!parentDir.exists() && parentDir.mkdirs()) || (!configFile.exists() && configFile.createNewFile());
+            isConfigNew =
+                    (!parentDir.exists() && parentDir.mkdirs()) || (!configFile.exists() && configFile.createNewFile());
             setupInitialValues();
         } catch (Exception ex) {
             ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.error.config.save"));
@@ -387,7 +642,8 @@ public class ConfigUtils {
                 Object fieldObject = null, foundProperty;
                 final String propertyName = configDataMappings.get(currentIndex).getFirst();
                 final Object defaultValue = configDataMappings.get(currentIndex).getSecond();
-                final Class<?> expectedClass = configDataMappings.get(currentIndex).getSecond().getClass();
+                final Class<?> expectedClass =
+                        configDataMappings.get(currentIndex).getSecond().getClass();
 
                 if (propertyList.contains(propertyName)) {
                     propertyList.remove(propertyName);
@@ -400,17 +656,19 @@ public class ConfigUtils {
 
                         // If null or toString is null (And the default value of the property is not empty)
                         // Throw an Exception to reset value to Prior/Default Value
-                        if (!StringUtils.isNullOrEmpty(defaultValue.toString()) && (fieldObject == null || StringUtils.isNullOrEmpty(fieldObject.toString()))) {
-                            throw new IllegalArgumentException(ModUtils.TRANSLATOR.translate(true, "craftpresence.exception.config.prop.null", propertyName));
+                        if (!StringUtils.isNullOrEmpty(defaultValue.toString())
+                                && (fieldObject == null || StringUtils.isNullOrEmpty(fieldObject.toString()))) {
+                            throw new IllegalArgumentException(ModUtils.TRANSLATOR.translate(
+                                    true, "craftpresence.exception.config.prop.null", propertyName));
                         }
                     } catch (Exception ex) {
                         // Case 2: Manually Convert Variable based on Expected Type
-                        if ((expectedClass == boolean.class || expectedClass == Boolean.class) &&
-                                StringUtils.isValidBoolean(foundProperty)) {
+                        if ((expectedClass == boolean.class || expectedClass == Boolean.class)
+                                && StringUtils.isValidBoolean(foundProperty)) {
                             // Convert to Boolean if Valid
                             fieldObject = Boolean.parseBoolean(foundProperty.toString());
-                        } else if ((expectedClass == int.class || expectedClass == Integer.class) &&
-                                StringUtils.getValidInteger(foundProperty).getFirst()) {
+                        } else if ((expectedClass == int.class || expectedClass == Integer.class)
+                                && StringUtils.getValidInteger(foundProperty).getFirst()) {
                             // Convert to Integer if Valid, and if not reset it
                             final Pair<Boolean, Integer> boolData = StringUtils.getValidInteger(foundProperty);
 
@@ -422,19 +680,38 @@ public class ConfigUtils {
                                         if (!CraftPresence.KEYBINDINGS.isValidKeyCode(boolData.getSecond())) {
                                             // If not a valid KeyCode, Revert Value to prior Data
                                             if (!skipLogging) {
-                                                ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.error.config.prop.empty", propertyName));
+                                                ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(
+                                                        true,
+                                                        "craftpresence.logger.error.config.prop.empty",
+                                                        propertyName));
                                             }
                                             fieldObject = defaultValue;
                                         } else {
                                             // If so, iterate through the migration data allocated earlier
                                             // to see if the property needs any data migrations
                                             for (Pair<List<String>, String> migrationChunk : migrationData) {
-                                                if (migrationChunk.getFirst().contains(keyTrigger.toLowerCase()) && !migrationChunk.getSecond().equalsIgnoreCase(KeyConverter.ConversionMode.Unknown.name())) {
+                                                if (migrationChunk.getFirst().contains(keyTrigger.toLowerCase())
+                                                        && !migrationChunk
+                                                                .getSecond()
+                                                                .equalsIgnoreCase(
+                                                                        KeyConverter.ConversionMode.Unknown.name())) {
                                                     // If so, retrieve the second part of the migration data,
                                                     // and adjust the property accordingly with the mode it should use
-                                                    final int migratedKeyCode = KeyConverter.convertKey(boolData.getSecond(), KeyConverter.ConversionMode.valueOf(migrationChunk.getSecond()));
+                                                    final int migratedKeyCode = KeyConverter.convertKey(
+                                                            boolData.getSecond(),
+                                                            KeyConverter.ConversionMode.valueOf(
+                                                                    migrationChunk.getSecond()));
                                                     if (!skipLogging && migratedKeyCode != boolData.getSecond()) {
-                                                        ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.info.migration.apply", migrationChunk.getFirst().toString(), migrationChunk.getSecond(), propertyName, boolData.getSecond(), migratedKeyCode));
+                                                        ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(
+                                                                true,
+                                                                "craftpresence.logger.info.migration.apply",
+                                                                migrationChunk
+                                                                        .getFirst()
+                                                                        .toString(),
+                                                                migrationChunk.getSecond(),
+                                                                propertyName,
+                                                                boolData.getSecond(),
+                                                                migratedKeyCode));
                                                     }
                                                     fieldObject = migratedKeyCode;
                                                     break;
@@ -451,46 +728,62 @@ public class ConfigUtils {
                             } else if (!avoidanceFilter.contains(propertyName)) {
                                 // If not a valid Integer, Revert Value to prior Data
                                 if (!skipLogging) {
-                                    ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.error.config.prop.empty", propertyName));
+                                    ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(
+                                            true, "craftpresence.logger.error.config.prop.empty", propertyName));
                                 }
                                 fieldObject = defaultValue;
                             }
                         } else if (expectedClass == String[].class) {
                             // Convert to String Array (After Verifying it is a single Array)
-                            final String convertedString = StringUtils.removeMatches(StringUtils.getMatches("\\[([^\\s]+?)\\]", foundProperty), null, 1);
+                            final String convertedString = StringUtils.removeMatches(
+                                    StringUtils.getMatches("\\[([^\\s]+?)\\]", foundProperty), null, 1);
 
-                            if (!StringUtils.isNullOrEmpty(convertedString) &&
-                                    (convertedString.startsWith("[") && convertedString.endsWith("]"))) {
+                            if (!StringUtils.isNullOrEmpty(convertedString)
+                                    && (convertedString.startsWith("[") && convertedString.endsWith("]"))) {
                                 // If Valid, interpret into formatted Array
-                                final String preArrayString = convertedString.replaceAll("\\[", "").replaceAll("]", "");
+                                final String preArrayString =
+                                        convertedString.replaceAll("\\[", "").replaceAll("]", "");
                                 if (preArrayString.contains(", ")) {
                                     fieldObject = preArrayString.split(", ");
                                 } else if (preArrayString.contains(",")) {
                                     fieldObject = preArrayString.split(",");
                                 } else {
-                                    fieldObject = new String[]{preArrayString};
+                                    fieldObject = new String[] {preArrayString};
                                 }
                             }
                         } else if (!avoidanceFilter.contains(propertyName)) {
                             // If not a Convertible Type, Revert Value to prior Data
                             if (!skipLogging) {
-                                ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.error.config.prop.empty", propertyName));
+                                ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(
+                                        true, "craftpresence.logger.error.config.prop.empty", propertyName));
                             }
                             fieldObject = defaultValue;
                         }
                     } finally {
                         if (fieldObject != null) {
-                            fieldObject = syncMigrationData(skipLogging, migrationData, configProperty, fieldObject, foundProperty, propertyName, defaultValue);
-                            StringUtils.updateField(getClass(), CraftPresence.CONFIG, new Tuple<>(configProperty.getSecond(), fieldObject, null));
+                            fieldObject = syncMigrationData(
+                                    skipLogging,
+                                    migrationData,
+                                    configProperty,
+                                    fieldObject,
+                                    foundProperty,
+                                    propertyName,
+                                    defaultValue);
+                            StringUtils.updateField(
+                                    getClass(),
+                                    CraftPresence.CONFIG,
+                                    new Tuple<>(configProperty.getSecond(), fieldObject, null));
                         }
                     }
                 } else if (!avoidanceFilter.contains(propertyName)) {
                     // If a Config Variable is not present in the Properties File, queue a Config Update
                     if (!skipLogging) {
-                        ModUtils.LOG.error(ModUtils.TRANSLATOR.translate("craftpresence.logger.error.config.prop.empty", propertyName));
+                        ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(
+                                "craftpresence.logger.error.config.prop.empty", propertyName));
                         for (String globalTrigger : globalTriggers) {
                             if (propertyName.toLowerCase().contains(globalTrigger.toLowerCase())) {
-                                // If a Global Variable is empty, we'll need to re-trigger a read event after updateConfig
+                                // If a Global Variable is empty, we'll need to re-trigger a read event after
+                                // updateConfig
                                 // in order to ensure migration data and validity is performed
                                 shouldRefreshLater = true;
                                 break;
@@ -504,7 +797,8 @@ public class ConfigUtils {
             for (String remainingProp : propertyList) {
                 // Removes any Invalid Properties, that were not checked off during read
                 if (!skipLogging) {
-                    ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.error.config.prop.invalid", remainingProp));
+                    ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(
+                            true, "craftpresence.logger.error.config.prop.invalid", remainingProp));
                 }
                 properties.remove(remainingProp);
                 save("UTF-8");
@@ -547,7 +841,14 @@ public class ConfigUtils {
      * @param defaultValue   The Default Value of the Property to Check against fieldObject
      * @return The Checked/Verified Field Object, depending on method execution
      */
-    private Object syncMigrationData(final boolean skipLogging, List<Pair<List<String>, String>> migrationData, final Pair<String, String> configProperty, final Object fieldObject, final Object foundProperty, final String propertyName, final Object defaultValue) {
+    private Object syncMigrationData(
+            final boolean skipLogging,
+            List<Pair<List<String>, String>> migrationData,
+            final Pair<String, String> configProperty,
+            final Object fieldObject,
+            final Object foundProperty,
+            final String propertyName,
+            final Object defaultValue) {
         Object finalFieldObject = fieldObject;
         // Move through any triggers or Migration Data, if needed
         // Before proceeding to final parsing
@@ -556,7 +857,8 @@ public class ConfigUtils {
                 // If the variable if Global, check and see if it is different from it's default value
                 // In some cases, additional migrations may also be needed, in which case data is added to the list
                 if (!skipLogging && !finalFieldObject.toString().equals(defaultValue.toString())) {
-                    ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.error.config.adjust.global", propertyName));
+                    ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(
+                            true, "craftpresence.logger.error.config.adjust.global", propertyName));
                 }
 
                 if (propertyName.equals(NAME_lastMcVersionId)) {
@@ -569,7 +871,8 @@ public class ConfigUtils {
                         }
                     }
 
-                    String keyCodeMigrationId = KeyConverter.ConversionMode.Unknown.name(), languageMigrationId = TranslationUtils.ConversionMode.Unknown.name();
+                    String keyCodeMigrationId = KeyConverter.ConversionMode.Unknown.name(),
+                            languageMigrationId = TranslationUtils.ConversionMode.Unknown.name();
                     if (currentParseValue <= 340 && defaultParseValue > 340) {
                         keyCodeMigrationId = KeyConverter.ConversionMode.Lwjgl3.name();
                     } else if (currentParseValue > 340 && defaultParseValue <= 340) {
@@ -587,8 +890,22 @@ public class ConfigUtils {
                     }
 
                     if (!skipLogging) {
-                        ModUtils.LOG.debugInfo(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.info.migration.add", Arrays.asList(keyCodeTriggers).toString(), keyCodeMigrationId, keyCodeMigrationId.equals(KeyConverter.ConversionMode.None.name()) ? "Verification" : "Setting Change"));
-                        ModUtils.LOG.debugInfo(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.info.migration.add", Arrays.asList(languageTriggers).toString(), languageMigrationId, languageMigrationId.equals(TranslationUtils.ConversionMode.None.name()) ? "Verification" : "Setting Change"));
+                        ModUtils.LOG.debugInfo(ModUtils.TRANSLATOR.translate(
+                                true,
+                                "craftpresence.logger.info.migration.add",
+                                Arrays.asList(keyCodeTriggers).toString(),
+                                keyCodeMigrationId,
+                                keyCodeMigrationId.equals(KeyConverter.ConversionMode.None.name())
+                                        ? "Verification"
+                                        : "Setting Change"));
+                        ModUtils.LOG.debugInfo(ModUtils.TRANSLATOR.translate(
+                                true,
+                                "craftpresence.logger.info.migration.add",
+                                Arrays.asList(languageTriggers).toString(),
+                                languageMigrationId,
+                                languageMigrationId.equals(TranslationUtils.ConversionMode.None.name())
+                                        ? "Verification"
+                                        : "Setting Change"));
                     }
 
                     // Global Case 1 Notes (KeyCode):
@@ -620,12 +937,24 @@ public class ConfigUtils {
                 // If so, iterate through the migration data allocated earlier
                 // to see if the property needs any data migrations
                 for (Pair<List<String>, String> migrationChunk : migrationData) {
-                    if (migrationChunk.getFirst().contains(langTrigger.toLowerCase()) && !migrationChunk.getSecond().equalsIgnoreCase(TranslationUtils.ConversionMode.Unknown.name())) {
+                    if (migrationChunk.getFirst().contains(langTrigger.toLowerCase())
+                            && !migrationChunk
+                                    .getSecond()
+                                    .equalsIgnoreCase(TranslationUtils.ConversionMode.Unknown.name())) {
                         // If so, retrieve the second part of the migration data,
                         // and adjust the property accordingly with the mode it should use
-                        final String migratedLanguageId = TranslationUtils.convertId(foundProperty.toString(), TranslationUtils.ConversionMode.valueOf(migrationChunk.getSecond()));
+                        final String migratedLanguageId = TranslationUtils.convertId(
+                                foundProperty.toString(),
+                                TranslationUtils.ConversionMode.valueOf(migrationChunk.getSecond()));
                         if (!skipLogging && !migratedLanguageId.equals(foundProperty.toString())) {
-                            ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.info.migration.apply", migrationChunk.getFirst().toString(), migrationChunk.getSecond(), propertyName, foundProperty.toString(), migratedLanguageId));
+                            ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(
+                                    true,
+                                    "craftpresence.logger.info.migration.apply",
+                                    migrationChunk.getFirst().toString(),
+                                    migrationChunk.getSecond(),
+                                    propertyName,
+                                    foundProperty.toString(),
+                                    migratedLanguageId));
                         }
                         finalFieldObject = migratedLanguageId;
                         break;
@@ -660,10 +989,13 @@ public class ConfigUtils {
 
                     // Ensure default Value for String Array is available
                     // If default value is not present, give it a dummy value
-                    boolean defaultFound = !StringUtils.isNullOrEmpty(StringUtils.getConfigPart(finalArray, "default", 0, 1, splitCharacter, null));
+                    boolean defaultFound = !StringUtils.isNullOrEmpty(
+                            StringUtils.getConfigPart(finalArray, "default", 0, 1, splitCharacter, null));
                     if (!defaultFound) {
-                        ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.error.config.missing.default", configDataSet.getFirst()));
-                        finalArray = StringUtils.addToArray(finalArray, finalArray.length, "default" + splitCharacter + "NaN");
+                        ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(
+                                true, "craftpresence.logger.error.config.missing.default", configDataSet.getFirst()));
+                        finalArray = StringUtils.addToArray(
+                                finalArray, finalArray.length, "default" + splitCharacter + "NaN");
                         needsDataSync = true;
                     }
 
@@ -674,7 +1006,9 @@ public class ConfigUtils {
                 }
 
                 // Replace Split Character if needed, and is not a blacklisted character
-                if (!StringUtils.isNullOrEmpty(queuedSplitCharacter) && finalOutput.contains(splitCharacter) && !Arrays.asList(blackListedCharacters).contains(queuedSplitCharacter)) {
+                if (!StringUtils.isNullOrEmpty(queuedSplitCharacter)
+                        && finalOutput.contains(splitCharacter)
+                        && !Arrays.asList(blackListedCharacters).contains(queuedSplitCharacter)) {
                     finalOutput = finalOutput.replace(splitCharacter, queuedSplitCharacter);
                     needsDataSync = true;
                 }
@@ -687,7 +1021,8 @@ public class ConfigUtils {
         }
 
         // Save Queued Split Character, if any
-        if (!StringUtils.isNullOrEmpty(queuedSplitCharacter) && !Arrays.asList(blackListedCharacters).contains(queuedSplitCharacter)) {
+        if (!StringUtils.isNullOrEmpty(queuedSplitCharacter)
+                && !Arrays.asList(blackListedCharacters).contains(queuedSplitCharacter)) {
             splitCharacter = queuedSplitCharacter;
             queuedSplitCharacter = null;
         }
@@ -712,11 +1047,12 @@ public class ConfigUtils {
         try {
             outputStream = new FileOutputStream(configFile);
             configWriter = new OutputStreamWriter(outputStream, Charset.forName(encoding));
-            properties.store(configWriter,
-                    ModUtils.TRANSLATOR.translate(true, "gui.config.title") + "\n" +
-                            ModUtils.TRANSLATOR.translate(true, "gui.config.comment.title", ModUtils.VERSION_ID, ModUtils.MOD_SCHEMA_VERSION) + "\n\n" +
-                            ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.info.config.notice")
-            );
+            properties.store(
+                    configWriter,
+                    ModUtils.TRANSLATOR.translate(true, "gui.config.title") + "\n"
+                            + ModUtils.TRANSLATOR.translate(
+                                    true, "gui.config.comment.title", ModUtils.VERSION_ID, ModUtils.MOD_SCHEMA_VERSION)
+                            + "\n\n" + ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.info.config.notice"));
         } catch (Exception ex) {
             ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.error.config.save"));
             ex.printStackTrace();

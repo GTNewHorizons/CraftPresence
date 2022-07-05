@@ -44,7 +44,6 @@ import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.entities.User;
 import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.entities.pipe.PipeStatus;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
-
 import java.util.List;
 
 /**
@@ -212,7 +211,8 @@ public class DiscordUtils {
             }
 
             // Create IPC Instance and Listener and Make a Connection if possible
-            ipcInstance = new IPCClient(Long.parseLong(CLIENT_ID), ModUtils.IS_DEV, ModUtils.IS_VERBOSE, AUTO_REGISTER, CLIENT_ID);
+            ipcInstance = new IPCClient(
+                    Long.parseLong(CLIENT_ID), ModUtils.IS_DEV, ModUtils.IS_VERBOSE, AUTO_REGISTER, CLIENT_ID);
             ipcInstance.setListener(new ModIPCListener());
             ipcInstance.connect();
 
@@ -225,7 +225,22 @@ public class DiscordUtils {
         }
 
         // Initialize and Sync any Pre-made Arguments (And Reset Related Data)
-        initArgument(false, "&MAINMENU&", "&BRAND&", "&MCVERSION&", "&IGN&", "&MODS&", "&PACK&", "&DIMENSION&", "&BIOME&", "&SERVER&", "&SCREEN&", "&TILEENTITY&", "&TARGETENTITY&", "&ATTACKINGENTITY&", "&RIDINGENTITY&");
+        initArgument(
+                false,
+                "&MAINMENU&",
+                "&BRAND&",
+                "&MCVERSION&",
+                "&IGN&",
+                "&MODS&",
+                "&PACK&",
+                "&DIMENSION&",
+                "&BIOME&",
+                "&SERVER&",
+                "&SCREEN&",
+                "&TILEENTITY&",
+                "&TARGETENTITY&",
+                "&ATTACKINGENTITY&",
+                "&RIDINGENTITY&");
         initArgument(true, "&DEFAULT&", "&MAINMENU&", "&PACK&", "&DIMENSION&", "&BIOME&", "&SERVER&");
 
         // Ensure Main Menu RPC Resets properly
@@ -235,10 +250,16 @@ public class DiscordUtils {
         modsArgs.add(new Pair<>("&MODCOUNT&", Integer.toString(FileUtils.getModCount())));
         playerInfoArgs.add(new Pair<>("&NAME&", ModUtils.USERNAME));
 
-        generalArgs.add(new Pair<>("&MCVERSION&", ModUtils.TRANSLATOR.translate("craftpresence.defaults.state.mc.version", ModUtils.MCVersion)));
+        generalArgs.add(new Pair<>(
+                "&MCVERSION&",
+                ModUtils.TRANSLATOR.translate("craftpresence.defaults.state.mc.version", ModUtils.MCVersion)));
         generalArgs.add(new Pair<>("&BRAND&", ModUtils.BRAND));
-        generalArgs.add(new Pair<>("&MODS&", StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.modsPlaceholderMessage, modsArgs)));
-        generalArgs.add(new Pair<>("&IGN&", StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.outerPlayerPlaceholderMessage, playerInfoArgs)));
+        generalArgs.add(new Pair<>(
+                "&MODS&", StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.modsPlaceholderMessage, modsArgs)));
+        generalArgs.add(new Pair<>(
+                "&IGN&",
+                StringUtils.sequentialReplaceAnyCase(
+                        CraftPresence.CONFIG.outerPlayerPlaceholderMessage, playerInfoArgs)));
 
         for (Pair<String, String> generalArgument : generalArgs) {
             // For each General (Can be used Anywhere) Argument
@@ -273,13 +294,15 @@ public class DiscordUtils {
         if (!StringUtils.isNullOrEmpty(argumentName)) {
             if (isIconData) {
                 synchronized (iconData) {
-                    if (iconData.removeIf(e -> e.getFirst().equalsIgnoreCase(argumentName) && !e.getSecond().equalsIgnoreCase(insertString))) {
+                    if (iconData.removeIf(e -> e.getFirst().equalsIgnoreCase(argumentName)
+                            && !e.getSecond().equalsIgnoreCase(insertString))) {
                         iconData.add(new Pair<>(argumentName, insertString));
                     }
                 }
             } else {
                 synchronized (messageData) {
-                    if (messageData.removeIf(e -> e.getFirst().equalsIgnoreCase(argumentName) && !e.getSecond().equalsIgnoreCase(insertString))) {
+                    if (messageData.removeIf(e -> e.getFirst().equalsIgnoreCase(argumentName)
+                            && !e.getSecond().equalsIgnoreCase(insertString))) {
                         messageData.add(new Pair<>(argumentName, insertString));
                     }
                 }
@@ -340,7 +363,8 @@ public class DiscordUtils {
         } else if (!StringUtils.isNullOrEmpty(MultiMCUtils.INSTANCE_NAME)) {
             foundPackName = MultiMCUtils.INSTANCE_NAME;
             foundPackIcon = MultiMCUtils.ICON_KEY;
-        } else if (MCUpdaterUtils.instance != null && !StringUtils.isNullOrEmpty(MCUpdaterUtils.instance.getPackName())) {
+        } else if (MCUpdaterUtils.instance != null
+                && !StringUtils.isNullOrEmpty(MCUpdaterUtils.instance.getPackName())) {
             foundPackName = MCUpdaterUtils.instance.getPackName();
             foundPackIcon = foundPackName;
         } else if (!StringUtils.isNullOrEmpty(TechnicUtils.PACK_NAME)) {
@@ -351,8 +375,19 @@ public class DiscordUtils {
             foundPackIcon = foundPackName;
         }
 
-        syncArgument("&PACK&", StringUtils.formatWord(StringUtils.replaceAnyCase(CraftPresence.CONFIG.packPlaceholderMessage, "&NAME&", !StringUtils.isNullOrEmpty(foundPackName) ? foundPackName : ""), !CraftPresence.CONFIG.formatWords), false);
-        syncArgument("&PACK&", !StringUtils.isNullOrEmpty(foundPackIcon) ? StringUtils.formatAsIcon(foundPackIcon) : "", true);
+        syncArgument(
+                "&PACK&",
+                StringUtils.formatWord(
+                        StringUtils.replaceAnyCase(
+                                CraftPresence.CONFIG.packPlaceholderMessage,
+                                "&NAME&",
+                                !StringUtils.isNullOrEmpty(foundPackName) ? foundPackName : ""),
+                        !CraftPresence.CONFIG.formatWords),
+                false);
+        syncArgument(
+                "&PACK&",
+                !StringUtils.isNullOrEmpty(foundPackIcon) ? StringUtils.formatAsIcon(foundPackIcon) : "",
+                true);
     }
 
     /**
@@ -361,9 +396,12 @@ public class DiscordUtils {
      * @param presence The New Presence Data to apply
      */
     public void updatePresence(final RichPresence presence) {
-        if (presence != null &&
-                (currentPresence == null || !presence.toJson().toString().equals(currentPresence.toJson().toString())) &&
-                ipcInstance.getStatus() == PipeStatus.CONNECTED) {
+        if (presence != null
+                && (currentPresence == null
+                        || !presence.toJson()
+                                .toString()
+                                .equals(currentPresence.toJson().toString()))
+                && ipcInstance.getStatus() == PipeStatus.CONNECTED) {
             ipcInstance.sendRichPresence(presence);
             currentPresence = presence;
         }
@@ -380,23 +418,36 @@ public class DiscordUtils {
     public String imageOf(final String evalString, final String alternativeString, final boolean allowNull) {
         // Ensures Assets were fully synced from the Client ID before running
         if (DiscordAssetUtils.syncCompleted) {
-            if (StringUtils.isNullOrEmpty(lastRequestedImageData.getFirst()) || !lastRequestedImageData.getFirst().equalsIgnoreCase(evalString)) {
-                final String defaultIcon = DiscordAssetUtils.contains(CraftPresence.CONFIG.defaultIcon) ? CraftPresence.CONFIG.defaultIcon : DiscordAssetUtils.getRandomAsset();
+            if (StringUtils.isNullOrEmpty(lastRequestedImageData.getFirst())
+                    || !lastRequestedImageData.getFirst().equalsIgnoreCase(evalString)) {
+                final String defaultIcon = DiscordAssetUtils.contains(CraftPresence.CONFIG.defaultIcon)
+                        ? CraftPresence.CONFIG.defaultIcon
+                        : DiscordAssetUtils.getRandomAsset();
                 lastRequestedImageData.setFirst(evalString);
 
                 String finalKey = evalString;
 
                 if (!DiscordAssetUtils.contains(finalKey)) {
-                    ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.error.discord.assets.fallback", evalString, alternativeString));
-                    ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.info.discord.assets.request", evalString));
+                    ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(
+                            true, "craftpresence.logger.error.discord.assets.fallback", evalString, alternativeString));
+                    ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(
+                            true, "craftpresence.logger.info.discord.assets.request", evalString));
                     if (DiscordAssetUtils.contains(alternativeString)) {
-                        ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.info.discord.assets.fallback", evalString, alternativeString));
+                        ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(
+                                true,
+                                "craftpresence.logger.info.discord.assets.fallback",
+                                evalString,
+                                alternativeString));
                         finalKey = alternativeString;
                     } else {
                         if (allowNull) {
                             finalKey = "";
                         } else {
-                            ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.error.discord.assets.default", evalString, defaultIcon));
+                            ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(
+                                    true,
+                                    "craftpresence.logger.error.discord.assets.default",
+                                    evalString,
+                                    defaultIcon));
                             finalKey = defaultIcon;
                         }
                     }
@@ -490,14 +541,32 @@ public class DiscordUtils {
      */
     public RichPresence buildRichPresence() {
         // Format Presence based on Arguments available in argumentData
-        DETAILS = StringUtils.formatWord(StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.detailsMessage, messageData), !CraftPresence.CONFIG.formatWords, true, 1);
-        GAME_STATE = StringUtils.formatWord(StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.gameStateMessage, messageData), !CraftPresence.CONFIG.formatWords, true, 1);
+        DETAILS = StringUtils.formatWord(
+                StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.detailsMessage, messageData),
+                !CraftPresence.CONFIG.formatWords,
+                true,
+                1);
+        GAME_STATE = StringUtils.formatWord(
+                StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.gameStateMessage, messageData),
+                !CraftPresence.CONFIG.formatWords,
+                true,
+                1);
 
-        LARGE_IMAGE_KEY = StringUtils.formatAsIcon(StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.largeImageKey, iconData));
-        SMALL_IMAGE_KEY = StringUtils.formatAsIcon(StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.smallImageKey, iconData));
+        LARGE_IMAGE_KEY = StringUtils.formatAsIcon(
+                StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.largeImageKey, iconData));
+        SMALL_IMAGE_KEY = StringUtils.formatAsIcon(
+                StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.smallImageKey, iconData));
 
-        LARGE_IMAGE_TEXT = StringUtils.formatWord(StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.largeImageMessage, messageData), !CraftPresence.CONFIG.formatWords, true, 1);
-        SMALL_IMAGE_TEXT = StringUtils.formatWord(StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.smallImageMessage, messageData), !CraftPresence.CONFIG.formatWords, true, 1);
+        LARGE_IMAGE_TEXT = StringUtils.formatWord(
+                StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.largeImageMessage, messageData),
+                !CraftPresence.CONFIG.formatWords,
+                true,
+                1);
+        SMALL_IMAGE_TEXT = StringUtils.formatWord(
+                StringUtils.sequentialReplaceAnyCase(CraftPresence.CONFIG.smallImageMessage, messageData),
+                !CraftPresence.CONFIG.formatWords,
+                true,
+                1);
 
         final RichPresence newRPCData = new RichPresence.Builder()
                 .setState(GAME_STATE)

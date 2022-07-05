@@ -45,4 +45,3 @@ public interface TupleConsumer<T, U, V> {
      */
     void accept(T t, U u, V v);
 }
-

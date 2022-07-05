@@ -40,10 +40,17 @@ import net.minecraft.client.gui.GuiScreen;
 @SuppressWarnings("DuplicatedCode")
 public class GeneralSettingsGui extends ExtendedScreen {
     private ExtendedButtonControl proceedButton, partyPrivacyLevelButton;
-    private CheckBoxControl detectCurseManifestButton, detectMultiMCManifestButton,
-            detectMCUpdaterInstanceButton, detectTechnicPackButton, showTimeButton,
-            detectBiomeDataButton, detectDimensionDataButton, detectWorldDataButton,
-            enableJoinRequestButton, resetTimeOnInitButton, autoRegisterButton;
+    private CheckBoxControl detectCurseManifestButton,
+            detectMultiMCManifestButton,
+            detectMCUpdaterInstanceButton,
+            detectTechnicPackButton,
+            showTimeButton,
+            detectBiomeDataButton,
+            detectDimensionDataButton,
+            detectWorldDataButton,
+            enableJoinRequestButton,
+            resetTimeOnInitButton,
+            autoRegisterButton;
     private ExtendedTextControl clientId;
 
     private int currentPartyPrivacy = PartyPrivacy.Public.getPartyIndex();
@@ -55,12 +62,7 @@ public class GeneralSettingsGui extends ExtendedScreen {
     @Override
     public void initializeUi() {
         clientId = addControl(
-                new ExtendedTextControl(
-                        getFontRenderer(),
-                        (width / 2) + 3, CraftPresence.GUIS.getButtonY(1),
-                        180, 20
-                )
-        );
+                new ExtendedTextControl(getFontRenderer(), (width / 2) + 3, CraftPresence.GUIS.getButtonY(1), 180, 20));
         clientId.setText(CraftPresence.CONFIG.clientId);
         clientId.setMaxStringLength(18);
 
@@ -71,342 +73,321 @@ public class GeneralSettingsGui extends ExtendedScreen {
         final int checkboxCalc2 = (width / 2) + 18;
 
         // Adding Default Icon Button
-        addControl(
-                new ExtendedButtonControl(
-                        buttonCalc1, CraftPresence.GUIS.getButtonY(2),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.default_icon"),
-                        () -> CraftPresence.GUIS.openScreen(
-                                new SelectorGui(
-                                        currentScreen,
-                                        ModUtils.TRANSLATOR.translate("gui.config.title.selector.icon"), DiscordAssetUtils.ICON_LIST,
-                                        CraftPresence.CONFIG.defaultIcon, null,
-                                        true, false, RenderType.DiscordAsset,
-                                        (attributeName, currentValue) -> {
-                                            CraftPresence.CONFIG.hasChanged = true;
-                                            CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                            CraftPresence.CONFIG.defaultIcon = currentValue;
-                                        }, null, null
-                                )
-                        ),
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.default_icon")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        currentPartyPrivacy = CraftPresence.CONFIG.partyPrivacyLevel;
-        partyPrivacyLevelButton = addControl(
-                new ExtendedButtonControl(
-                        buttonCalc2, CraftPresence.GUIS.getButtonY(2),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.party_privacy") + " => " + PartyPrivacy.from(currentPartyPrivacy).getDisplayName(),
-                        () -> currentPartyPrivacy = (currentPartyPrivacy + 1) % 2,
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.party_privacy")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        detectCurseManifestButton = addControl(
-                new CheckBoxControl(
-                        checkboxCalc1, CraftPresence.GUIS.getButtonY(3),
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_curse_manifest"),
-                        CraftPresence.CONFIG.detectCurseManifest,
+        addControl(new ExtendedButtonControl(
+                buttonCalc1,
+                CraftPresence.GUIS.getButtonY(2),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.default_icon"),
+                () -> CraftPresence.GUIS.openScreen(new SelectorGui(
+                        currentScreen,
+                        ModUtils.TRANSLATOR.translate("gui.config.title.selector.icon"),
+                        DiscordAssetUtils.ICON_LIST,
+                        CraftPresence.CONFIG.defaultIcon,
                         null,
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_curse_manifest")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        detectMultiMCManifestButton = addControl(
-                new CheckBoxControl(
-                        checkboxCalc2, CraftPresence.GUIS.getButtonY(3),
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_multimc_manifest"),
-                        CraftPresence.CONFIG.detectMultiMCManifest,
-                        null,
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_multimc_manifest")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        detectMCUpdaterInstanceButton = addControl(
-                new CheckBoxControl(
-                        checkboxCalc1, CraftPresence.GUIS.getButtonY(4, -10),
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_mcupdater_instance"),
-                        CraftPresence.CONFIG.detectMCUpdaterInstance,
-                        null,
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_mcupdater_instance")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        detectTechnicPackButton = addControl(
-                new CheckBoxControl(
-                        checkboxCalc2, CraftPresence.GUIS.getButtonY(4, -10),
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_technic_pack"),
-                        CraftPresence.CONFIG.detectTechnicPack,
-                        null,
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_technic_pack")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        showTimeButton = addControl(
-                new CheckBoxControl(
-                        checkboxCalc1, CraftPresence.GUIS.getButtonY(5, -20),
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.show_time"),
-                        CraftPresence.CONFIG.showTime,
-                        null,
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.show_time")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        detectBiomeDataButton = addControl(
-                new CheckBoxControl(
-                        checkboxCalc2, CraftPresence.GUIS.getButtonY(5, -20),
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_biome_data"),
-                        CraftPresence.CONFIG.detectBiomeData,
-                        null,
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_biome_data")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        detectDimensionDataButton = addControl(
-                new CheckBoxControl(
-                        checkboxCalc1, CraftPresence.GUIS.getButtonY(6, -30),
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_dimension_data"),
-                        CraftPresence.CONFIG.detectDimensionData,
-                        null,
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_dimension_data")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        detectWorldDataButton = addControl(
-                new CheckBoxControl(
-                        checkboxCalc2, CraftPresence.GUIS.getButtonY(6, -30),
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_world_data"),
-                        CraftPresence.CONFIG.detectWorldData,
-                        null,
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_world_data")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        enableJoinRequestButton = addControl(
-                new CheckBoxControl(
-                        checkboxCalc1, CraftPresence.GUIS.getButtonY(7, -40),
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.enable_join_request"),
-                        CraftPresence.CONFIG.enableJoinRequest,
-                        null,
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.enable_join_request")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        resetTimeOnInitButton = addControl(
-                new CheckBoxControl(
-                        checkboxCalc2, CraftPresence.GUIS.getButtonY(7, -40),
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.reset_time_on_init"),
-                        CraftPresence.CONFIG.resetTimeOnInit,
-                        null,
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.reset_time_on_init")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        autoRegisterButton = addControl(
-                new CheckBoxControl(
-                        checkboxCalc1, CraftPresence.GUIS.getButtonY(8, -50),
-                        ModUtils.TRANSLATOR.translate("gui.config.name.general.auto_register"),
-                        CraftPresence.CONFIG.autoRegister,
-                        null,
-                        () -> CraftPresence.GUIS.drawMultiLineString(
-                                StringUtils.splitTextByNewLine(
-                                        ModUtils.TRANSLATOR.translate("gui.config.comment.general.auto_register")
-                                ),
-                                getMouseX(), getMouseY(),
-                                width, height,
-                                getWrapWidth(),
-                                getFontRenderer(),
-                                true
-                        )
-                )
-        );
-        proceedButton = addControl(
-                new ExtendedButtonControl(
-                        (width / 2) - 90, (height - 30),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
-                        () -> {
-                            if (!clientId.getText().equals(CraftPresence.CONFIG.clientId)) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.clientId = clientId.getText();
-                            }
-                            if (currentPartyPrivacy != CraftPresence.CONFIG.partyPrivacyLevel) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.partyPrivacyLevel = currentPartyPrivacy;
-                            }
-                            if (detectCurseManifestButton.isChecked() != CraftPresence.CONFIG.detectCurseManifest) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.detectCurseManifest = detectCurseManifestButton.isChecked();
-                            }
-                            if (detectMultiMCManifestButton.isChecked() != CraftPresence.CONFIG.detectMultiMCManifest) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.detectMultiMCManifest = detectMultiMCManifestButton.isChecked();
-                            }
-                            if (detectMCUpdaterInstanceButton.isChecked() != CraftPresence.CONFIG.detectMCUpdaterInstance) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.detectMCUpdaterInstance = detectMCUpdaterInstanceButton.isChecked();
-                            }
-                            if (detectTechnicPackButton.isChecked() != CraftPresence.CONFIG.detectTechnicPack) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.detectTechnicPack = detectTechnicPackButton.isChecked();
-                            }
-                            if (showTimeButton.isChecked() != CraftPresence.CONFIG.showTime) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.showTime = showTimeButton.isChecked();
-                            }
-                            if (detectBiomeDataButton.isChecked() != CraftPresence.CONFIG.detectBiomeData) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.detectBiomeData = detectBiomeDataButton.isChecked();
-                            }
-                            if (detectDimensionDataButton.isChecked() != CraftPresence.CONFIG.detectDimensionData) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.detectDimensionData = detectDimensionDataButton.isChecked();
-                            }
-                            if (detectWorldDataButton.isChecked() != CraftPresence.CONFIG.detectWorldData) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.detectWorldData = detectWorldDataButton.isChecked();
-                            }
-                            if (enableJoinRequestButton.isChecked() != CraftPresence.CONFIG.enableJoinRequest) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.enableJoinRequest = enableJoinRequestButton.isChecked();
-                            }
-                            if (resetTimeOnInitButton.isChecked() != CraftPresence.CONFIG.resetTimeOnInit) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.resetTimeOnInit = resetTimeOnInitButton.isChecked();
-                            }
-                            if (autoRegisterButton.isChecked() != CraftPresence.CONFIG.autoRegister) {
-                                CraftPresence.CONFIG.hasChanged = true;
-                                CraftPresence.CONFIG.hasClientPropertiesChanged = true;
-                                CraftPresence.CONFIG.autoRegister = autoRegisterButton.isChecked();
-                            }
-                            CraftPresence.GUIS.openScreen(parentScreen);
+                        true,
+                        false,
+                        RenderType.DiscordAsset,
+                        (attributeName, currentValue) -> {
+                            CraftPresence.CONFIG.hasChanged = true;
+                            CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                            CraftPresence.CONFIG.defaultIcon = currentValue;
                         },
-                        () -> {
-                            if (!proceedButton.isControlEnabled()) {
-                                CraftPresence.GUIS.drawMultiLineString(
-                                        StringUtils.splitTextByNewLine(
-                                                ModUtils.TRANSLATOR.translate("gui.config.message.hover.empty.default")
-                                        ),
-                                        getMouseX(), getMouseY(),
-                                        width, height,
-                                        getWrapWidth(),
-                                        getFontRenderer(),
-                                        true
-                                );
-                            }
-                        }
-                )
-        );
+                        null,
+                        null)),
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.default_icon")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        currentPartyPrivacy = CraftPresence.CONFIG.partyPrivacyLevel;
+        partyPrivacyLevelButton = addControl(new ExtendedButtonControl(
+                buttonCalc2,
+                CraftPresence.GUIS.getButtonY(2),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.party_privacy") + " => "
+                        + PartyPrivacy.from(currentPartyPrivacy).getDisplayName(),
+                () -> currentPartyPrivacy = (currentPartyPrivacy + 1) % 2,
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.party_privacy")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        detectCurseManifestButton = addControl(new CheckBoxControl(
+                checkboxCalc1,
+                CraftPresence.GUIS.getButtonY(3),
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_curse_manifest"),
+                CraftPresence.CONFIG.detectCurseManifest,
+                null,
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_curse_manifest")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        detectMultiMCManifestButton = addControl(new CheckBoxControl(
+                checkboxCalc2,
+                CraftPresence.GUIS.getButtonY(3),
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_multimc_manifest"),
+                CraftPresence.CONFIG.detectMultiMCManifest,
+                null,
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_multimc_manifest")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        detectMCUpdaterInstanceButton = addControl(new CheckBoxControl(
+                checkboxCalc1,
+                CraftPresence.GUIS.getButtonY(4, -10),
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_mcupdater_instance"),
+                CraftPresence.CONFIG.detectMCUpdaterInstance,
+                null,
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_mcupdater_instance")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        detectTechnicPackButton = addControl(new CheckBoxControl(
+                checkboxCalc2,
+                CraftPresence.GUIS.getButtonY(4, -10),
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_technic_pack"),
+                CraftPresence.CONFIG.detectTechnicPack,
+                null,
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_technic_pack")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        showTimeButton = addControl(new CheckBoxControl(
+                checkboxCalc1,
+                CraftPresence.GUIS.getButtonY(5, -20),
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.show_time"),
+                CraftPresence.CONFIG.showTime,
+                null,
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.show_time")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        detectBiomeDataButton = addControl(new CheckBoxControl(
+                checkboxCalc2,
+                CraftPresence.GUIS.getButtonY(5, -20),
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_biome_data"),
+                CraftPresence.CONFIG.detectBiomeData,
+                null,
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_biome_data")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        detectDimensionDataButton = addControl(new CheckBoxControl(
+                checkboxCalc1,
+                CraftPresence.GUIS.getButtonY(6, -30),
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_dimension_data"),
+                CraftPresence.CONFIG.detectDimensionData,
+                null,
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_dimension_data")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        detectWorldDataButton = addControl(new CheckBoxControl(
+                checkboxCalc2,
+                CraftPresence.GUIS.getButtonY(6, -30),
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.detect_world_data"),
+                CraftPresence.CONFIG.detectWorldData,
+                null,
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.detect_world_data")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        enableJoinRequestButton = addControl(new CheckBoxControl(
+                checkboxCalc1,
+                CraftPresence.GUIS.getButtonY(7, -40),
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.enable_join_request"),
+                CraftPresence.CONFIG.enableJoinRequest,
+                null,
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.enable_join_request")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        resetTimeOnInitButton = addControl(new CheckBoxControl(
+                checkboxCalc2,
+                CraftPresence.GUIS.getButtonY(7, -40),
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.reset_time_on_init"),
+                CraftPresence.CONFIG.resetTimeOnInit,
+                null,
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.reset_time_on_init")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        autoRegisterButton = addControl(new CheckBoxControl(
+                checkboxCalc1,
+                CraftPresence.GUIS.getButtonY(8, -50),
+                ModUtils.TRANSLATOR.translate("gui.config.name.general.auto_register"),
+                CraftPresence.CONFIG.autoRegister,
+                null,
+                () -> CraftPresence.GUIS.drawMultiLineString(
+                        StringUtils.splitTextByNewLine(
+                                ModUtils.TRANSLATOR.translate("gui.config.comment.general.auto_register")),
+                        getMouseX(),
+                        getMouseY(),
+                        width,
+                        height,
+                        getWrapWidth(),
+                        getFontRenderer(),
+                        true)));
+        proceedButton = addControl(new ExtendedButtonControl(
+                (width / 2) - 90,
+                (height - 30),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
+                () -> {
+                    if (!clientId.getText().equals(CraftPresence.CONFIG.clientId)) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.clientId = clientId.getText();
+                    }
+                    if (currentPartyPrivacy != CraftPresence.CONFIG.partyPrivacyLevel) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.partyPrivacyLevel = currentPartyPrivacy;
+                    }
+                    if (detectCurseManifestButton.isChecked() != CraftPresence.CONFIG.detectCurseManifest) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.detectCurseManifest = detectCurseManifestButton.isChecked();
+                    }
+                    if (detectMultiMCManifestButton.isChecked() != CraftPresence.CONFIG.detectMultiMCManifest) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.detectMultiMCManifest = detectMultiMCManifestButton.isChecked();
+                    }
+                    if (detectMCUpdaterInstanceButton.isChecked() != CraftPresence.CONFIG.detectMCUpdaterInstance) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.detectMCUpdaterInstance = detectMCUpdaterInstanceButton.isChecked();
+                    }
+                    if (detectTechnicPackButton.isChecked() != CraftPresence.CONFIG.detectTechnicPack) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.detectTechnicPack = detectTechnicPackButton.isChecked();
+                    }
+                    if (showTimeButton.isChecked() != CraftPresence.CONFIG.showTime) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.showTime = showTimeButton.isChecked();
+                    }
+                    if (detectBiomeDataButton.isChecked() != CraftPresence.CONFIG.detectBiomeData) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.detectBiomeData = detectBiomeDataButton.isChecked();
+                    }
+                    if (detectDimensionDataButton.isChecked() != CraftPresence.CONFIG.detectDimensionData) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.detectDimensionData = detectDimensionDataButton.isChecked();
+                    }
+                    if (detectWorldDataButton.isChecked() != CraftPresence.CONFIG.detectWorldData) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.detectWorldData = detectWorldDataButton.isChecked();
+                    }
+                    if (enableJoinRequestButton.isChecked() != CraftPresence.CONFIG.enableJoinRequest) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.enableJoinRequest = enableJoinRequestButton.isChecked();
+                    }
+                    if (resetTimeOnInitButton.isChecked() != CraftPresence.CONFIG.resetTimeOnInit) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.resetTimeOnInit = resetTimeOnInitButton.isChecked();
+                    }
+                    if (autoRegisterButton.isChecked() != CraftPresence.CONFIG.autoRegister) {
+                        CraftPresence.CONFIG.hasChanged = true;
+                        CraftPresence.CONFIG.hasClientPropertiesChanged = true;
+                        CraftPresence.CONFIG.autoRegister = autoRegisterButton.isChecked();
+                    }
+                    CraftPresence.GUIS.openScreen(parentScreen);
+                },
+                () -> {
+                    if (!proceedButton.isControlEnabled()) {
+                        CraftPresence.GUIS.drawMultiLineString(
+                                StringUtils.splitTextByNewLine(
+                                        ModUtils.TRANSLATOR.translate("gui.config.message.hover.empty.default")),
+                                getMouseX(),
+                                getMouseY(),
+                                width,
+                                height,
+                                getWrapWidth(),
+                                getFontRenderer(),
+                                true);
+                    }
+                }));
 
         super.initializeUi();
     }
@@ -421,16 +402,34 @@ public class GeneralSettingsGui extends ExtendedScreen {
         renderString(subTitle, (width / 2f) - (StringUtils.getStringWidth(subTitle) / 2f), 20, 0xFFFFFF);
         renderString(clientIdText, (width / 2f) - 130, CraftPresence.GUIS.getButtonY(1, 5), 0xFFFFFF);
 
-        partyPrivacyLevelButton.setControlMessage(ModUtils.TRANSLATOR.translate("gui.config.name.general.party_privacy") + " => " + PartyPrivacy.from(currentPartyPrivacy).getDisplayName());
-        proceedButton.setControlEnabled(!StringUtils.isNullOrEmpty(clientId.getText()) && clientId.getText().length() == 18 && StringUtils.getValidLong(clientId.getText()).getFirst());
+        partyPrivacyLevelButton.setControlMessage(ModUtils.TRANSLATOR.translate("gui.config.name.general.party_privacy")
+                + " => " + PartyPrivacy.from(currentPartyPrivacy).getDisplayName());
+        proceedButton.setControlEnabled(!StringUtils.isNullOrEmpty(clientId.getText())
+                && clientId.getText().length() == 18
+                && StringUtils.getValidLong(clientId.getText()).getFirst());
     }
 
     @Override
     public void postRender() {
         final String clientIdText = ModUtils.TRANSLATOR.translate("gui.config.name.general.client_id");
         // Hovering over Client ID Label
-        if (CraftPresence.GUIS.isMouseOver(getMouseX(), getMouseY(), (width / 2f) - 130, CraftPresence.GUIS.getButtonY(1, 5), StringUtils.getStringWidth(clientIdText), getFontHeight())) {
-            CraftPresence.GUIS.drawMultiLineString(StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate("gui.config.comment.general.client_id")), getMouseX(), getMouseY(), width, height, getWrapWidth(), getFontRenderer(), true);
+        if (CraftPresence.GUIS.isMouseOver(
+                getMouseX(),
+                getMouseY(),
+                (width / 2f) - 130,
+                CraftPresence.GUIS.getButtonY(1, 5),
+                StringUtils.getStringWidth(clientIdText),
+                getFontHeight())) {
+            CraftPresence.GUIS.drawMultiLineString(
+                    StringUtils.splitTextByNewLine(
+                            ModUtils.TRANSLATOR.translate("gui.config.comment.general.client_id")),
+                    getMouseX(),
+                    getMouseY(),
+                    width,
+                    height,
+                    getWrapWidth(),
+                    getFontRenderer(),
+                    true);
         }
     }
 }

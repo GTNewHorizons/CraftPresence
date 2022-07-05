@@ -32,7 +32,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
@@ -101,20 +100,24 @@ public class FileUtils {
      */
     public static void downloadFile(final String urlString, final File file) {
         try {
-            ModUtils.LOG.info(ModUtils.TRANSLATOR.translate("craftpresence.logger.info.download.init", file.getName(), file.getAbsolutePath(), urlString));
+            ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(
+                    "craftpresence.logger.info.download.init", file.getName(), file.getAbsolutePath(), urlString));
             final URL url = new URL(urlString);
             if (file.exists()) {
                 final boolean fileDeleted = file.delete();
                 if (!fileDeleted) {
-                    ModUtils.LOG.error(ModUtils.TRANSLATOR.translate("craftpresence.logger.error.delete.file", file.getName()));
+                    ModUtils.LOG.error(
+                            ModUtils.TRANSLATOR.translate("craftpresence.logger.error.delete.file", file.getName()));
                 }
             }
 
             final InputStream stream = UrlUtils.getURLStream(url);
             org.apache.commons.io.FileUtils.copyInputStreamToFile(stream, file);
-            ModUtils.LOG.info(ModUtils.TRANSLATOR.translate("craftpresence.logger.info.download.loaded", file.getName(), file.getAbsolutePath(), urlString));
+            ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(
+                    "craftpresence.logger.info.download.loaded", file.getName(), file.getAbsolutePath(), urlString));
         } catch (Exception ex) {
-            ModUtils.LOG.error(ModUtils.TRANSLATOR.translate("craftpresence.logger.error.download", file.getName(), urlString, file.getAbsolutePath()));
+            ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(
+                    "craftpresence.logger.error.download", file.getName(), urlString, file.getAbsolutePath()));
             ex.printStackTrace();
         }
     }
@@ -194,7 +197,8 @@ public class FileUtils {
      * @param sourcePackages      The root package directories to search within
      * @return The List of found class names from the search
      */
-    public static List<Class<?>> getClassNamesMatchingSuperType(final List<Class<?>> searchList, final boolean includeExtraClasses, final String... sourcePackages) {
+    public static List<Class<?>> getClassNamesMatchingSuperType(
+            final List<Class<?>> searchList, final boolean includeExtraClasses, final String... sourcePackages) {
         final List<Class<?>> matchingClasses = Lists.newArrayList();
         final List<ClassPath.ClassInfo> classList = Lists.newArrayList();
         final List<String> sourceData = Lists.newArrayList(sourcePackages);
@@ -266,7 +270,8 @@ public class FileUtils {
      * @param scannedClasses The class hierarchy of scanned data
      * @return A pair with the format of isSubclassOf:scannedClasses
      */
-    protected static Pair<Boolean, List<Class<?>>> isSubclassOf(final Class<?> originalClass, final Class<?> superClass, final List<Class<?>> scannedClasses) {
+    protected static Pair<Boolean, List<Class<?>>> isSubclassOf(
+            final Class<?> originalClass, final Class<?> superClass, final List<Class<?>> scannedClasses) {
         Class<?> clazz = originalClass;
         if (superClass.equals(Object.class)) {
             // Every class is an Object.
@@ -294,7 +299,8 @@ public class FileUtils {
      * @param sourcePackages The root package directories to search within
      * @return The List of found classes from the search
      */
-    public static List<Class<?>> getClassNamesMatchingSuperType(final Class<?> searchTarget, final boolean includeExtraClasses, final String... sourcePackages) {
+    public static List<Class<?>> getClassNamesMatchingSuperType(
+            final Class<?> searchTarget, final boolean includeExtraClasses, final String... sourcePackages) {
         return getClassNamesMatchingSuperType(Lists.newArrayList(searchTarget), includeExtraClasses, sourcePackages);
     }
 
