@@ -54,11 +54,11 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 @Mod(
         modid = ModUtils.MOD_ID,
-        name = "CraftPresence",
-        version = "GRADLETOKEN_VERSION",
+        name = ModUtils.NAME,
+        version = ModUtils.VERSION_ID,
         guiFactory = ModUtils.GUI_FACTORY,
         canBeDeactivated = true,
-        certificateFingerprint = ModUtils.FINGERPRINT,
+//        certificateFingerprint = ModUtils.FINGERPRINT,
         acceptedMinecraftVersions = "*")
 public class CraftPresence {
     /**

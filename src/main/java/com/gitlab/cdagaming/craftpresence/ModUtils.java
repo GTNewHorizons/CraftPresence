@@ -48,22 +48,22 @@ public class ModUtils {
     /**
      * The Application's Name
      */
-    public static final String NAME;
+    public static final String NAME = "CraftPresence";
 
     /**
      * The Application's Version ID
      */
-    public static final String VERSION_ID;
+    public static final String VERSION_ID = "vGRADLETOKEN_VERSION";
 
     /**
      * The Application's Version Release Type
      */
-    public static final String VERSION_TYPE;
+    public static final String VERSION_TYPE = "Release";
 
     /**
      * The Application's Version Release Type Display Name
      */
-    public static final String VERSION_LABEL;
+    public static final String VERSION_LABEL = "Release";
 
     /**
      * The Application's Identifier
@@ -139,7 +139,7 @@ public class ModUtils {
     /**
      * The Application's Instance of {@link ModUpdaterUtils} for Retrieving if the Application has an update
      */
-    public static final ModUpdaterUtils UPDATER;
+    public static final ModUpdaterUtils UPDATER = new ModUpdaterUtils(MOD_ID, UPDATE_JSON, VERSION_ID, MCVersion);
     /**
      * If this Application is in the Hard Floor of Legacy Mode
      * <p>This variable becomes true only on versions at or before 1.5.2 (Or when critical APIs are missing)
@@ -166,14 +166,6 @@ public class ModUtils {
                     && !Launch.blackboard.isEmpty()
                     && Launch.blackboard.containsKey("fml.deobfuscatedEnvironment"))
             && (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-
-    static {
-        NAME = "@MOD_NAME@";
-        VERSION_ID = "v@VERSION_ID@";
-        VERSION_TYPE = "@VERSION_TYPE@";
-        VERSION_LABEL = "@VERSION_LABEL@";
-        UPDATER = new ModUpdaterUtils(MOD_ID, UPDATE_JSON, VERSION_ID, MCVersion);
-    }
 
     /**
      * Retrieves and Initializes Character Data<p>
