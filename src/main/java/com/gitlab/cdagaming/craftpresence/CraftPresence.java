@@ -58,7 +58,7 @@ import net.minecraft.entity.player.EntityPlayer;
         version = ModUtils.VERSION_ID,
         guiFactory = ModUtils.GUI_FACTORY,
         canBeDeactivated = true,
-        //        certificateFingerprint = ModUtils.FINGERPRINT,
+        // certificateFingerprint = ModUtils.FINGERPRINT,
         acceptedMinecraftVersions = "*")
 public class CraftPresence {
     /**
