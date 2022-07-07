@@ -1,3 +1,4 @@
+// spotless:off
 /*
  * MIT License
  *
@@ -306,3 +307,4 @@ public class CraftPresence {
         }
     }
 }
+//spotless:on
