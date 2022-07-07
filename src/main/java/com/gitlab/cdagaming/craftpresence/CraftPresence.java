@@ -53,13 +53,13 @@ import net.minecraft.entity.player.EntityPlayer;
  * @author CDAGaming
  */
 @Mod(
-    modid = ModUtils.MOD_ID,
-    name = ModUtils.NAME,
-    version = ModUtils.VERSION_ID,
-    guiFactory = ModUtils.GUI_FACTORY,
-    canBeDeactivated = true,
-    // certificateFingerprint = ModUtils.FINGERPRINT,
-    acceptedMinecraftVersions = "*")
+        modid = ModUtils.MOD_ID,
+        name = ModUtils.NAME,
+        version = ModUtils.VERSION_ID,
+        guiFactory = ModUtils.GUI_FACTORY,
+        canBeDeactivated = true,
+        // certificateFingerprint = ModUtils.FINGERPRINT,
+        acceptedMinecraftVersions = "*")
 public class CraftPresence {
     /**
      * Whether Pack Data was able to be Found and Parsed
@@ -167,7 +167,7 @@ public class CraftPresence {
         // If running in Developer Mode, Warn of Possible Issues and Log OS Info
         ModUtils.LOG.debugWarn(ModUtils.TRANSLATOR.translate(true, "craftpresence.logger.warning.debug_mode"));
         ModUtils.LOG.debugInfo(ModUtils.TRANSLATOR.translate(
-            true, "craftpresence.logger.info.os", SYSTEM.OS_NAME, SYSTEM.OS_ARCH, SYSTEM.IS_64_BIT));
+                true, "craftpresence.logger.info.os", SYSTEM.OS_NAME, SYSTEM.OS_ARCH, SYSTEM.IS_64_BIT));
 
         // Check for Updates before continuing
         ModUtils.UPDATER.checkForUpdates(() -> {
@@ -175,21 +175,21 @@ public class CraftPresence {
                 // If the Updater found our version to be an invalid one
                 // Then replace the Version ID, Name, and Type
                 StringUtils.updateField(
-                    ModUtils.class,
-                    null,
-                    new Tuple<>("VERSION_ID", "v" + ModUtils.UPDATER.targetVersion, ~Modifier.FINAL));
+                        ModUtils.class,
+                        null,
+                        new Tuple<>("VERSION_ID", "v" + ModUtils.UPDATER.targetVersion, ~Modifier.FINAL));
                 StringUtils.updateField(
-                    ModUtils.class,
-                    null,
-                    new Tuple<>("VERSION_TYPE", ModUtils.UPDATER.currentState.getDisplayName(), ~Modifier.FINAL));
+                        ModUtils.class,
+                        null,
+                        new Tuple<>("VERSION_TYPE", ModUtils.UPDATER.currentState.getDisplayName(), ~Modifier.FINAL));
                 StringUtils.updateField(
-                    ModUtils.class,
-                    null,
-                    new Tuple<>("VERSION_LABEL", ModUtils.UPDATER.currentState.getDisplayName(), ~Modifier.FINAL));
+                        ModUtils.class,
+                        null,
+                        new Tuple<>("VERSION_LABEL", ModUtils.UPDATER.currentState.getDisplayName(), ~Modifier.FINAL));
                 StringUtils.updateField(
-                    ModUtils.class,
-                    null,
-                    new Tuple<>("NAME", CraftPresence.class.getSimpleName(), ~Modifier.FINAL));
+                        ModUtils.class,
+                        null,
+                        new Tuple<>("NAME", CraftPresence.class.getSimpleName(), ~Modifier.FINAL));
 
                 ModUtils.UPDATER.currentVersion = ModUtils.UPDATER.targetVersion;
                 ModUtils.UPDATER.isInvalidVersion = false;
@@ -238,13 +238,13 @@ public class CraftPresence {
     private void scheduleTick() {
         if (!closing) {
             timerObj.schedule(
-                new TimerTask() {
-                    @Override
-                    public void run() {
-                        clientTick();
-                    }
-                },
-                50);
+                    new TimerTask() {
+                        @Override
+                        public void run() {
+                            clientTick();
+                        }
+                    },
+                    50);
         }
     }
 
@@ -270,11 +270,11 @@ public class CraftPresence {
                         // Ensure Loading Presence has already passed, before any other type of presence displays
                         CommandUtils.setLoadingPresence();
                     } else if (!CommandUtils.isInMainMenu
-                        && (!DIMENSIONS.isInUse
-                        && !BIOMES.isInUse
-                        && !TILE_ENTITIES.isInUse
-                        && !ENTITIES.isInUse
-                        && !SERVER.isInUse)) {
+                            && (!DIMENSIONS.isInUse
+                                    && !BIOMES.isInUse
+                                    && !TILE_ENTITIES.isInUse
+                                    && !ENTITIES.isInUse
+                                    && !SERVER.isInUse)) {
                         CommandUtils.setMainMenuPresence();
                     } else if (player != null && (CommandUtils.isLoadingGame || CommandUtils.isInMainMenu)) {
                         CommandUtils.isInMainMenu = false;
@@ -285,11 +285,11 @@ public class CraftPresence {
                     if (SYSTEM.HAS_LOADED) {
                         if (CLIENT.awaitingReply && SYSTEM.TIMER == 0) {
                             StringUtils.sendMessageToPlayer(
-                                player,
-                                ModUtils.TRANSLATOR.translate(
-                                    "craftpresence.command.request.ignored", CLIENT.REQUESTER_USER.getName()));
+                                    player,
+                                    ModUtils.TRANSLATOR.translate(
+                                            "craftpresence.command.request.ignored", CLIENT.REQUESTER_USER.getName()));
                             CLIENT.ipcInstance.respondToJoinRequest(
-                                CLIENT.REQUESTER_USER, IPCClient.ApprovalMode.DENY, null);
+                                    CLIENT.REQUESTER_USER, IPCClient.ApprovalMode.DENY, null);
                             CLIENT.awaitingReply = false;
                             CLIENT.STATUS = DiscordStatus.Ready;
                         } else if (!CLIENT.awaitingReply && CLIENT.REQUESTER_USER != null) {
