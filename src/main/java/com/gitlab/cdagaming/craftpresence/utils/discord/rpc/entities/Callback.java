@@ -89,8 +89,7 @@ public class Callback {
      * @param packet The packet to execute after success
      */
     public void succeed(Packet packet) {
-        if (success != null)
-            success.accept(packet);
+        if (success != null) success.accept(packet);
     }
 
     /**
@@ -100,7 +99,6 @@ public class Callback {
      * @param message The message to launch the failure consumer with.
      */
     public void fail(String message) {
-        if (failure != null)
-            failure.accept(message);
+        if (failure != null) failure.accept(message);
     }
 }

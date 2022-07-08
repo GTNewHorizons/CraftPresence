@@ -33,7 +33,6 @@ import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.exceptions.NoDiscord
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -139,7 +138,8 @@ public final class IPCClient implements Closeable {
      * @param applicationId   The application id to register with, usually the client id in string form
      * @param optionalSteamId The steam id to register with, registers as a steam game if present
      */
-    public IPCClient(long clientId, boolean debugMode, boolean autoRegister, String applicationId, String optionalSteamId) {
+    public IPCClient(
+            long clientId, boolean debugMode, boolean autoRegister, String applicationId, String optionalSteamId) {
         this.clientId = clientId;
         this.debugMode = debugMode;
         this.applicationId = applicationId;
@@ -159,7 +159,8 @@ public final class IPCClient implements Closeable {
      * @param autoRegister   Whether to register as an application with discord
      * @param applicationId  The application id to register with, usually the client id in string form
      */
-    public IPCClient(long clientId, boolean debugMode, boolean verboseLogging, boolean autoRegister, String applicationId) {
+    public IPCClient(
+            long clientId, boolean debugMode, boolean verboseLogging, boolean autoRegister, String applicationId) {
         this.clientId = clientId;
         this.debugMode = debugMode;
         this.verboseLogging = verboseLogging;
@@ -180,7 +181,13 @@ public final class IPCClient implements Closeable {
      * @param applicationId   The application id to register with, usually the client id in string form
      * @param optionalSteamId The steam id to register with, registers as a steam game if present
      */
-    public IPCClient(long clientId, boolean debugMode, boolean verboseLogging, boolean autoRegister, String applicationId, String optionalSteamId) {
+    public IPCClient(
+            long clientId,
+            boolean debugMode,
+            boolean verboseLogging,
+            boolean autoRegister,
+            String applicationId,
+            String optionalSteamId) {
         this.clientId = clientId;
         this.debugMode = debugMode;
         this.verboseLogging = verboseLogging;
@@ -213,8 +220,7 @@ public final class IPCClient implements Closeable {
      */
     public void setListener(IPCListener listener) {
         this.listener = listener;
-        if (pipe != null)
-            pipe.setListener(listener);
+        if (pipe != null) pipe.setListener(listener);
     }
 
     /**
@@ -323,8 +329,7 @@ public final class IPCClient implements Closeable {
             try {
                 if (optionalSteamId != null && !optionalSteamId.isEmpty())
                     this.registerSteamGame(getApplicationId(), optionalSteamId);
-                else
-                    this.registerApp(getApplicationId(), null);
+                else this.registerApp(getApplicationId(), null);
             } catch (Exception | Error ex) {
                 if (debugMode) {
                     ex.printStackTrace();
@@ -382,12 +387,12 @@ public final class IPCClient implements Closeable {
         checkConnected(true);
 
         if (debugMode) {
-            ModUtils.LOG.debugInfo("Sending RichPresence to discord: " + (presence == null ? null : presence.toDecodedJson(encoding)));
+            ModUtils.LOG.debugInfo(
+                    "Sending RichPresence to discord: " + (presence == null ? null : presence.toDecodedJson(encoding)));
         }
 
         // Setup and Send JsonObject Data Representing an RPC Update
-        JsonObject finalObject = new JsonObject(),
-                args = new JsonObject();
+        JsonObject finalObject = new JsonObject(), args = new JsonObject();
 
         finalObject.addProperty("cmd", "SET_ACTIVITY");
 
@@ -405,8 +410,7 @@ public final class IPCClient implements Closeable {
      * @param optionalSteamId Application Steam ID
      */
     public void registerSteamGame(String applicationId, String optionalSteamId) {
-        if (this.pipe != null)
-            this.pipe.registerSteamGame(applicationId, optionalSteamId);
+        if (this.pipe != null) this.pipe.registerSteamGame(applicationId, optionalSteamId);
     }
 
     /**
@@ -416,8 +420,7 @@ public final class IPCClient implements Closeable {
      * @param command       Command to run the application
      */
     public void registerApp(String applicationId, String command) {
-        if (this.pipe != null)
-            this.pipe.registerApp(applicationId, command);
+        if (this.pipe != null) this.pipe.registerApp(applicationId, command);
     }
 
     /**
@@ -451,8 +454,7 @@ public final class IPCClient implements Closeable {
      */
     public void subscribe(Event sub, Callback callback) {
         checkConnected(true);
-        if (!sub.isSubscribable())
-            throw new IllegalStateException("Cannot subscribe to " + sub + " event!");
+        if (!sub.isSubscribable()) throw new IllegalStateException("Cannot subscribe to " + sub + " event!");
 
         if (debugMode) {
             ModUtils.LOG.debugInfo(String.format("Subscribing to Event: %s", sub.name()));
@@ -470,11 +472,14 @@ public final class IPCClient implements Closeable {
 
         if (user != null) {
             if (debugMode) {
-                ModUtils.LOG.debugInfo(String.format("Sending response to %s as %s", user.getName(), approvalMode.name()));
+                ModUtils.LOG.debugInfo(
+                        String.format("Sending response to %s as %s", user.getName(), approvalMode.name()));
             }
 
             JsonObject pipeData = new JsonObject();
-            pipeData.addProperty("cmd", approvalMode == ApprovalMode.ACCEPT ? "SEND_ACTIVITY_JOIN_INVITE" : "CLOSE_ACTIVITY_REQUEST");
+            pipeData.addProperty(
+                    "cmd",
+                    approvalMode == ApprovalMode.ACCEPT ? "SEND_ACTIVITY_JOIN_INVITE" : "CLOSE_ACTIVITY_REQUEST");
 
             JsonObject args = new JsonObject();
             args.addProperty("user_id", user.getId());
@@ -484,7 +489,6 @@ public final class IPCClient implements Closeable {
             pipe.send(OpCode.FRAME, pipeData, callback);
         }
     }
-
 
     /**
      * Gets the IPCClient's current {@link PipeStatus}.
@@ -553,7 +557,6 @@ public final class IPCClient implements Closeable {
         return pipe.getCurrentUser();
     }
 
-
     // Private methods
 
     /**
@@ -577,97 +580,136 @@ public final class IPCClient implements Closeable {
     private void startReading() {
         final IPCClient localInstance = this;
 
-        readThread = new Thread(() -> {
-            try {
-                Packet p;
-                while ((p = pipe.read()).getOp() != OpCode.CLOSE) {
-                    JsonObject json = p.getJson();
+        readThread = new Thread(
+                () -> {
+                    try {
+                        Packet p;
+                        while ((p = pipe.read()).getOp() != OpCode.CLOSE) {
+                            JsonObject json = p.getJson();
 
-                    if (json != null) {
-                        Event event = Event.of(json.has("evt") && !json.get("evt").isJsonNull() ? json.getAsJsonPrimitive("evt").getAsString() : null);
-                        String nonce = json.has("nonce") && !json.get("nonce").isJsonNull() ? json.getAsJsonPrimitive("nonce").getAsString() : null;
+                            if (json != null) {
+                                Event event = Event.of(
+                                        json.has("evt") && !json.get("evt").isJsonNull()
+                                                ? json.getAsJsonPrimitive("evt").getAsString()
+                                                : null);
+                                String nonce = json.has("nonce")
+                                                && !json.get("nonce").isJsonNull()
+                                        ? json.getAsJsonPrimitive("nonce").getAsString()
+                                        : null;
 
-                        switch (event) {
-                            case NULL:
-                                if (nonce != null && callbacks.containsKey(nonce))
-                                    callbacks.remove(nonce).succeed(p);
-                                break;
+                                switch (event) {
+                                    case NULL:
+                                        if (nonce != null && callbacks.containsKey(nonce))
+                                            callbacks.remove(nonce).succeed(p);
+                                        break;
 
-                            case ERROR:
-                                if (nonce != null && callbacks.containsKey(nonce))
-                                    callbacks.remove(nonce).fail(json.has("data") && json.getAsJsonObject("data").has("message") ? json.getAsJsonObject("data").getAsJsonObject("message").getAsString() : null);
-                                break;
+                                    case ERROR:
+                                        if (nonce != null && callbacks.containsKey(nonce))
+                                            callbacks
+                                                    .remove(nonce)
+                                                    .fail(
+                                                            json.has("data")
+                                                                            && json.getAsJsonObject("data")
+                                                                                    .has("message")
+                                                                    ? json.getAsJsonObject("data")
+                                                                            .getAsJsonObject("message")
+                                                                            .getAsString()
+                                                                    : null);
+                                        break;
 
-                            case ACTIVITY_JOIN:
-                                if (debugMode) {
-                                    ModUtils.LOG.debugInfo("Reading thread received a 'join' event.");
-                                }
-                                break;
-
-                            case ACTIVITY_SPECTATE:
-                                if (debugMode) {
-                                    ModUtils.LOG.debugInfo("Reading thread received a 'spectate' event.");
-                                }
-                                break;
-
-                            case ACTIVITY_JOIN_REQUEST:
-                                if (debugMode) {
-                                    ModUtils.LOG.debugInfo("Reading thread received a 'join request' event.");
-                                }
-                                break;
-
-                            case UNKNOWN:
-                                if (debugMode) {
-                                    ModUtils.LOG.debugInfo("Reading thread encountered an event with an unknown type: " +
-                                            json.getAsJsonPrimitive("evt").getAsString());
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-
-                        if (listener != null && json.has("cmd") && json.getAsJsonPrimitive("cmd").getAsString().equals("DISPATCH")) {
-                            try {
-                                JsonObject data = json.getAsJsonObject("data");
-                                switch (Event.of(json.getAsJsonPrimitive("evt").getAsString())) {
                                     case ACTIVITY_JOIN:
-                                        listener.onActivityJoin(localInstance, data.getAsJsonPrimitive("secret").getAsString());
+                                        if (debugMode) {
+                                            ModUtils.LOG.debugInfo("Reading thread received a 'join' event.");
+                                        }
                                         break;
 
                                     case ACTIVITY_SPECTATE:
-                                        listener.onActivitySpectate(localInstance, data.getAsJsonPrimitive("secret").getAsString());
+                                        if (debugMode) {
+                                            ModUtils.LOG.debugInfo("Reading thread received a 'spectate' event.");
+                                        }
                                         break;
 
                                     case ACTIVITY_JOIN_REQUEST:
-                                        final JsonObject u = data.getAsJsonObject("user");
-                                        final User user = new User(
-                                                u.getAsJsonPrimitive("username").getAsString(),
-                                                u.getAsJsonPrimitive("discriminator").getAsString(),
-                                                Long.parseLong(u.getAsJsonPrimitive("id").getAsString()),
-                                                u.has("avatar") ? u.getAsJsonPrimitive("avatar").getAsString() : null
-                                        );
-                                        listener.onActivityJoinRequest(localInstance, data.has("secret") ? data.getAsJsonObject("secret").getAsString() : null, user);
+                                        if (debugMode) {
+                                            ModUtils.LOG.debugInfo("Reading thread received a 'join request' event.");
+                                        }
+                                        break;
+
+                                    case UNKNOWN:
+                                        if (debugMode) {
+                                            ModUtils.LOG.debugInfo(
+                                                    "Reading thread encountered an event with an unknown type: "
+                                                            + json.getAsJsonPrimitive("evt")
+                                                                    .getAsString());
+                                        }
                                         break;
                                     default:
                                         break;
                                 }
-                            } catch (Exception e) {
-                                ModUtils.LOG.error(String.format("Exception when handling event: %s", e));
+
+                                if (listener != null
+                                        && json.has("cmd")
+                                        && json.getAsJsonPrimitive("cmd")
+                                                .getAsString()
+                                                .equals("DISPATCH")) {
+                                    try {
+                                        JsonObject data = json.getAsJsonObject("data");
+                                        switch (Event.of(
+                                                json.getAsJsonPrimitive("evt").getAsString())) {
+                                            case ACTIVITY_JOIN:
+                                                listener.onActivityJoin(
+                                                        localInstance,
+                                                        data.getAsJsonPrimitive("secret")
+                                                                .getAsString());
+                                                break;
+
+                                            case ACTIVITY_SPECTATE:
+                                                listener.onActivitySpectate(
+                                                        localInstance,
+                                                        data.getAsJsonPrimitive("secret")
+                                                                .getAsString());
+                                                break;
+
+                                            case ACTIVITY_JOIN_REQUEST:
+                                                final JsonObject u = data.getAsJsonObject("user");
+                                                final User user = new User(
+                                                        u.getAsJsonPrimitive("username")
+                                                                .getAsString(),
+                                                        u.getAsJsonPrimitive("discriminator")
+                                                                .getAsString(),
+                                                        Long.parseLong(u.getAsJsonPrimitive("id")
+                                                                .getAsString()),
+                                                        u.has("avatar")
+                                                                ? u.getAsJsonPrimitive("avatar")
+                                                                        .getAsString()
+                                                                : null);
+                                                listener.onActivityJoinRequest(
+                                                        localInstance,
+                                                        data.has("secret")
+                                                                ? data.getAsJsonObject("secret")
+                                                                        .getAsString()
+                                                                : null,
+                                                        user);
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    } catch (Exception e) {
+                                        ModUtils.LOG.error(String.format("Exception when handling event: %s", e));
+                                    }
+                                }
                             }
                         }
-                    }
-                }
-                pipe.setStatus(PipeStatus.DISCONNECTED);
-                if (listener != null)
-                    listener.onClose(localInstance, p.getJson());
-            } catch (IOException | JsonParseException ex) {
-                ModUtils.LOG.error(String.format("Reading thread encountered an Exception: %s", ex));
+                        pipe.setStatus(PipeStatus.DISCONNECTED);
+                        if (listener != null) listener.onClose(localInstance, p.getJson());
+                    } catch (IOException | JsonParseException ex) {
+                        ModUtils.LOG.error(String.format("Reading thread encountered an Exception: %s", ex));
 
-                pipe.setStatus(PipeStatus.DISCONNECTED);
-                if (listener != null)
-                    listener.onDisconnect(localInstance, ex);
-            }
-        }, "IPCClient-Reader");
+                        pipe.setStatus(PipeStatus.DISCONNECTED);
+                        if (listener != null) listener.onDisconnect(localInstance, ex);
+                    }
+                },
+                "IPCClient-Reader");
 
         if (debugMode) {
             ModUtils.LOG.debugInfo("Starting IPCClient reading thread!");
@@ -681,7 +723,8 @@ public final class IPCClient implements Closeable {
      * Constants representing a Response to an Ask to Join or Spectate Request
      */
     public enum ApprovalMode {
-        ACCEPT, DENY
+        ACCEPT,
+        DENY
     }
 
     /**
@@ -714,11 +757,9 @@ public final class IPCClient implements Closeable {
         }
 
         static Event of(String str) {
-            if (str == null)
-                return NULL;
+            if (str == null) return NULL;
             for (Event s : Event.values()) {
-                if (s != UNKNOWN && s.name().equalsIgnoreCase(str))
-                    return s;
+                if (s != UNKNOWN && s.name().equalsIgnoreCase(str)) return s;
             }
             return UNKNOWN;
         }

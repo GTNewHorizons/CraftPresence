@@ -26,7 +26,6 @@ package com.gitlab.cdagaming.craftpresence.integrations.mcupdater;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import java.util.List;
 import java.util.Map;
 
@@ -211,11 +210,10 @@ public class MCUpdaterInstance {
      */
     @Override
     public String toString() {
-        return "MCUpdaterInstance{" +
-                "mcversion:" + this.mcversion + ";" +
-                "revision:" + this.revision + ";" +
-                "hash:" + this.hash + ";" +
-                "}";
+        return "MCUpdaterInstance{" + "mcversion:"
+                + this.mcversion + ";" + "revision:"
+                + this.revision + ";" + "hash:"
+                + this.hash + ";" + "}";
     }
 
     /**

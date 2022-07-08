@@ -35,9 +35,8 @@ import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ScrollableListContr
 import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ScrollableListControl.RenderType;
 import com.gitlab.cdagaming.craftpresence.utils.gui.integrations.ExtendedScreen;
 import com.google.common.collect.Lists;
-import net.minecraft.client.gui.GuiScreen;
-
 import java.util.List;
+import net.minecraft.client.gui.GuiScreen;
 
 public class SelectorGui extends ExtendedScreen {
     private final String mainTitle, attributeName, originalValue;
@@ -53,7 +52,18 @@ public class SelectorGui extends ExtendedScreen {
     private String searchTerm;
     private List<String> itemList;
 
-    public SelectorGui(GuiScreen parentScreen, String mainTitle, List<String> list, String currentValue, String attributeName, boolean allowContinuing, boolean allowDynamicEditing, RenderType renderType, PairConsumer<String, String> onUpdatedCallback, PairConsumer<String, GuiScreen> onAdjustDynamicEntry, DataConsumer<GuiScreen> onAddDynamicEntry) {
+    public SelectorGui(
+            GuiScreen parentScreen,
+            String mainTitle,
+            List<String> list,
+            String currentValue,
+            String attributeName,
+            boolean allowContinuing,
+            boolean allowDynamicEditing,
+            RenderType renderType,
+            PairConsumer<String, String> onUpdatedCallback,
+            PairConsumer<String, GuiScreen> onAdjustDynamicEntry,
+            DataConsumer<GuiScreen> onAddDynamicEntry) {
         super(parentScreen);
         itemList = originalList = list;
         originalValue = currentValue;
@@ -67,81 +77,122 @@ public class SelectorGui extends ExtendedScreen {
         this.onAddDynamicEntry = onAddDynamicEntry;
     }
 
-    public SelectorGui(GuiScreen parentScreen, String mainTitle, List<String> list, String currentValue, String attributeName, boolean allowContinuing, boolean allowDynamicEditing, RenderType renderType, PairConsumer<String, GuiScreen> onAdjustDynamicEntry, DataConsumer<GuiScreen> onAddDynamicEntry) {
-        this(parentScreen, mainTitle, list, currentValue, attributeName, allowContinuing, allowDynamicEditing, renderType, null, onAdjustDynamicEntry, onAddDynamicEntry);
+    public SelectorGui(
+            GuiScreen parentScreen,
+            String mainTitle,
+            List<String> list,
+            String currentValue,
+            String attributeName,
+            boolean allowContinuing,
+            boolean allowDynamicEditing,
+            RenderType renderType,
+            PairConsumer<String, GuiScreen> onAdjustDynamicEntry,
+            DataConsumer<GuiScreen> onAddDynamicEntry) {
+        this(
+                parentScreen,
+                mainTitle,
+                list,
+                currentValue,
+                attributeName,
+                allowContinuing,
+                allowDynamicEditing,
+                renderType,
+                null,
+                onAdjustDynamicEntry,
+                onAddDynamicEntry);
     }
 
-    public SelectorGui(GuiScreen parentScreen, String mainTitle, List<String> list, String currentValue, String attributeName, boolean allowContinuing, boolean allowDynamicEditing, PairConsumer<String, GuiScreen> onAdjustDynamicEntry, DataConsumer<GuiScreen> onAddDynamicEntry) {
-        this(parentScreen, mainTitle, list, currentValue, attributeName, allowContinuing, allowDynamicEditing, RenderType.None, onAdjustDynamicEntry, onAddDynamicEntry);
+    public SelectorGui(
+            GuiScreen parentScreen,
+            String mainTitle,
+            List<String> list,
+            String currentValue,
+            String attributeName,
+            boolean allowContinuing,
+            boolean allowDynamicEditing,
+            PairConsumer<String, GuiScreen> onAdjustDynamicEntry,
+            DataConsumer<GuiScreen> onAddDynamicEntry) {
+        this(
+                parentScreen,
+                mainTitle,
+                list,
+                currentValue,
+                attributeName,
+                allowContinuing,
+                allowDynamicEditing,
+                RenderType.None,
+                onAdjustDynamicEntry,
+                onAddDynamicEntry);
     }
 
     @Override
     public void initializeUi() {
         if (itemList != null && !itemList.isEmpty()) {
-            proceedButton = addControl(
-                    new ExtendedButtonControl(
-                            (width - 100), (height - 30),
-                            90, 20,
-                            ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
-                            () -> {
-                                if (allowContinuing && scrollList.currentValue != null) {
-                                    if (originalValue != null) {
-                                        if (!scrollList.currentValue.equals(originalValue)) {
-                                            if (onUpdatedCallback != null) {
-                                                onUpdatedCallback.accept(attributeName, scrollList.currentValue);
-                                                CraftPresence.GUIS.openScreen(parentScreen);
-                                            } else {
-                                                CraftPresence.GUIS.openScreen(new MessageGui(parentScreen, StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate("gui.config.message.null"))));
-                                            }
-                                        } else {
-                                            CraftPresence.GUIS.openScreen(parentScreen);
-                                        }
+            proceedButton = addControl(new ExtendedButtonControl(
+                    (width - 100),
+                    (height - 30),
+                    90,
+                    20,
+                    ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
+                    () -> {
+                        if (allowContinuing && scrollList.currentValue != null) {
+                            if (originalValue != null) {
+                                if (!scrollList.currentValue.equals(originalValue)) {
+                                    if (onUpdatedCallback != null) {
+                                        onUpdatedCallback.accept(attributeName, scrollList.currentValue);
+                                        CraftPresence.GUIS.openScreen(parentScreen);
                                     } else {
-                                        if (allowDynamicEditing && onAdjustDynamicEntry != null) {
-                                            onAdjustDynamicEntry.accept(scrollList.currentValue, parentScreen);
-                                        } else {
-                                            CraftPresence.GUIS.openScreen(new MessageGui(parentScreen, StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate("gui.config.message.null"))));
-                                        }
+                                        CraftPresence.GUIS.openScreen(new MessageGui(
+                                                parentScreen,
+                                                StringUtils.splitTextByNewLine(
+                                                        ModUtils.TRANSLATOR.translate("gui.config.message.null"))));
                                     }
                                 } else {
                                     CraftPresence.GUIS.openScreen(parentScreen);
                                 }
+                            } else {
+                                if (allowDynamicEditing && onAdjustDynamicEntry != null) {
+                                    onAdjustDynamicEntry.accept(scrollList.currentValue, parentScreen);
+                                } else {
+                                    CraftPresence.GUIS.openScreen(new MessageGui(
+                                            parentScreen,
+                                            StringUtils.splitTextByNewLine(
+                                                    ModUtils.TRANSLATOR.translate("gui.config.message.null"))));
+                                }
                             }
-                    )
-            );
+                        } else {
+                            CraftPresence.GUIS.openScreen(parentScreen);
+                        }
+                    }));
 
-            scrollList = addList(
-                    new ScrollableListControl(
-                            mc,
-                            width, height,
-                            32, height - 45, renderType != RenderType.None && !CraftPresence.CONFIG.stripExtraGuiElements ? 45 : 18,
-                            itemList, originalValue,
-                            renderType
-                    )
-            );
-            searchBox = addControl(
-                    new ExtendedTextControl(
-                            getFontRenderer(),
-                            60, (height - 30),
-                            120, 20
-                    )
-            );
+            scrollList = addList(new ScrollableListControl(
+                    mc,
+                    width,
+                    height,
+                    32,
+                    height - 45,
+                    renderType != RenderType.None && !CraftPresence.CONFIG.stripExtraGuiElements ? 45 : 18,
+                    itemList,
+                    originalValue,
+                    renderType));
+            searchBox = addControl(new ExtendedTextControl(getFontRenderer(), 60, (height - 30), 120, 20));
 
             if (allowDynamicEditing && onAddDynamicEntry != null) {
                 // Adding Add New Button
-                addControl(
-                        new ExtendedButtonControl(
-                                (width - 195), (height - 30),
-                                90, 20,
-                                ModUtils.TRANSLATOR.translate("gui.config.message.button.add.new"),
-                                () -> onAddDynamicEntry.accept(parentScreen)
-                        )
-                );
+                addControl(new ExtendedButtonControl(
+                        (width - 195),
+                        (height - 30),
+                        90,
+                        20,
+                        ModUtils.TRANSLATOR.translate("gui.config.message.button.add.new"),
+                        () -> onAddDynamicEntry.accept(parentScreen)));
             }
 
             super.initializeUi();
         } else {
-            CraftPresence.GUIS.openScreen(new MessageGui(parentScreen, StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate("gui.config.message.empty.list"))));
+            CraftPresence.GUIS.openScreen(new MessageGui(
+                    parentScreen,
+                    StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate("gui.config.message.empty.list"))));
         }
     }
 
@@ -153,7 +204,8 @@ public class SelectorGui extends ExtendedScreen {
             if (!searchBox.getText().equals(searchTerm)) {
                 searchTerm = searchBox.getText();
                 for (String item : originalList) {
-                    if (item.toLowerCase().contains(searchTerm.toLowerCase()) && !modifiedList.contains(item.toLowerCase())) {
+                    if (item.toLowerCase().contains(searchTerm.toLowerCase())
+                            && !modifiedList.contains(item.toLowerCase())) {
                         modifiedList.add(item);
                     }
                 }
@@ -176,16 +228,20 @@ public class SelectorGui extends ExtendedScreen {
         scrollList.itemList = itemList;
 
         proceedButton.setControlMessage(
-                allowContinuing && scrollList.currentValue != null &&
-                        ((originalValue != null && !scrollList.currentValue.equals(originalValue)) || (StringUtils.isNullOrEmpty(originalValue))) ?
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.continue") : ModUtils.TRANSLATOR.translate("gui.config.message.button.back")
-        );
+                allowContinuing
+                                && scrollList.currentValue != null
+                                && ((originalValue != null && !scrollList.currentValue.equals(originalValue))
+                                        || (StringUtils.isNullOrEmpty(originalValue)))
+                        ? ModUtils.TRANSLATOR.translate("gui.config.message.button.continue")
+                        : ModUtils.TRANSLATOR.translate("gui.config.message.button.back"));
     }
 
     @Override
     public void postRender() {
         final String searchText = ModUtils.TRANSLATOR.translate("gui.config.message.editor.search");
-        final String extraText = isVerboseMode() ? ModUtils.TRANSLATOR.translate("gui.config.title.selector.extra", itemList.size(), originalList.size()) : "";
+        final String extraText = isVerboseMode()
+                ? ModUtils.TRANSLATOR.translate("gui.config.title.selector.extra", itemList.size(), originalList.size())
+                : "";
         final String displayText = mainTitle + " " + extraText;
 
         renderString(searchText, (30 - (StringUtils.getStringWidth(searchText) / 2f)), (height - 25), 0xFFFFFF);

@@ -31,7 +31,6 @@ import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.entities.Callback;
 import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.entities.Packet;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -68,11 +67,9 @@ public class WindowsPipe extends Pipe {
             }
         }
 
-        if (status == PipeStatus.DISCONNECTED)
-            throw new IOException("Disconnected!");
+        if (status == PipeStatus.DISCONNECTED) throw new IOException("Disconnected!");
 
-        if (status == PipeStatus.CLOSED)
-            return new Packet(Packet.OpCode.CLOSE, null, ipcClient.getEncoding());
+        if (status == PipeStatus.CLOSED) return new Packet(Packet.OpCode.CLOSE, null, ipcClient.getEncoding());
 
         Packet.OpCode op = Packet.OpCode.values()[Integer.reverseBytes(file.readInt())];
         int len = Integer.reverseBytes(file.readInt());
@@ -101,17 +98,16 @@ public class WindowsPipe extends Pipe {
         String javaLibraryPath = System.getProperty("java.home");
         File javaExeFile = new File(javaLibraryPath.split(";")[0] + "/bin/java.exe");
         File javawExeFile = new File(javaLibraryPath.split(";")[0] + "/bin/javaw.exe");
-        String javaExePath = javaExeFile.exists() ? javaExeFile.getAbsolutePath() : javawExeFile.exists() ? javawExeFile.getAbsolutePath() : null;
+        String javaExePath = javaExeFile.exists()
+                ? javaExeFile.getAbsolutePath()
+                : javawExeFile.exists() ? javawExeFile.getAbsolutePath() : null;
 
-        if (javaExePath == null)
-            throw new RuntimeException("Unable to find java path");
+        if (javaExePath == null) throw new RuntimeException("Unable to find java path");
 
         String openCommand;
 
-        if (command != null)
-            openCommand = command;
-        else
-            openCommand = javaExePath;
+        if (command != null) openCommand = command;
+        else openCommand = javaExePath;
 
         String protocolName = "discord-" + applicationId;
         String protocolDescription = "URL:Run game " + applicationId + " protocol";
@@ -155,8 +151,7 @@ public class WindowsPipe extends Pipe {
             } else {
                 steamPath = WinRegistry.readString(targetKey, "Software\\\\Valve\\\\Steam", "SteamExe");
             }
-            if (steamPath == null)
-                throw new RuntimeException("Steam exe path not found");
+            if (steamPath == null) throw new RuntimeException("Steam exe path not found");
 
             steamPath = steamPath.replaceAll("/", "\\");
 
@@ -167,5 +162,4 @@ public class WindowsPipe extends Pipe {
             throw new RuntimeException("Unable to register Steam game", ex);
         }
     }
-
 }

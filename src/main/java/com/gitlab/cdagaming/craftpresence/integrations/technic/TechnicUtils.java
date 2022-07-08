@@ -28,7 +28,6 @@ import com.gitlab.cdagaming.craftpresence.CraftPresence;
 import com.gitlab.cdagaming.craftpresence.ModUtils;
 import com.gitlab.cdagaming.craftpresence.utils.FileUtils;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -55,7 +54,8 @@ public class TechnicUtils {
         ModUtils.LOG.info(ModUtils.TRANSLATOR.translate("craftpresence.logger.info.technic.init"));
 
         try {
-            final File installedPacks = new File(CraftPresence.SYSTEM.USER_DIR + File.separator + ".." + File.separator + ".." + File.separator + "installedPacks");
+            final File installedPacks = new File(CraftPresence.SYSTEM.USER_DIR + File.separator + ".." + File.separator
+                    + ".." + File.separator + "installedPacks");
             final TechnicPack technicPack = FileUtils.getJSONFromFile(installedPacks, TechnicPack.class);
 
             if (technicPack != null) {
@@ -64,7 +64,8 @@ public class TechnicUtils {
                     ICON_NAME = StringUtils.formatAsIcon(technicPack.selected);
                     CraftPresence.packFound = true;
 
-                    ModUtils.LOG.info(ModUtils.TRANSLATOR.translate("craftpresence.logger.info.technic.loaded", PACK_NAME, ICON_NAME));
+                    ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(
+                            "craftpresence.logger.info.technic.loaded", PACK_NAME, ICON_NAME));
                 } else {
                     ModUtils.LOG.error(ModUtils.TRANSLATOR.translate("craftpresence.logger.error.technic.limitation"));
                 }

@@ -14,14 +14,14 @@
 
 package com.gitlab.cdagaming.craftpresence.impl.guava;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.common.collect.*;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CharSource;
-
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -36,8 +36,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.annotation.Nullable;
 
 /**
  * Scans the source of a {@link ClassLoader} and finds all loadable classes and resources.
@@ -51,8 +50,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class ClassPath {
     private static final Logger logger = Logger.getLogger(ClassPath.class.getName());
 
-    private static final Predicate<ClassInfo> IS_TOP_LEVEL =
-            info -> info.className.indexOf('$') == -1;
+    private static final Predicate<ClassInfo> IS_TOP_LEVEL = info -> info.className.indexOf('$') == -1;
 
     /**
      * Separator for the Class-Path manifest attribute value in jar files.
@@ -104,14 +102,21 @@ public final class ClassPath {
      * @since 16.0
      */
     public Set<ClassInfo> getAllClasses() {
-        return resources.stream().filter(ClassInfo.class::isInstance).map(ClassInfo.class::cast).collect(Collectors.toSet());
+        return resources.stream()
+                .filter(ClassInfo.class::isInstance)
+                .map(ClassInfo.class::cast)
+                .collect(Collectors.toSet());
     }
 
     /**
      * Returns all top level classes loadable from the current class path.
      */
     public Set<ClassInfo> getTopLevelClasses() {
-        return resources.stream().filter(ClassInfo.class::isInstance).map(ClassInfo.class::cast).filter(IS_TOP_LEVEL).collect(Collectors.toSet());
+        return resources.stream()
+                .filter(ClassInfo.class::isInstance)
+                .map(ClassInfo.class::cast)
+                .filter(IS_TOP_LEVEL)
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -337,8 +342,7 @@ public final class ClassPath {
                 return ImmutableSet.of();
             }
             ImmutableSet.Builder<File> builder = ImmutableSet.builder();
-            String classpathAttribute =
-                    manifest.getMainAttributes().getValue(Attributes.Name.CLASS_PATH.toString());
+            String classpathAttribute = manifest.getMainAttributes().getValue(Attributes.Name.CLASS_PATH.toString());
             if (classpathAttribute != null) {
                 for (String path : CLASS_PATH_ATTRIBUTE_SEPARATOR.split(classpathAttribute)) {
                     URL url;
@@ -391,7 +395,8 @@ public final class ClassPath {
         }
 
         public final void scan(ClassLoader classloader) throws IOException {
-            for (Map.Entry<File, ClassLoader> entry : getClassPathEntries(classloader).entrySet()) {
+            for (Map.Entry<File, ClassLoader> entry :
+                    getClassPathEntries(classloader).entrySet()) {
                 scan(entry.getKey(), entry.getValue());
             }
         }

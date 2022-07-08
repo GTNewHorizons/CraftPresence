@@ -102,7 +102,9 @@ public enum PartyPrivacy {
      */
     public static PartyPrivacy from(int partyIndex, String displayName) {
         for (PartyPrivacy value : values()) {
-            if (value.getDisplayName() != null && value.getDisplayName().equals(displayName) && value.getPartyIndex() == partyIndex) {
+            if (value.getDisplayName() != null
+                    && value.getDisplayName().equals(displayName)
+                    && value.getPartyIndex() == partyIndex) {
                 return value;
             }
         }

@@ -27,7 +27,6 @@ package com.gitlab.cdagaming.craftpresence.integrations.multimc;
 import com.gitlab.cdagaming.craftpresence.CraftPresence;
 import com.gitlab.cdagaming.craftpresence.ModUtils;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -47,7 +46,8 @@ public class MultiMCUtils {
     /**
      * The location of the MultiMC Instance properties, if any
      */
-    private static final String instanceFile = new File(CraftPresence.SYSTEM.USER_DIR).getParent() + File.separator + "instance.cfg";
+    private static final String instanceFile =
+            new File(CraftPresence.SYSTEM.USER_DIR).getParent() + File.separator + "instance.cfg";
     /**
      * The MultiMC Instance Name
      */
@@ -89,10 +89,14 @@ public class MultiMCUtils {
             INSTANCE_NAME = get("name");
 
             final String tempIconKey = get("iconKey"), defaultIconName = "default", defaultIconKey = "infinity";
-            ICON_KEY = StringUtils.formatAsIcon(!StringUtils.isNullOrEmpty(tempIconKey) && !tempIconKey.equals(defaultIconName) ? tempIconKey : defaultIconKey);
+            ICON_KEY = StringUtils.formatAsIcon(
+                    !StringUtils.isNullOrEmpty(tempIconKey) && !tempIconKey.equals(defaultIconName)
+                            ? tempIconKey
+                            : defaultIconKey);
 
             if (!StringUtils.isNullOrEmpty(INSTANCE_NAME) && !StringUtils.isNullOrEmpty(ICON_KEY)) {
-                ModUtils.LOG.info(ModUtils.TRANSLATOR.translate("craftpresence.logger.info.instance.loaded", INSTANCE_NAME, ICON_KEY));
+                ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(
+                        "craftpresence.logger.info.instance.loaded", INSTANCE_NAME, ICON_KEY));
                 CraftPresence.packFound = true;
             }
         } catch (Exception ex) {

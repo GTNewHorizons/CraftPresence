@@ -35,7 +35,6 @@ import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.entities.User;
 import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.exceptions.NoDiscordClientException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -44,7 +43,7 @@ import java.util.UUID;
 public abstract class Pipe {
     private static final int VERSION = 1;
     // a list of system property keys to get IPC file from different unix systems.
-    private final static String[] unixPaths = {"XDG_RUNTIME_DIR", "TMPDIR", "TMP", "TEMP"};
+    private static final String[] unixPaths = {"XDG_RUNTIME_DIR", "TMPDIR", "TMP", "TEMP"};
     final IPCClient ipcClient;
     private final HashMap<String, Callback> callbacks;
     PipeStatus status = PipeStatus.CONNECTING;
@@ -57,11 +56,12 @@ public abstract class Pipe {
         this.callbacks = callbacks;
     }
 
-    public static Pipe openPipe(IPCClient ipcClient, long clientId, HashMap<String, Callback> callbacks,
-                                DiscordBuild... preferredOrder) throws NoDiscordClientException {
+    public static Pipe openPipe(
+            IPCClient ipcClient, long clientId, HashMap<String, Callback> callbacks, DiscordBuild... preferredOrder)
+            throws NoDiscordClientException {
 
         if (preferredOrder == null || preferredOrder.length == 0)
-            preferredOrder = new DiscordBuild[]{DiscordBuild.ANY};
+            preferredOrder = new DiscordBuild[] {DiscordBuild.ANY};
 
         Pipe pipe = null;
 
@@ -89,20 +89,23 @@ public abstract class Pipe {
                     final JsonObject data = parsedData.getAsJsonObject("data");
                     final JsonObject userData = data.getAsJsonObject("user");
 
-                    pipe.build = DiscordBuild.from(data
-                            .getAsJsonObject("config")
-                            .get("api_endpoint").getAsString());
+                    pipe.build = DiscordBuild.from(
+                            data.getAsJsonObject("config").get("api_endpoint").getAsString());
 
                     pipe.currentUser = new User(
                             userData.getAsJsonPrimitive("username").getAsString(),
                             userData.getAsJsonPrimitive("discriminator").getAsString(),
                             Long.parseLong(userData.getAsJsonPrimitive("id").getAsString()),
-                            userData.has("avatar") && userData.get("avatar").isJsonPrimitive() ? userData.getAsJsonPrimitive("avatar").getAsString() : null
-                    );
+                            userData.has("avatar") && userData.get("avatar").isJsonPrimitive()
+                                    ? userData.getAsJsonPrimitive("avatar").getAsString()
+                                    : null);
 
                     if (ipcClient.isDebugMode()) {
-                        ModUtils.LOG.debugInfo(String.format("Found a valid client (%s) with packet: %s", pipe.build.name(), p));
-                        ModUtils.LOG.debugInfo(String.format("Found a valid user (%s) with id: %s", pipe.currentUser.getName(), pipe.currentUser.getId()));
+                        ModUtils.LOG.debugInfo(
+                                String.format("Found a valid client (%s) with packet: %s", pipe.build.name(), p));
+                        ModUtils.LOG.debugInfo(String.format(
+                                "Found a valid user (%s) with id: %s",
+                                pipe.currentUser.getName(), pipe.currentUser.getId()));
                     }
 
                     // we're done if we found our first choice
@@ -136,7 +139,10 @@ public abstract class Pipe {
                 if (open[cb.ordinal()] != null) {
                     pipe = open[cb.ordinal()];
                     open[cb.ordinal()] = null;
-                    if (cb == DiscordBuild.ANY) // if we pulled this from the 'any' slot, we need to figure out which build it was
+                    if (cb
+                            == DiscordBuild
+                                    .ANY) // if we pulled this from the 'any' slot, we need to figure out which build it
+                    // was
                     {
                         for (int k = 0; k < open.length; k++) {
                             if (open[k] == pipe) {
@@ -158,8 +164,7 @@ public abstract class Pipe {
         }
         // close unused files, except skip 'any' because its always a duplicate
         for (int i = 0; i < open.length; i++) {
-            if (i == DiscordBuild.ANY.ordinal())
-                continue;
+            if (i == DiscordBuild.ANY.ordinal()) continue;
             if (open[i] != null) {
                 try {
                     open[i].close();
@@ -186,7 +191,9 @@ public abstract class Pipe {
             return attemptedPipe.file != null ? attemptedPipe : null;
         } else if (osName.contains("linux") || osName.contains("mac")) {
             try {
-                return osName.contains("mac") ? new MacPipe(ipcClient, callbacks, location) : new UnixPipe(ipcClient, callbacks, location);
+                return osName.contains("mac")
+                        ? new MacPipe(ipcClient, callbacks, location)
+                        : new UnixPipe(ipcClient, callbacks, location);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -212,20 +219,17 @@ public abstract class Pipe {
      */
     private static String getPipeLocation(int index) {
         String tmpPath = null, pipePath = "discord-ipc-" + index;
-        if (System.getProperty("os.name").contains("Win"))
-            return "\\\\?\\pipe\\" + pipePath;
+        if (System.getProperty("os.name").contains("Win")) return "\\\\?\\pipe\\" + pipePath;
         for (String str : unixPaths) {
             tmpPath = System.getenv(str);
-            if (tmpPath != null)
-                break;
+            if (tmpPath != null) break;
         }
         if (tmpPath == null) {
             tmpPath = "/tmp";
         } else {
             String snapPath = tmpPath + "/snap.discord", flatpakPath = tmpPath + "/app/com.discordapp.Discord";
 
-            File snapFile = new File(snapPath),
-                    flatpakFile = new File(flatpakPath);
+            File snapFile = new File(snapPath), flatpakFile = new File(flatpakPath);
 
             if (snapFile.exists() && snapFile.isDirectory()) {
                 tmpPath = snapPath;
@@ -248,15 +252,13 @@ public abstract class Pipe {
             String nonce = generateNonce();
             data.addProperty("nonce", nonce);
             Packet p = new Packet(op, data, ipcClient.getEncoding());
-            if (callback != null && !callback.isEmpty())
-                callbacks.put(nonce, callback);
+            if (callback != null && !callback.isEmpty()) callbacks.put(nonce, callback);
             write(p.toBytes());
             if (ipcClient.isDebugMode()) {
                 ModUtils.LOG.debugInfo(String.format("Sent packet: %s", p.toDecodedString()));
             }
 
-            if (listener != null)
-                listener.onPacketSent(ipcClient, p);
+            if (listener != null) listener.onPacketSent(ipcClient, p);
         } catch (IOException ex) {
             ModUtils.LOG.error("Encountered an IOException while sending a packet and disconnected!");
             status = PipeStatus.DISCONNECTED;
@@ -277,8 +279,7 @@ public abstract class Pipe {
             ModUtils.LOG.debugInfo(String.format("Received packet: %s", p));
         }
 
-        if (listener != null)
-            listener.onPacketReceived(ipcClient, p);
+        if (listener != null) listener.onPacketReceived(ipcClient, p);
         return p;
     }
 

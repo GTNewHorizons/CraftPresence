@@ -54,10 +54,24 @@ public class RichPresence {
     private final JsonArray buttons;
     private final boolean instance;
 
-    public RichPresence(String state, String details, long startTimestamp, long endTimestamp,
-                        String largeImageKey, String largeImageText, String smallImageKey, String smallImageText,
-                        String partyId, int partySize, int partyMax, int partyPrivacy, String matchSecret, String joinSecret,
-                        String spectateSecret, JsonArray buttons, boolean instance) {
+    public RichPresence(
+            String state,
+            String details,
+            long startTimestamp,
+            long endTimestamp,
+            String largeImageKey,
+            String largeImageText,
+            String smallImageKey,
+            String smallImageText,
+            String partyId,
+            int partySize,
+            int partyMax,
+            int partyPrivacy,
+            String matchSecret,
+            String joinSecret,
+            String spectateSecret,
+            JsonArray buttons,
+            boolean instance) {
         this.state = state;
         this.details = details;
         this.startTimestamp = startTimestamp;
@@ -117,8 +131,7 @@ public class RichPresence {
             }
         }
 
-        if ((partyId != null && !partyId.isEmpty()) ||
-                (partySize > 0 && partyMax > 0) || partyPrivacy >= 0) {
+        if ((partyId != null && !partyId.isEmpty()) || (partySize > 0 && partyMax > 0) || partyPrivacy >= 0) {
             if (partyId != null && !partyId.isEmpty()) {
                 party.addProperty("id", partyId);
             }
@@ -214,10 +227,24 @@ public class RichPresence {
          * @return The RichPresence built.
          */
         public RichPresence build() {
-            return new RichPresence(state, details, startTimestamp, endTimestamp,
-                    largeImageKey, largeImageText, smallImageKey, smallImageText,
-                    partyId, partySize, partyMax, partyPrivacy, matchSecret, joinSecret,
-                    spectateSecret, buttons, instance);
+            return new RichPresence(
+                    state,
+                    details,
+                    startTimestamp,
+                    endTimestamp,
+                    largeImageKey,
+                    largeImageText,
+                    smallImageKey,
+                    smallImageText,
+                    partyId,
+                    partySize,
+                    partyMax,
+                    partyPrivacy,
+                    matchSecret,
+                    joinSecret,
+                    spectateSecret,
+                    buttons,
+                    instance);
         }
 
         /**

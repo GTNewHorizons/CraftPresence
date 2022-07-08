@@ -34,13 +34,12 @@ import com.gitlab.cdagaming.craftpresence.impl.Pair;
 import com.gitlab.cdagaming.craftpresence.impl.Tuple;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.client.gui.GuiControls;
 import net.minecraft.client.settings.KeyBinding;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.input.Keyboard;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Keyboard Utilities to Parse KeyCodes and handle KeyCode Events
@@ -82,17 +81,21 @@ public class KeyUtils {
         KEY_MAPPINGS.put(
                 "configKeyCode",
                 new Tuple<>(
-                        new KeyBinding("key.craftpresence.config_keycode.name", CraftPresence.CONFIG.configKeyCode, "key.craftpresence.category"),
+                        new KeyBinding(
+                                "key.craftpresence.config_keycode.name",
+                                CraftPresence.CONFIG.configKeyCode,
+                                "key.craftpresence.category"),
                         () -> {
                             if (!CraftPresence.GUIS.isFocused && !CraftPresence.GUIS.configGUIOpened) {
                                 CraftPresence.GUIS.openScreen(new MainGui(CraftPresence.instance.currentScreen));
                             }
-                        }, null
-                )
-        );
+                        },
+                        null));
 
         for (String keyName : KEY_MAPPINGS.keySet()) {
-            CraftPresence.instance.gameSettings.keyBindings = ArrayUtils.add(CraftPresence.instance.gameSettings.keyBindings, KEY_MAPPINGS.get(keyName).getFirst());
+            CraftPresence.instance.gameSettings.keyBindings = ArrayUtils.add(
+                    CraftPresence.instance.gameSettings.keyBindings,
+                    KEY_MAPPINGS.get(keyName).getFirst());
         }
     }
 
@@ -138,7 +141,8 @@ public class KeyUtils {
      * @return Either an LWJGL KeyCode Name or the KeyCode if none can be found
      */
     public String getKeyName(final String original) {
-        final String unknownKeyName = (ModUtils.MCProtocolID <= 340 ? KeyConverter.fromGlfw.get(-1) : KeyConverter.toGlfw.get(0)).getSecond();
+        final String unknownKeyName =
+                (ModUtils.MCProtocolID <= 340 ? KeyConverter.fromGlfw.get(-1) : KeyConverter.toGlfw.get(0)).getSecond();
         if (!StringUtils.isNullOrEmpty(original)) {
             final Pair<Boolean, Integer> integerData = StringUtils.getValidInteger(original);
 
@@ -162,7 +166,10 @@ public class KeyUtils {
      */
     public String getKeyName(final int original) {
         final int unknownKeyCode = (ModUtils.MCProtocolID <= 340 ? -1 : 0);
-        final String unknownKeyName = (ModUtils.MCProtocolID <= 340 ? KeyConverter.fromGlfw.get(unknownKeyCode) : KeyConverter.toGlfw.get(unknownKeyCode)).getSecond();
+        final String unknownKeyName = (ModUtils.MCProtocolID <= 340
+                        ? KeyConverter.fromGlfw.get(unknownKeyCode)
+                        : KeyConverter.toGlfw.get(unknownKeyCode))
+                .getSecond();
         if (isValidKeyCode(original)) {
             // If Input is a valid Integer and Valid KeyCode,
             // Parse depending on Protocol
@@ -202,7 +209,10 @@ public class KeyUtils {
     void onTick() {
         if (Keyboard.isCreated() && CraftPresence.CONFIG != null) {
             final int unknownKeyCode = (ModUtils.MCProtocolID <= 340 ? -1 : 0);
-            final String unknownKeyName = (ModUtils.MCProtocolID <= 340 ? KeyConverter.fromGlfw.get(unknownKeyCode) : KeyConverter.toGlfw.get(unknownKeyCode)).getSecond();
+            final String unknownKeyName = (ModUtils.MCProtocolID <= 340
+                            ? KeyConverter.fromGlfw.get(unknownKeyCode)
+                            : KeyConverter.toGlfw.get(unknownKeyCode))
+                    .getSecond();
             try {
                 for (String keyName : KEY_MAPPINGS.keySet()) {
                     final KeyBinding keyBind = KEY_MAPPINGS.get(keyName).getFirst();
@@ -211,15 +221,18 @@ public class KeyUtils {
 
                     if (!getKeyName(currentBind).equals(unknownKeyName) && !isValidClearCode(currentBind)) {
                         // Only process the key if it is not an unknown or invalid key
-                        if (Keyboard.isKeyDown(currentBind) && !(CraftPresence.instance.currentScreen instanceof GuiControls)) {
-                            final Tuple<KeyBinding, Runnable, DataConsumer<Throwable>> keyData = KEY_MAPPINGS.get(keyName);
+                        if (Keyboard.isKeyDown(currentBind)
+                                && !(CraftPresence.instance.currentScreen instanceof GuiControls)) {
+                            final Tuple<KeyBinding, Runnable, DataConsumer<Throwable>> keyData =
+                                    KEY_MAPPINGS.get(keyName);
                             try {
                                 keyData.getSecond().run();
                             } catch (Exception | Error ex) {
                                 if (keyData.getThird() != null) {
                                     keyData.getThird().accept(ex);
                                 } else {
-                                    ModUtils.LOG.error(ModUtils.TRANSLATOR.translate("craftpresence.logger.error.keycode", keyBind.getKeyDescription()));
+                                    ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(
+                                            "craftpresence.logger.error.keycode", keyBind.getKeyDescription()));
                                     syncKeyData(keyName, ImportMode.Specific, keyBind.getKeyCodeDefault());
                                 }
                             } finally {
@@ -233,7 +246,10 @@ public class KeyUtils {
                         if (CraftPresence.CONFIG.keySyncQueue.containsKey(keyName)) {
                             syncKeyData(keyName, ImportMode.Config, CraftPresence.CONFIG.keySyncQueue.get(keyName));
                             CraftPresence.CONFIG.keySyncQueue.remove(keyName);
-                        } else if (currentBind != StringUtils.getValidInteger(StringUtils.lookupObject(ConfigUtils.class, CraftPresence.CONFIG, keyName)).getSecond()) {
+                        } else if (currentBind
+                                != StringUtils.getValidInteger(StringUtils.lookupObject(
+                                                ConfigUtils.class, CraftPresence.CONFIG, keyName))
+                                        .getSecond()) {
                             syncKeyData(keyName, ImportMode.Vanilla, currentBind);
                         }
                     }
@@ -265,7 +281,8 @@ public class KeyUtils {
             syncKeyData(keyName, ImportMode.Vanilla, keyCode);
         } else {
             if (ModUtils.IS_VERBOSE) {
-                ModUtils.LOG.debugWarn(ModUtils.TRANSLATOR.translate("craftpresence.logger.warning.convert.invalid", keyName, mode.name()));
+                ModUtils.LOG.debugWarn(ModUtils.TRANSLATOR.translate(
+                        "craftpresence.logger.warning.convert.invalid", keyName, mode.name()));
             }
         }
     }
@@ -277,21 +294,22 @@ public class KeyUtils {
      * @param filterData The filter data to attach to the filter mode
      * @return The filtered key mappings
      */
-    public Map<String, Tuple<KeyBinding, Runnable, DataConsumer<Throwable>>> getKeyMappings(final FilterMode mode, final List<String> filterData) {
+    public Map<String, Tuple<KeyBinding, Runnable, DataConsumer<Throwable>>> getKeyMappings(
+            final FilterMode mode, final List<String> filterData) {
         final Map<String, Tuple<KeyBinding, Runnable, DataConsumer<Throwable>>> filteredMappings = Maps.newHashMap();
 
         for (String keyName : KEY_MAPPINGS.keySet()) {
-            if (mode == FilterMode.None ||
-                    mode == FilterMode.Category ||
-                    mode == FilterMode.Id ||
-                    (mode == FilterMode.Name && filterData.contains(keyName))
-            ) {
+            if (mode == FilterMode.None
+                    || mode == FilterMode.Category
+                    || mode == FilterMode.Id
+                    || (mode == FilterMode.Name && filterData.contains(keyName))) {
                 final Tuple<KeyBinding, Runnable, DataConsumer<Throwable>> keyData = KEY_MAPPINGS.get(keyName);
-                if (mode == FilterMode.None ||
-                        (mode == FilterMode.Category && filterData.contains(keyData.getFirst().getKeyCategory())) ||
-                        (mode == FilterMode.Id && filterData.contains(keyData.getFirst().getKeyDescription())) ||
-                        mode == FilterMode.Name
-                ) {
+                if (mode == FilterMode.None
+                        || (mode == FilterMode.Category
+                                && filterData.contains(keyData.getFirst().getKeyCategory()))
+                        || (mode == FilterMode.Id
+                                && filterData.contains(keyData.getFirst().getKeyDescription()))
+                        || mode == FilterMode.Name) {
                     filteredMappings.put(keyName, keyData);
                 }
             }
@@ -319,10 +337,15 @@ public class KeyUtils {
      * - Specific: Signals Client to force both the controls menu and config value to a specific value
      */
     public enum ImportMode {
-        Config, Vanilla, Specific
+        Config,
+        Vanilla,
+        Specific
     }
 
     public enum FilterMode {
-        Category, Name, Id, None
+        Category,
+        Name,
+        Id,
+        None
     }
 }

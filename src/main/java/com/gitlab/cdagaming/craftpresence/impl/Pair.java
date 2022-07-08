@@ -117,7 +117,8 @@ public class Pair<U, V> {
     public boolean equals(final Pair<?, ?> obj) {
         try {
             // Case 1: Attempt ToString Conversion Checking
-            return (this.getFirst().toString().equals(obj.getFirst().toString())) && (this.getSecond().toString().equals(obj.getSecond().toString()));
+            return (this.getFirst().toString().equals(obj.getFirst().toString()))
+                    && (this.getSecond().toString().equals(obj.getSecond().toString()));
         } catch (Exception ex) {
             // Case 2: Automated Checking
             // Note: Can Likely return false positives depending on conditions
@@ -127,6 +128,7 @@ public class Pair<U, V> {
 
     @Override
     public String toString() {
-        return "Pair[key=" + (this.getFirst() != null ? this.getFirst().toString() : "N/A") + "; value=" + (this.getSecond() != null ? this.getSecond().toString() : "N/A") + "]";
+        return "Pair[key=" + (this.getFirst() != null ? this.getFirst().toString() : "N/A") + "; value="
+                + (this.getSecond() != null ? this.getSecond().toString() : "N/A") + "]";
     }
 }

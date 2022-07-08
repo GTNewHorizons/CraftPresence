@@ -32,8 +32,8 @@ public class ModLoader {
     @SerializedName("id")
     @Expose
     public String id;
+
     @SerializedName("primary")
     @Expose
     public Boolean primary;
-
 }

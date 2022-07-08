@@ -25,7 +25,6 @@
 package com.gitlab.cdagaming.craftpresence.utils.discord.rpc.entities;
 
 import com.google.gson.JsonObject;
-
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 
@@ -124,6 +123,10 @@ public class Packet {
      * connected.
      */
     public enum OpCode {
-        HANDSHAKE, FRAME, CLOSE, PING, PONG
+        HANDSHAKE,
+        FRAME,
+        CLOSE,
+        PING,
+        PONG
     }
 }

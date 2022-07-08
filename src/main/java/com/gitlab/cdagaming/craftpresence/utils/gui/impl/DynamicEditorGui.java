@@ -42,7 +42,15 @@ public class DynamicEditorGui extends ExtendedScreen {
     private ExtendedTextControl specificMessageInput, newValueName;
     private String attributeName, removeMessage;
 
-    public DynamicEditorGui(GuiScreen parentScreen, String attributeName, PairConsumer<String, DynamicEditorGui> onNewInit, PairConsumer<String, DynamicEditorGui> onAdjustInit, PairConsumer<String, String> onAdjustEntry, PairConsumer<String, String> onRemoveEntry, PairConsumer<String, DynamicEditorGui> onSpecificCallback, PairConsumer<String, DynamicEditorGui> onHoverCallback) {
+    public DynamicEditorGui(
+            GuiScreen parentScreen,
+            String attributeName,
+            PairConsumer<String, DynamicEditorGui> onNewInit,
+            PairConsumer<String, DynamicEditorGui> onAdjustInit,
+            PairConsumer<String, String> onAdjustEntry,
+            PairConsumer<String, String> onRemoveEntry,
+            PairConsumer<String, DynamicEditorGui> onSpecificCallback,
+            PairConsumer<String, DynamicEditorGui> onHoverCallback) {
         super(parentScreen);
         this.attributeName = attributeName;
         isNewValue = StringUtils.isNullOrEmpty(attributeName);
@@ -72,75 +80,72 @@ public class DynamicEditorGui extends ExtendedScreen {
         removeMessage = ModUtils.TRANSLATOR.translate("gui.config.message.remove");
 
         specificMessageInput = addControl(
-                new ExtendedTextControl(
-                        getFontRenderer(),
-                        (width / 2) + 3, CraftPresence.GUIS.getButtonY(1),
-                        180, 20
-                )
-        );
+                new ExtendedTextControl(getFontRenderer(), (width / 2) + 3, CraftPresence.GUIS.getButtonY(1), 180, 20));
         specificMessageInput.setText(specificMessage);
 
         if (onSpecificCallback != null && !isNewValue) {
             // Adding Specific Icon Button
-            addControl(
-                    new ExtendedButtonControl(
-                            (width / 2) - 90, CraftPresence.GUIS.getButtonY(2),
-                            180, 20,
-                            ModUtils.TRANSLATOR.translate("gui.config.message.button.icon.change"),
-                            () -> onSpecificCallback.accept(attributeName, this)
-                    )
-            );
+            addControl(new ExtendedButtonControl(
+                    (width / 2) - 90,
+                    CraftPresence.GUIS.getButtonY(2),
+                    180,
+                    20,
+                    ModUtils.TRANSLATOR.translate("gui.config.message.button.icon.change"),
+                    () -> onSpecificCallback.accept(attributeName, this)));
         }
         if (isNewValue) {
-            newValueName = addControl(
-                    new ExtendedTextControl(
-                            getFontRenderer(),
-                            (width / 2) + 3, CraftPresence.GUIS.getButtonY(3),
-                            180, 20
-                    )
-            );
+            newValueName = addControl(new ExtendedTextControl(
+                    getFontRenderer(), (width / 2) + 3, CraftPresence.GUIS.getButtonY(3), 180, 20));
         }
 
-        proceedButton = addControl(
-                new ExtendedButtonControl(
-                        (width / 2) - 90, (height - 30),
-                        180, 20,
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
-                        () -> {
-                            if (!specificMessageInput.getText().equals(specificMessage) || (isNewValue && !StringUtils.isNullOrEmpty(newValueName.getText()) && !specificMessageInput.getText().equals(defaultMessage)) || (isDefaultValue && !StringUtils.isNullOrEmpty(specificMessageInput.getText()) && !specificMessageInput.getText().equals(specificMessage))) {
-                                if (isNewValue && !StringUtils.isNullOrEmpty(newValueName.getText())) {
-                                    attributeName = newValueName.getText();
-                                }
-                                if (onAdjustEntry != null) {
-                                    onAdjustEntry.accept(attributeName, specificMessageInput.getText());
-                                }
-                            }
-                            if (StringUtils.isNullOrEmpty(specificMessageInput.getText()) || (specificMessageInput.getText().equalsIgnoreCase(defaultMessage) && !specificMessage.equals(defaultMessage) && !isDefaultValue)) {
-                                if (isNewValue && !StringUtils.isNullOrEmpty(newValueName.getText())) {
-                                    attributeName = newValueName.getText();
-                                }
-                                if (onRemoveEntry != null) {
-                                    onRemoveEntry.accept(attributeName, specificMessageInput.getText());
-                                }
-                            }
-                            CraftPresence.GUIS.openScreen(parentScreen);
-                        },
-                        () -> {
-                            if (!proceedButton.isControlEnabled()) {
-                                CraftPresence.GUIS.drawMultiLineString(
-                                        StringUtils.splitTextByNewLine(
-                                                ModUtils.TRANSLATOR.translate("gui.config.message.hover.empty.default")
-                                        ),
-                                        getMouseX(), getMouseY(),
-                                        width, height,
-                                        getWrapWidth(),
-                                        getFontRenderer(),
-                                        true
-                                );
-                            }
+        proceedButton = addControl(new ExtendedButtonControl(
+                (width / 2) - 90,
+                (height - 30),
+                180,
+                20,
+                ModUtils.TRANSLATOR.translate("gui.config.message.button.back"),
+                () -> {
+                    if (!specificMessageInput.getText().equals(specificMessage)
+                            || (isNewValue
+                                    && !StringUtils.isNullOrEmpty(newValueName.getText())
+                                    && !specificMessageInput.getText().equals(defaultMessage))
+                            || (isDefaultValue
+                                    && !StringUtils.isNullOrEmpty(specificMessageInput.getText())
+                                    && !specificMessageInput.getText().equals(specificMessage))) {
+                        if (isNewValue && !StringUtils.isNullOrEmpty(newValueName.getText())) {
+                            attributeName = newValueName.getText();
                         }
-                )
-        );
+                        if (onAdjustEntry != null) {
+                            onAdjustEntry.accept(attributeName, specificMessageInput.getText());
+                        }
+                    }
+                    if (StringUtils.isNullOrEmpty(specificMessageInput.getText())
+                            || (specificMessageInput.getText().equalsIgnoreCase(defaultMessage)
+                                    && !specificMessage.equals(defaultMessage)
+                                    && !isDefaultValue)) {
+                        if (isNewValue && !StringUtils.isNullOrEmpty(newValueName.getText())) {
+                            attributeName = newValueName.getText();
+                        }
+                        if (onRemoveEntry != null) {
+                            onRemoveEntry.accept(attributeName, specificMessageInput.getText());
+                        }
+                    }
+                    CraftPresence.GUIS.openScreen(parentScreen);
+                },
+                () -> {
+                    if (!proceedButton.isControlEnabled()) {
+                        CraftPresence.GUIS.drawMultiLineString(
+                                StringUtils.splitTextByNewLine(
+                                        ModUtils.TRANSLATOR.translate("gui.config.message.hover.empty.default")),
+                                getMouseX(),
+                                getMouseY(),
+                                width,
+                                height,
+                                getWrapWidth(),
+                                getFontRenderer(),
+                                true);
+                    }
+                }));
 
         super.initializeUi();
     }
@@ -155,15 +160,23 @@ public class DynamicEditorGui extends ExtendedScreen {
         if (isNewValue) {
             renderString(valueNameText, (width / 2f) - 130, CraftPresence.GUIS.getButtonY(3, 5), 0xFFFFFF);
         } else {
-            renderString(removeMessage, (width / 2f) - (StringUtils.getStringWidth(removeMessage) / 2f), (height - 45), 0xFFFFFF);
+            renderString(
+                    removeMessage,
+                    (width / 2f) - (StringUtils.getStringWidth(removeMessage) / 2f),
+                    (height - 45),
+                    0xFFFFFF);
         }
 
         proceedButton.setControlMessage(
-                !specificMessageInput.getText().equals(specificMessage) ||
-                        (isNewValue && !StringUtils.isNullOrEmpty(newValueName.getText()) && !specificMessageInput.getText().equals(defaultMessage)) ||
-                        (isDefaultValue && !StringUtils.isNullOrEmpty(specificMessageInput.getText()) && !specificMessageInput.getText().equals(specificMessage)) ?
-                        ModUtils.TRANSLATOR.translate("gui.config.message.button.continue") : ModUtils.TRANSLATOR.translate("gui.config.message.button.back")
-        );
+                !specificMessageInput.getText().equals(specificMessage)
+                                || (isNewValue
+                                        && !StringUtils.isNullOrEmpty(newValueName.getText())
+                                        && !specificMessageInput.getText().equals(defaultMessage))
+                                || (isDefaultValue
+                                        && !StringUtils.isNullOrEmpty(specificMessageInput.getText())
+                                        && !specificMessageInput.getText().equals(specificMessage))
+                        ? ModUtils.TRANSLATOR.translate("gui.config.message.button.continue")
+                        : ModUtils.TRANSLATOR.translate("gui.config.message.button.back"));
 
         proceedButton.setControlEnabled(!(StringUtils.isNullOrEmpty(specificMessageInput.getText()) && isDefaultValue));
     }
@@ -172,15 +185,37 @@ public class DynamicEditorGui extends ExtendedScreen {
     public void postRender() {
         final String messageText = ModUtils.TRANSLATOR.translate("gui.config.message.editor.message");
         final String valueNameText = ModUtils.TRANSLATOR.translate("gui.config.message.editor.value.name");
-        final boolean isHovering = CraftPresence.GUIS.isMouseOver(getMouseX(), getMouseY(), (width / 2f) - 130, CraftPresence.GUIS.getButtonY(1, 5), StringUtils.getStringWidth(messageText), getFontHeight());
+        final boolean isHovering = CraftPresence.GUIS.isMouseOver(
+                getMouseX(),
+                getMouseY(),
+                (width / 2f) - 130,
+                CraftPresence.GUIS.getButtonY(1, 5),
+                StringUtils.getStringWidth(messageText),
+                getFontHeight());
         // Hovering over Message Label
         if (isHovering && onHoverCallback != null) {
             onHoverCallback.accept(attributeName, this);
         }
 
         // Hovering over Value Name Label
-        if (isNewValue && CraftPresence.GUIS.isMouseOver(getMouseX(), getMouseY(), (width / 2f) - 130, CraftPresence.GUIS.getButtonY(3, 5), StringUtils.getStringWidth(valueNameText), getFontHeight())) {
-            CraftPresence.GUIS.drawMultiLineString(StringUtils.splitTextByNewLine(ModUtils.TRANSLATOR.translate("gui.config.message.hover.value.name")), getMouseX(), getMouseY(), width, height, getWrapWidth(), getFontRenderer(), true);
+        if (isNewValue
+                && CraftPresence.GUIS.isMouseOver(
+                        getMouseX(),
+                        getMouseY(),
+                        (width / 2f) - 130,
+                        CraftPresence.GUIS.getButtonY(3, 5),
+                        StringUtils.getStringWidth(valueNameText),
+                        getFontHeight())) {
+            CraftPresence.GUIS.drawMultiLineString(
+                    StringUtils.splitTextByNewLine(
+                            ModUtils.TRANSLATOR.translate("gui.config.message.hover.value.name")),
+                    getMouseX(),
+                    getMouseY(),
+                    width,
+                    height,
+                    getWrapWidth(),
+                    getFontRenderer(),
+                    true);
         }
     }
 }

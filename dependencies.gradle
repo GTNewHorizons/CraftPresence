@@ -1,0 +1,4 @@
+dependencies {
+	shadeCompile 'com.kohlschutter.junixsocket:junixsocket-core:2.5.0'
+	compileOnly 'com.kohlschutter:compiler-annotations:1.4.4'
+}

@@ -30,7 +30,6 @@ import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.gitlab.cdagaming.craftpresence.utils.UrlUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -84,8 +83,8 @@ public class DiscordAssetUtils {
      * @return {@code true} if the Icon Key is present and able to be used
      */
     public static boolean contains(final String key) {
-        final String formattedKey = StringUtils.isNullOrEmpty(key) ? ""
-                : StringUtils.formatAsIcon(key.replace(" ", "_"));
+        final String formattedKey =
+                StringUtils.isNullOrEmpty(key) ? "" : StringUtils.formatAsIcon(key.replace(" ", "_"));
         return ASSET_LIST.containsKey(formattedKey);
     }
 
@@ -97,8 +96,8 @@ public class DiscordAssetUtils {
      * @return The {@link DiscordAsset} data for this Icon Key
      */
     public static DiscordAsset get(final String key) {
-        final String formattedKey = StringUtils.isNullOrEmpty(key) ? ""
-                : StringUtils.formatAsIcon(key.replace(" ", "_"));
+        final String formattedKey =
+                StringUtils.isNullOrEmpty(key) ? "" : StringUtils.formatAsIcon(key.replace(" ", "_"));
         return contains(formattedKey) ? ASSET_LIST.get(formattedKey) : null;
     }
 
@@ -109,8 +108,8 @@ public class DiscordAssetUtils {
      * @return The Parsed Icon Key from the {@link DiscordAsset} data
      */
     public static String getKey(final String key) {
-        final String formattedKey = StringUtils.isNullOrEmpty(key) ? ""
-                : StringUtils.formatAsIcon(key.replace(" ", "_"));
+        final String formattedKey =
+                StringUtils.isNullOrEmpty(key) ? "" : StringUtils.formatAsIcon(key.replace(" ", "_"));
         return contains(formattedKey) ? ASSET_LIST.get(formattedKey).getName() : "";
     }
 
@@ -121,8 +120,8 @@ public class DiscordAssetUtils {
      * @return The Parsed Icon ID from the {@link DiscordAsset} data
      */
     public static String getId(final String key) {
-        final String formattedKey = StringUtils.isNullOrEmpty(key) ? ""
-                : StringUtils.formatAsIcon(key.replace(" ", "_"));
+        final String formattedKey =
+                StringUtils.isNullOrEmpty(key) ? "" : StringUtils.formatAsIcon(key.replace(" ", "_"));
         return contains(formattedKey) ? ASSET_LIST.get(formattedKey).getId() : "";
     }
 
@@ -133,7 +132,8 @@ public class DiscordAssetUtils {
      * @return The Parsed Image Type from the {@link DiscordAsset} data
      */
     public static DiscordAsset.AssetType getType(final String key) {
-        final String formattedKey = StringUtils.isNullOrEmpty(key) ? "" : key.replace(" ", "_").toLowerCase();
+        final String formattedKey =
+                StringUtils.isNullOrEmpty(key) ? "" : key.replace(" ", "_").toLowerCase();
         return contains(formattedKey) ? ASSET_LIST.get(formattedKey).getType() : DiscordAsset.AssetType.LARGE;
     }
 
@@ -186,8 +186,10 @@ public class DiscordAssetUtils {
      * @return The asset url in String form (As in Url form, it'll only work if it is a valid Client Id)
      */
     public static String getAssetUrl(final String clientId, final String keyId, final boolean isLocalName) {
-        return !StringUtils.isNullOrEmpty(keyId) ? "https://cdn.discordapp.com/app-assets/"
-                + clientId + "/" + (isLocalName ? getId(keyId) : keyId) + ".png" : "";
+        return !StringUtils.isNullOrEmpty(keyId)
+                ? "https://cdn.discordapp.com/app-assets/" + clientId + "/" + (isLocalName ? getId(keyId) : keyId)
+                        + ".png"
+                : "";
     }
 
     /**
@@ -246,7 +248,8 @@ public class DiscordAssetUtils {
         } finally {
             verifyConfigAssets();
             syncCompleted = true;
-            ModUtils.LOG.info(ModUtils.TRANSLATOR.translate("craftpresence.logger.info.discord.assets.detected", String.valueOf(ASSET_LIST.size())));
+            ModUtils.LOG.info(ModUtils.TRANSLATOR.translate(
+                    "craftpresence.logger.info.discord.assets.detected", String.valueOf(ASSET_LIST.size())));
         }
     }
 
@@ -256,12 +259,21 @@ public class DiscordAssetUtils {
     private static void verifyConfigAssets() {
         boolean needsFullUpdate = false;
         for (String property : CraftPresence.CONFIG.properties.stringPropertyNames()) {
-            if ((property.equals(CraftPresence.CONFIG.NAME_defaultIcon) || property.equals(CraftPresence.CONFIG.NAME_defaultDimensionIcon) || property.equals(CraftPresence.CONFIG.NAME_defaultServerIcon)) && !contains(CraftPresence.CONFIG.properties.getProperty(property))) {
-                final String newAsset = contains(CraftPresence.CONFIG.defaultIcon) ? CraftPresence.CONFIG.defaultIcon : getRandomAsset();
-                ModUtils.LOG.error(ModUtils.TRANSLATOR.translate("craftpresence.logger.error.config.invalid.icon.pre", CraftPresence.CONFIG.properties.getProperty(property), property));
+            if ((property.equals(CraftPresence.CONFIG.NAME_defaultIcon)
+                            || property.equals(CraftPresence.CONFIG.NAME_defaultDimensionIcon)
+                            || property.equals(CraftPresence.CONFIG.NAME_defaultServerIcon))
+                    && !contains(CraftPresence.CONFIG.properties.getProperty(property))) {
+                final String newAsset = contains(CraftPresence.CONFIG.defaultIcon)
+                        ? CraftPresence.CONFIG.defaultIcon
+                        : getRandomAsset();
+                ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(
+                        "craftpresence.logger.error.config.invalid.icon.pre",
+                        CraftPresence.CONFIG.properties.getProperty(property),
+                        property));
                 CraftPresence.CONFIG.properties.setProperty(property, newAsset);
                 needsFullUpdate = true;
-                ModUtils.LOG.error(ModUtils.TRANSLATOR.translate("craftpresence.logger.error.config.invalid.icon.post", property, newAsset));
+                ModUtils.LOG.error(ModUtils.TRANSLATOR.translate(
+                        "craftpresence.logger.error.config.invalid.icon.post", property, newAsset));
             }
         }
 

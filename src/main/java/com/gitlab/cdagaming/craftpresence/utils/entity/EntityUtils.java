@@ -28,14 +28,13 @@ import com.gitlab.cdagaming.craftpresence.CraftPresence;
 import com.gitlab.cdagaming.craftpresence.impl.Pair;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.google.common.collect.Lists;
+import java.util.List;
 import net.minecraft.client.gui.GuiPlayerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MovingObjectPosition;
-
-import java.util.List;
 
 /**
  * Entity Utilities used to Parse Entity Data and handle related RPC Events
@@ -183,7 +182,11 @@ public class EntityUtils {
      * Synchronizes Data related to this module, if needed
      */
     private void updateEntityData() {
-        final Entity NEW_CURRENT_TARGET = CraftPresence.instance.objectMouseOver != null && CraftPresence.instance.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY ? CraftPresence.instance.objectMouseOver.entityHit : null;
+        final Entity NEW_CURRENT_TARGET = CraftPresence.instance.objectMouseOver != null
+                        && CraftPresence.instance.objectMouseOver.typeOfHit
+                                == MovingObjectPosition.MovingObjectType.ENTITY
+                ? CraftPresence.instance.objectMouseOver.entityHit
+                : null;
         final Entity NEW_CURRENT_ATTACKING = CraftPresence.player.func_94060_bK();
         final Entity NEW_CURRENT_RIDING = CraftPresence.player.ridingEntity;
 
@@ -193,42 +196,54 @@ public class EntityUtils {
         // Users are still free to manually add Uuid's as they please for this module
         if (NEW_CURRENT_TARGET instanceof EntityPlayer) {
             final EntityPlayer NEW_CURRENT_PLAYER_TARGET = (EntityPlayer) NEW_CURRENT_TARGET;
-            NEW_CURRENT_TARGET_NAME = StringUtils.stripColors(NEW_CURRENT_PLAYER_TARGET.getGameProfile().getId().toString());
+            NEW_CURRENT_TARGET_NAME = StringUtils.stripColors(
+                    NEW_CURRENT_PLAYER_TARGET.getGameProfile().getId().toString());
         } else {
-            NEW_CURRENT_TARGET_NAME = NEW_CURRENT_TARGET != null ?
-                    StringUtils.stripColors(NEW_CURRENT_TARGET.getFormattedCommandSenderName().getFormattedText()) : "";
+            NEW_CURRENT_TARGET_NAME = NEW_CURRENT_TARGET != null
+                    ? StringUtils.stripColors(
+                            NEW_CURRENT_TARGET.func_145748_c_().getFormattedText())
+                    : "";
         }
 
         if (NEW_CURRENT_ATTACKING instanceof EntityPlayer) {
             final EntityPlayer NEW_CURRENT_PLAYER_ATTACKING = (EntityPlayer) NEW_CURRENT_ATTACKING;
-            NEW_CURRENT_ATTACKING_NAME = StringUtils.stripColors(NEW_CURRENT_PLAYER_ATTACKING.getGameProfile().getId().toString());
+            NEW_CURRENT_ATTACKING_NAME = StringUtils.stripColors(
+                    NEW_CURRENT_PLAYER_ATTACKING.getGameProfile().getId().toString());
         } else {
-            NEW_CURRENT_ATTACKING_NAME = NEW_CURRENT_ATTACKING != null ?
-                    StringUtils.stripColors(NEW_CURRENT_ATTACKING.getFormattedCommandSenderName().getFormattedText()) : "";
+            NEW_CURRENT_ATTACKING_NAME = NEW_CURRENT_ATTACKING != null
+                    ? StringUtils.stripColors(
+                            NEW_CURRENT_ATTACKING.func_145748_c_().getFormattedText())
+                    : "";
         }
 
         if (NEW_CURRENT_RIDING instanceof EntityPlayer) {
             final EntityPlayer NEW_CURRENT_PLAYER_RIDING = (EntityPlayer) NEW_CURRENT_RIDING;
-            NEW_CURRENT_RIDING_NAME = StringUtils.stripColors(NEW_CURRENT_PLAYER_RIDING.getGameProfile().getId().toString());
+            NEW_CURRENT_RIDING_NAME = StringUtils.stripColors(
+                    NEW_CURRENT_PLAYER_RIDING.getGameProfile().getId().toString());
         } else {
-            NEW_CURRENT_RIDING_NAME = NEW_CURRENT_RIDING != null ?
-                    StringUtils.stripColors(NEW_CURRENT_RIDING.getFormattedCommandSenderName().getFormattedText()) : "";
+            NEW_CURRENT_RIDING_NAME = NEW_CURRENT_RIDING != null
+                    ? StringUtils.stripColors(
+                            NEW_CURRENT_RIDING.func_145748_c_().getFormattedText())
+                    : "";
         }
 
-        final boolean hasTargetChanged = (NEW_CURRENT_TARGET != null &&
-                !NEW_CURRENT_TARGET.equals(CURRENT_TARGET) || !NEW_CURRENT_TARGET_NAME.equals(CURRENT_TARGET_NAME)) ||
-                (NEW_CURRENT_TARGET == null && CURRENT_TARGET != null);
-        final boolean hasAttackingChanged = (NEW_CURRENT_ATTACKING != null &&
-                !NEW_CURRENT_ATTACKING.equals(CURRENT_ATTACKING) || !NEW_CURRENT_ATTACKING_NAME.equals(CURRENT_ATTACKING_NAME)) ||
-                (NEW_CURRENT_ATTACKING == null && CURRENT_ATTACKING != null);
-        final boolean hasRidingChanged = (NEW_CURRENT_RIDING != null &&
-                !NEW_CURRENT_RIDING.equals(CURRENT_RIDING) || !NEW_CURRENT_RIDING_NAME.equals(CURRENT_RIDING_NAME)) ||
-                (NEW_CURRENT_RIDING == null && CURRENT_RIDING != null);
+        final boolean hasTargetChanged = (NEW_CURRENT_TARGET != null && !NEW_CURRENT_TARGET.equals(CURRENT_TARGET)
+                        || !NEW_CURRENT_TARGET_NAME.equals(CURRENT_TARGET_NAME))
+                || (NEW_CURRENT_TARGET == null && CURRENT_TARGET != null);
+        final boolean hasAttackingChanged =
+                (NEW_CURRENT_ATTACKING != null && !NEW_CURRENT_ATTACKING.equals(CURRENT_ATTACKING)
+                                || !NEW_CURRENT_ATTACKING_NAME.equals(CURRENT_ATTACKING_NAME))
+                        || (NEW_CURRENT_ATTACKING == null && CURRENT_ATTACKING != null);
+        final boolean hasRidingChanged = (NEW_CURRENT_RIDING != null && !NEW_CURRENT_RIDING.equals(CURRENT_RIDING)
+                        || !NEW_CURRENT_RIDING_NAME.equals(CURRENT_RIDING_NAME))
+                || (NEW_CURRENT_RIDING == null && CURRENT_RIDING != null);
 
         if (hasTargetChanged) {
             CURRENT_TARGET = NEW_CURRENT_TARGET;
             CURRENT_TARGET_TAG = CURRENT_TARGET != null ? CURRENT_TARGET.getEntityData() : null;
-            final List<String> NEW_CURRENT_TARGET_TAGS = CURRENT_TARGET_TAG != null ? Lists.newArrayList(CURRENT_TARGET_TAG.getKeySet()) : Lists.newArrayList();
+            final List<String> NEW_CURRENT_TARGET_TAGS = CURRENT_TARGET_TAG != null
+                    ? Lists.newArrayList(CURRENT_TARGET_TAG.func_150296_c())
+                    : Lists.newArrayList();
 
             if (!NEW_CURRENT_TARGET_TAGS.equals(CURRENT_TARGET_TAGS)) {
                 CURRENT_TARGET_TAGS = NEW_CURRENT_TARGET_TAGS;
@@ -239,7 +254,9 @@ public class EntityUtils {
         if (hasAttackingChanged) {
             CURRENT_ATTACKING = NEW_CURRENT_ATTACKING;
             CURRENT_ATTACKING_TAG = CURRENT_ATTACKING != null ? CURRENT_ATTACKING.getEntityData() : null;
-            final List<String> NEW_CURRENT_ATTACKING_TAGS = CURRENT_ATTACKING_TAG != null ? Lists.newArrayList(CURRENT_ATTACKING_TAG.getKeySet()) : Lists.newArrayList();
+            final List<String> NEW_CURRENT_ATTACKING_TAGS = CURRENT_ATTACKING_TAG != null
+                    ? Lists.newArrayList(CURRENT_ATTACKING_TAG.func_150296_c())
+                    : Lists.newArrayList();
 
             if (!NEW_CURRENT_ATTACKING_TAGS.equals(CURRENT_ATTACKING_TAGS)) {
                 CURRENT_ATTACKING_TAGS = NEW_CURRENT_ATTACKING_TAGS;
@@ -250,7 +267,9 @@ public class EntityUtils {
         if (hasRidingChanged) {
             CURRENT_RIDING = NEW_CURRENT_RIDING;
             CURRENT_RIDING_TAG = CURRENT_RIDING != null ? CURRENT_RIDING.getEntityData() : null;
-            final List<String> NEW_CURRENT_RIDING_TAGS = CURRENT_RIDING_TAG != null ? Lists.newArrayList(CURRENT_RIDING_TAG.getKeySet()) : Lists.newArrayList();
+            final List<String> NEW_CURRENT_RIDING_TAGS = CURRENT_RIDING_TAG != null
+                    ? Lists.newArrayList(CURRENT_RIDING_TAG.func_150296_c())
+                    : Lists.newArrayList();
 
             if (!NEW_CURRENT_RIDING_TAGS.equals(CURRENT_RIDING_TAGS)) {
                 CURRENT_RIDING_TAGS = NEW_CURRENT_RIDING_TAGS;
@@ -269,28 +288,44 @@ public class EntityUtils {
      */
     public void updateEntityPresence() {
         // Retrieve Messages
-        final String defaultEntityTargetMessage = StringUtils.getConfigPart(CraftPresence.CONFIG.entityTargetMessages,
-                "default", 0, 1, CraftPresence.CONFIG.splitCharacter,
+        final String defaultEntityTargetMessage = StringUtils.getConfigPart(
+                CraftPresence.CONFIG.entityTargetMessages, "default", 0, 1, CraftPresence.CONFIG.splitCharacter, null);
+        final String defaultEntityAttackingMessage = StringUtils.getConfigPart(
+                CraftPresence.CONFIG.entityAttackingMessages,
+                "default",
+                0,
+                1,
+                CraftPresence.CONFIG.splitCharacter,
                 null);
-        final String defaultEntityAttackingMessage = StringUtils.getConfigPart(CraftPresence.CONFIG.entityAttackingMessages,
-                "default", 0, 1, CraftPresence.CONFIG.splitCharacter,
-                null);
-        final String defaultEntityRidingMessage = StringUtils.getConfigPart(CraftPresence.CONFIG.entityRidingMessages,
-                "default", 0, 1, CraftPresence.CONFIG.splitCharacter,
-                null);
+        final String defaultEntityRidingMessage = StringUtils.getConfigPart(
+                CraftPresence.CONFIG.entityRidingMessages, "default", 0, 1, CraftPresence.CONFIG.splitCharacter, null);
 
-        final String targetEntityMessage = StringUtils.getConfigPart(CraftPresence.CONFIG.entityTargetMessages,
-                CURRENT_TARGET_NAME, 0, 1, CraftPresence.CONFIG.splitCharacter,
+        final String targetEntityMessage = StringUtils.getConfigPart(
+                CraftPresence.CONFIG.entityTargetMessages,
+                CURRENT_TARGET_NAME,
+                0,
+                1,
+                CraftPresence.CONFIG.splitCharacter,
                 defaultEntityTargetMessage);
-        final String attackingEntityMessage = StringUtils.getConfigPart(CraftPresence.CONFIG.entityAttackingMessages,
-                CURRENT_ATTACKING_NAME, 0, 1, CraftPresence.CONFIG.splitCharacter,
+        final String attackingEntityMessage = StringUtils.getConfigPart(
+                CraftPresence.CONFIG.entityAttackingMessages,
+                CURRENT_ATTACKING_NAME,
+                0,
+                1,
+                CraftPresence.CONFIG.splitCharacter,
                 defaultEntityAttackingMessage);
-        final String ridingEntityMessage = StringUtils.getConfigPart(CraftPresence.CONFIG.entityRidingMessages,
-                CURRENT_RIDING_NAME, 0, 1, CraftPresence.CONFIG.splitCharacter,
+        final String ridingEntityMessage = StringUtils.getConfigPart(
+                CraftPresence.CONFIG.entityRidingMessages,
+                CURRENT_RIDING_NAME,
+                0,
+                1,
+                CraftPresence.CONFIG.splitCharacter,
                 defaultEntityRidingMessage);
 
         // Form Entity Argument List
-        final List<Pair<String, String>> entityTargetArgs = Lists.newArrayList(), entityAttackingArgs = Lists.newArrayList(), entityRidingArgs = Lists.newArrayList();
+        final List<Pair<String, String>> entityTargetArgs = Lists.newArrayList(),
+                entityAttackingArgs = Lists.newArrayList(),
+                entityRidingArgs = Lists.newArrayList();
 
         entityTargetArgs.add(new Pair<>("&entity&", CURRENT_TARGET_NAME));
         entityAttackingArgs.add(new Pair<>("&entity&", CURRENT_ATTACKING_NAME));
@@ -299,19 +334,23 @@ public class EntityUtils {
         // Extend Arguments, if tags available
         if (!CURRENT_TARGET_TAGS.isEmpty()) {
             for (String tagName : CURRENT_TARGET_TAGS) {
-                entityTargetArgs.add(new Pair<>("&" + tagName + "&", CURRENT_TARGET_TAG.getTag(tagName).toString()));
+                entityTargetArgs.add(new Pair<>(
+                        "&" + tagName + "&", CURRENT_TARGET_TAG.getTag(tagName).toString()));
             }
         }
 
         if (!CURRENT_ATTACKING_TAGS.isEmpty()) {
             for (String tagName : CURRENT_ATTACKING_TAGS) {
-                entityAttackingArgs.add(new Pair<>("&" + tagName + "&", CURRENT_ATTACKING_TAG.getTag(tagName).toString()));
+                entityAttackingArgs.add(new Pair<>(
+                        "&" + tagName + "&",
+                        CURRENT_ATTACKING_TAG.getTag(tagName).toString()));
             }
         }
 
         if (!CURRENT_RIDING_TAGS.isEmpty()) {
             for (String tagName : CURRENT_RIDING_TAGS) {
-                entityRidingArgs.add(new Pair<>("&" + tagName + "&", CURRENT_RIDING_TAG.getTag(tagName).toString()));
+                entityRidingArgs.add(new Pair<>(
+                        "&" + tagName + "&", CURRENT_RIDING_TAG.getTag(tagName).toString()));
             }
         }
 
@@ -322,9 +361,12 @@ public class EntityUtils {
             entityRidingArgs.addAll(CraftPresence.CLIENT.generalArgs);
         }
 
-        final String CURRENT_TARGET_MESSAGE = StringUtils.sequentialReplaceAnyCase(targetEntityMessage, entityTargetArgs);
-        final String CURRENT_ATTACKING_MESSAGE = StringUtils.sequentialReplaceAnyCase(attackingEntityMessage, entityAttackingArgs);
-        final String CURRENT_RIDING_MESSAGE = StringUtils.sequentialReplaceAnyCase(ridingEntityMessage, entityRidingArgs);
+        final String CURRENT_TARGET_MESSAGE =
+                StringUtils.sequentialReplaceAnyCase(targetEntityMessage, entityTargetArgs);
+        final String CURRENT_ATTACKING_MESSAGE =
+                StringUtils.sequentialReplaceAnyCase(attackingEntityMessage, entityAttackingArgs);
+        final String CURRENT_RIDING_MESSAGE =
+                StringUtils.sequentialReplaceAnyCase(ridingEntityMessage, entityRidingArgs);
 
         // NOTE: Only Apply if Entities are not Empty, otherwise Clear Argument
         if (!allEntitiesEmpty) {
@@ -343,9 +385,11 @@ public class EntityUtils {
      * @return A List of Tags from a Entity name, if currently equipped
      */
     public List<String> getListFromName(final String name) {
-        return name.equalsIgnoreCase(CURRENT_TARGET_NAME) ? CURRENT_TARGET_TAGS
-                : name.equalsIgnoreCase(CURRENT_ATTACKING_NAME) ? CURRENT_ATTACKING_TAGS
-                : name.equalsIgnoreCase(CURRENT_RIDING_NAME) ? CURRENT_RIDING_TAGS : Lists.newArrayList();
+        return name.equalsIgnoreCase(CURRENT_TARGET_NAME)
+                ? CURRENT_TARGET_TAGS
+                : name.equalsIgnoreCase(CURRENT_ATTACKING_NAME)
+                        ? CURRENT_ATTACKING_TAGS
+                        : name.equalsIgnoreCase(CURRENT_RIDING_NAME) ? CURRENT_RIDING_TAGS : Lists.newArrayList();
     }
 
     /**
@@ -364,10 +408,13 @@ public class EntityUtils {
 
                 if (addExtraData) {
                     // If specified, also append the Tag's value to the placeholder String
-                    final String tagValue =
-                            tags.equals(CURRENT_TARGET_TAGS) ? CURRENT_TARGET_TAG.getTag(tagName).toString() :
-                                    tags.equals(CURRENT_ATTACKING_TAGS) ? CURRENT_ATTACKING_TAG.getTag(tagName).toString() :
-                                            tags.equals(CURRENT_RIDING_TAGS) ? CURRENT_RIDING_TAG.getTag(tagName).toString() : null;
+                    final String tagValue = tags.equals(CURRENT_TARGET_TAGS)
+                            ? CURRENT_TARGET_TAG.getTag(tagName).toString()
+                            : tags.equals(CURRENT_ATTACKING_TAGS)
+                                    ? CURRENT_ATTACKING_TAG.getTag(tagName).toString()
+                                    : tags.equals(CURRENT_RIDING_TAGS)
+                                            ? CURRENT_RIDING_TAG.getTag(tagName).toString()
+                                            : null;
 
                     if (!StringUtils.isNullOrEmpty(tagValue)) {
                         finalString.append(" (Value -> ").append(tagValue).append(")");
@@ -375,7 +422,8 @@ public class EntityUtils {
                 }
             }
         }
-        return ((!StringUtils.isNullOrEmpty(name) ? name : "None") + " " + (!StringUtils.isNullOrEmpty(finalString.toString()) ? finalString.toString() : "\\n - N/A"));
+        return ((!StringUtils.isNullOrEmpty(name) ? name : "None") + " "
+                + (!StringUtils.isNullOrEmpty(finalString.toString()) ? finalString.toString() : "\\n - N/A"));
     }
 
     /**

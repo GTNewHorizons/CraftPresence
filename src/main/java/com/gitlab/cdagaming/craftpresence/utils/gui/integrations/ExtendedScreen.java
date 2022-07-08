@@ -32,15 +32,14 @@ import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ExtendedButtonContr
 import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ExtendedTextControl;
 import com.gitlab.cdagaming.craftpresence.utils.gui.controls.ScrollableListControl;
 import com.google.common.collect.Lists;
+import java.util.List;
+import javax.annotation.Nonnull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 /**
  * An Extended and Globalized Gui Screen
@@ -236,7 +235,7 @@ public class ExtendedScreen extends GuiScreen {
             preRender();
 
             for (ScrollableListControl listControl : extendedLists) {
-                if (listControl.getEnabled()) {
+                if (listControl.func_148125_i()) {
                     listControl.drawScreen(mouseX, mouseY, partialTicks);
                 }
             }
@@ -385,11 +384,21 @@ public class ExtendedScreen extends GuiScreen {
      * @param useXAsActual Whether or not to use the widthScale as the actual X value
      * @param useYAsActual Whether or not to use the heightScale as the actual Y value
      */
-    public void renderNotice(final List<String> notice, final float widthScale, final float heightScale, final boolean useXAsActual, final boolean useYAsActual) {
+    public void renderNotice(
+            final List<String> notice,
+            final float widthScale,
+            final float heightScale,
+            final boolean useXAsActual,
+            final boolean useYAsActual) {
         if (notice != null && !notice.isEmpty()) {
             for (int i = 0; i < notice.size(); i++) {
                 final String string = notice.get(i);
-                renderString(string, (useXAsActual ? widthScale : (width / widthScale)) - (StringUtils.getStringWidth(string) / widthScale), (useYAsActual ? heightScale : (height / heightScale)) + (i * 10), 0xFFFFFF);
+                renderString(
+                        string,
+                        (useXAsActual ? widthScale : (width / widthScale))
+                                - (StringUtils.getStringWidth(string) / widthScale),
+                        (useYAsActual ? heightScale : (height / heightScale)) + (i * 10),
+                        0xFFFFFF);
             }
         }
     }
@@ -440,7 +449,7 @@ public class ExtendedScreen extends GuiScreen {
      * @return The Current Font Renderer for this Screen
      */
     public FontRenderer getFontRenderer() {
-        return mc.fontRendererObj != null ? mc.fontRendererObj : GuiUtils.getDefaultFontRenderer();
+        return mc.fontRenderer != null ? mc.fontRenderer : GuiUtils.getDefaultFontRenderer();
     }
 
     /**

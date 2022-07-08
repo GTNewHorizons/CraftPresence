@@ -43,4 +43,3 @@ public interface DataConsumer<T> {
      */
     void accept(T t);
 }
-

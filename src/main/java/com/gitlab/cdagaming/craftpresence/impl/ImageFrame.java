@@ -24,14 +24,6 @@
 
 package com.gitlab.cdagaming.craftpresence.impl;
 
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.metadata.IIOMetadataNode;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -39,6 +31,13 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Image Conversion Layers and Utilities used to translate other Image Types
@@ -81,7 +80,8 @@ public class ImageFrame {
      * @param width    The width of this image
      * @param height   The height of this image
      */
-    public ImageFrame(final BufferedImage image, final int delay, final String disposal, final int width, final int height) {
+    public ImageFrame(
+            final BufferedImage image, final int delay, final String disposal, final int width, final int height) {
         this.image = image;
         this.delay = delay;
         this.disposal = disposal;
@@ -122,7 +122,8 @@ public class ImageFrame {
         Color backgroundColor = null;
 
         if (metadata != null) {
-            final IIOMetadataNode globalRoot = (IIOMetadataNode) metadata.getAsTree(metadata.getNativeMetadataFormatName());
+            final IIOMetadataNode globalRoot =
+                    (IIOMetadataNode) metadata.getAsTree(metadata.getNativeMetadataFormatName());
 
             final NodeList globalColorTable = globalRoot.getElementsByTagName("GlobalColorTable");
             final NodeList globalScreeDescriptor = globalRoot.getElementsByTagName("LogicalScreenDescriptor");
@@ -175,8 +176,10 @@ public class ImageFrame {
                 height = image.getHeight();
             }
 
-            final IIOMetadataNode root = (IIOMetadataNode) reader.getImageMetadata(frameIndex).getAsTree("javax_imageio_gif_image_1.0");
-            final IIOMetadataNode gce = (IIOMetadataNode) root.getElementsByTagName("GraphicControlExtension").item(0);
+            final IIOMetadataNode root =
+                    (IIOMetadataNode) reader.getImageMetadata(frameIndex).getAsTree("javax_imageio_gif_image_1.0");
+            final IIOMetadataNode gce = (IIOMetadataNode)
+                    root.getElementsByTagName("GraphicControlExtension").item(0);
             final NodeList children = root.getChildNodes();
 
             final int delay = Integer.parseInt(gce.getAttribute("delayTime"));
@@ -201,8 +204,10 @@ public class ImageFrame {
                     if (nodeItem.getNodeName().equals("ImageDescriptor")) {
                         final NamedNodeMap map = nodeItem.getAttributes();
 
-                        x = Integer.parseInt(map.getNamedItem("imageLeftPosition").getNodeValue());
-                        y = Integer.parseInt(map.getNamedItem("imageTopPosition").getNodeValue());
+                        x = Integer.parseInt(
+                                map.getNamedItem("imageLeftPosition").getNodeValue());
+                        y = Integer.parseInt(
+                                map.getNamedItem("imageTopPosition").getNodeValue());
                     }
                 }
 
@@ -221,8 +226,15 @@ public class ImageFrame {
                         final WritableRaster raster = from.copyData(null);
                         master = new BufferedImage(model, raster, alpha, null);
                     }
-                } else if (disposal.equals("restoreToBackgroundColor") && backgroundColor != null && (!hasBackground || frameIndex > 1)) {
-                    master.createGraphics().fillRect(lastX, lastY, frames.get(frameIndex - 1).getWidth(), frames.get(frameIndex - 1).getHeight());
+                } else if (disposal.equals("restoreToBackgroundColor")
+                        && backgroundColor != null
+                        && (!hasBackground || frameIndex > 1)) {
+                    master.createGraphics()
+                            .fillRect(
+                                    lastX,
+                                    lastY,
+                                    frames.get(frameIndex - 1).getWidth(),
+                                    frames.get(frameIndex - 1).getHeight());
                 }
                 master.createGraphics().drawImage(image, x, y, null);
 

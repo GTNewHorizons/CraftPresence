@@ -25,7 +25,6 @@
 package com.gitlab.cdagaming.craftpresence.impl;
 
 import com.gitlab.cdagaming.craftpresence.ModUtils;
-
 import java.util.HashMap;
 
 /**
@@ -183,136 +182,137 @@ public class KeyConverter {
      * Note: Characters that are Unavailable in lwjgl2 are listed as lwjgl2's Unknown Keycode (0)
      * Format: LWJGL3 Key;[LWJGL2 Key, Universal Key Name]
      */
-    public static final HashMap<Integer, Pair<Integer, String>> fromGlfw = new HashMap<Integer, Pair<Integer, String>>() {
-        /**
-         * The serialized unique version identifier
-         */
-        private static final long serialVersionUID = 1L;
+    public static final HashMap<Integer, Pair<Integer, String>> fromGlfw =
+            new HashMap<Integer, Pair<Integer, String>>() {
+                /**
+                 * The serialized unique version identifier
+                 */
+                private static final long serialVersionUID = 1L;
 
-        {
-            put(-1, new Pair<>(0, "None"));
-            put(32, new Pair<>(57, "Space"));
-            put(39, new Pair<>(40, "Apostrophe"));
-            put(44, new Pair<>(51, "Comma"));
-            put(45, new Pair<>(12, "Minus"));
-            put(46, new Pair<>(52, "Period"));
-            put(47, new Pair<>(53, "Slash"));
-            put(48, new Pair<>(11, "0"));
-            put(49, new Pair<>(2, "1"));
-            put(50, new Pair<>(3, "2"));
-            put(51, new Pair<>(4, "3"));
-            put(52, new Pair<>(5, "4"));
-            put(53, new Pair<>(6, "5"));
-            put(54, new Pair<>(7, "6"));
-            put(55, new Pair<>(8, "7"));
-            put(56, new Pair<>(9, "8"));
-            put(57, new Pair<>(10, "9"));
-            put(59, new Pair<>(39, "Semicolon"));
-            put(61, new Pair<>(13, "Equals"));
-            put(65, new Pair<>(30, "A"));
-            put(66, new Pair<>(48, "B"));
-            put(67, new Pair<>(46, "C"));
-            put(68, new Pair<>(32, "D"));
-            put(69, new Pair<>(18, "E"));
-            put(70, new Pair<>(33, "F"));
-            put(71, new Pair<>(34, "G"));
-            put(72, new Pair<>(35, "H"));
-            put(73, new Pair<>(23, "I"));
-            put(74, new Pair<>(36, "J"));
-            put(75, new Pair<>(37, "K"));
-            put(76, new Pair<>(38, "L"));
-            put(77, new Pair<>(50, "M"));
-            put(78, new Pair<>(49, "N"));
-            put(79, new Pair<>(24, "O"));
-            put(80, new Pair<>(25, "P"));
-            put(81, new Pair<>(16, "Q"));
-            put(82, new Pair<>(19, "R"));
-            put(83, new Pair<>(31, "S"));
-            put(84, new Pair<>(20, "T"));
-            put(85, new Pair<>(22, "U"));
-            put(86, new Pair<>(47, "V"));
-            put(87, new Pair<>(17, "W"));
-            put(88, new Pair<>(45, "X"));
-            put(89, new Pair<>(21, "Y"));
-            put(90, new Pair<>(44, "Z"));
-            put(91, new Pair<>(26, "Left Bracket"));
-            put(92, new Pair<>(43, "Backslash"));
-            put(93, new Pair<>(27, "Right Bracket"));
-            put(96, new Pair<>(41, "Grave"));
-            put(161, new Pair<>(0, "WORLD_1"));
-            put(162, new Pair<>(0, "WORLD_2"));
-            put(256, new Pair<>(1, "Escape"));
-            put(257, new Pair<>(28, "Return / Enter"));
-            put(258, new Pair<>(15, "Tab"));
-            put(259, new Pair<>(14, "Backspace"));
-            put(260, new Pair<>(210, "Insert"));
-            put(261, new Pair<>(211, "Delete"));
-            put(262, new Pair<>(205, "Right Arrow"));
-            put(263, new Pair<>(203, "Left Arrow"));
-            put(264, new Pair<>(208, "Down Arrow"));
-            put(265, new Pair<>(200, "Up Arrow"));
-            put(266, new Pair<>(201, "Page Up"));
-            put(267, new Pair<>(209, "Page Down"));
-            put(268, new Pair<>(199, "Home"));
-            put(269, new Pair<>(207, "End"));
-            put(280, new Pair<>(58, "Caps Lock"));
-            put(281, new Pair<>(70, "Scroll Lock"));
-            put(282, new Pair<>(69, "Number Lock"));
-            put(283, new Pair<>(0, "Print Screen"));
-            put(284, new Pair<>(197, "Pause"));
-            put(290, new Pair<>(59, "F1"));
-            put(291, new Pair<>(60, "F2"));
-            put(292, new Pair<>(61, "F3"));
-            put(293, new Pair<>(62, "F4"));
-            put(294, new Pair<>(63, "F5"));
-            put(295, new Pair<>(64, "F6"));
-            put(296, new Pair<>(65, "F7"));
-            put(297, new Pair<>(66, "F8"));
-            put(298, new Pair<>(67, "F9"));
-            put(299, new Pair<>(68, "F10"));
-            put(300, new Pair<>(87, "F11"));
-            put(301, new Pair<>(88, "F12"));
-            put(302, new Pair<>(100, "F13"));
-            put(303, new Pair<>(101, "F14"));
-            put(304, new Pair<>(102, "F15"));
-            put(305, new Pair<>(103, "F16"));
-            put(306, new Pair<>(104, "F17"));
-            put(307, new Pair<>(105, "F18"));
-            put(308, new Pair<>(113, "F19"));
-            put(309, new Pair<>(0, "F20"));
-            put(310, new Pair<>(0, "F21"));
-            put(311, new Pair<>(0, "F22"));
-            put(312, new Pair<>(0, "F23"));
-            put(313, new Pair<>(0, "F24"));
-            put(314, new Pair<>(0, "F25"));
-            put(320, new Pair<>(82, "Keypad - 0"));
-            put(321, new Pair<>(79, "Keypad - 1"));
-            put(322, new Pair<>(80, "Keypad - 2"));
-            put(323, new Pair<>(81, "Keypad - 3"));
-            put(324, new Pair<>(75, "Keypad - 4"));
-            put(325, new Pair<>(76, "Keypad - 5"));
-            put(326, new Pair<>(77, "Keypad - 6"));
-            put(327, new Pair<>(71, "Keypad - 7"));
-            put(328, new Pair<>(72, "Keypad - 8"));
-            put(329, new Pair<>(73, "Keypad - 9"));
-            put(330, new Pair<>(83, "Keypad - Decimal"));
-            put(331, new Pair<>(181, "Keypad - Divide"));
-            put(332, new Pair<>(55, "Keypad - Multiply"));
-            put(333, new Pair<>(74, "Keypad - Subtract"));
-            put(334, new Pair<>(78, "Keypad - Add"));
-            put(335, new Pair<>(156, "Keypad - Enter"));
-            put(336, new Pair<>(141, "Keypad - Equals"));
-            put(340, new Pair<>(42, "Left Shift"));
-            put(341, new Pair<>(29, "Left Control"));
-            put(342, new Pair<>(56, "Left Alt"));
-            put(343, new Pair<>(219, "Left Meta"));
-            put(344, new Pair<>(54, "Right Shift"));
-            put(345, new Pair<>(157, "Right Control"));
-            put(346, new Pair<>(184, "Right Alt"));
-            put(347, new Pair<>(220, "Right Meta"));
-            put(348, new Pair<>(0, "KEY_MENU"));
-        }
-    };
+                {
+                    put(-1, new Pair<>(0, "None"));
+                    put(32, new Pair<>(57, "Space"));
+                    put(39, new Pair<>(40, "Apostrophe"));
+                    put(44, new Pair<>(51, "Comma"));
+                    put(45, new Pair<>(12, "Minus"));
+                    put(46, new Pair<>(52, "Period"));
+                    put(47, new Pair<>(53, "Slash"));
+                    put(48, new Pair<>(11, "0"));
+                    put(49, new Pair<>(2, "1"));
+                    put(50, new Pair<>(3, "2"));
+                    put(51, new Pair<>(4, "3"));
+                    put(52, new Pair<>(5, "4"));
+                    put(53, new Pair<>(6, "5"));
+                    put(54, new Pair<>(7, "6"));
+                    put(55, new Pair<>(8, "7"));
+                    put(56, new Pair<>(9, "8"));
+                    put(57, new Pair<>(10, "9"));
+                    put(59, new Pair<>(39, "Semicolon"));
+                    put(61, new Pair<>(13, "Equals"));
+                    put(65, new Pair<>(30, "A"));
+                    put(66, new Pair<>(48, "B"));
+                    put(67, new Pair<>(46, "C"));
+                    put(68, new Pair<>(32, "D"));
+                    put(69, new Pair<>(18, "E"));
+                    put(70, new Pair<>(33, "F"));
+                    put(71, new Pair<>(34, "G"));
+                    put(72, new Pair<>(35, "H"));
+                    put(73, new Pair<>(23, "I"));
+                    put(74, new Pair<>(36, "J"));
+                    put(75, new Pair<>(37, "K"));
+                    put(76, new Pair<>(38, "L"));
+                    put(77, new Pair<>(50, "M"));
+                    put(78, new Pair<>(49, "N"));
+                    put(79, new Pair<>(24, "O"));
+                    put(80, new Pair<>(25, "P"));
+                    put(81, new Pair<>(16, "Q"));
+                    put(82, new Pair<>(19, "R"));
+                    put(83, new Pair<>(31, "S"));
+                    put(84, new Pair<>(20, "T"));
+                    put(85, new Pair<>(22, "U"));
+                    put(86, new Pair<>(47, "V"));
+                    put(87, new Pair<>(17, "W"));
+                    put(88, new Pair<>(45, "X"));
+                    put(89, new Pair<>(21, "Y"));
+                    put(90, new Pair<>(44, "Z"));
+                    put(91, new Pair<>(26, "Left Bracket"));
+                    put(92, new Pair<>(43, "Backslash"));
+                    put(93, new Pair<>(27, "Right Bracket"));
+                    put(96, new Pair<>(41, "Grave"));
+                    put(161, new Pair<>(0, "WORLD_1"));
+                    put(162, new Pair<>(0, "WORLD_2"));
+                    put(256, new Pair<>(1, "Escape"));
+                    put(257, new Pair<>(28, "Return / Enter"));
+                    put(258, new Pair<>(15, "Tab"));
+                    put(259, new Pair<>(14, "Backspace"));
+                    put(260, new Pair<>(210, "Insert"));
+                    put(261, new Pair<>(211, "Delete"));
+                    put(262, new Pair<>(205, "Right Arrow"));
+                    put(263, new Pair<>(203, "Left Arrow"));
+                    put(264, new Pair<>(208, "Down Arrow"));
+                    put(265, new Pair<>(200, "Up Arrow"));
+                    put(266, new Pair<>(201, "Page Up"));
+                    put(267, new Pair<>(209, "Page Down"));
+                    put(268, new Pair<>(199, "Home"));
+                    put(269, new Pair<>(207, "End"));
+                    put(280, new Pair<>(58, "Caps Lock"));
+                    put(281, new Pair<>(70, "Scroll Lock"));
+                    put(282, new Pair<>(69, "Number Lock"));
+                    put(283, new Pair<>(0, "Print Screen"));
+                    put(284, new Pair<>(197, "Pause"));
+                    put(290, new Pair<>(59, "F1"));
+                    put(291, new Pair<>(60, "F2"));
+                    put(292, new Pair<>(61, "F3"));
+                    put(293, new Pair<>(62, "F4"));
+                    put(294, new Pair<>(63, "F5"));
+                    put(295, new Pair<>(64, "F6"));
+                    put(296, new Pair<>(65, "F7"));
+                    put(297, new Pair<>(66, "F8"));
+                    put(298, new Pair<>(67, "F9"));
+                    put(299, new Pair<>(68, "F10"));
+                    put(300, new Pair<>(87, "F11"));
+                    put(301, new Pair<>(88, "F12"));
+                    put(302, new Pair<>(100, "F13"));
+                    put(303, new Pair<>(101, "F14"));
+                    put(304, new Pair<>(102, "F15"));
+                    put(305, new Pair<>(103, "F16"));
+                    put(306, new Pair<>(104, "F17"));
+                    put(307, new Pair<>(105, "F18"));
+                    put(308, new Pair<>(113, "F19"));
+                    put(309, new Pair<>(0, "F20"));
+                    put(310, new Pair<>(0, "F21"));
+                    put(311, new Pair<>(0, "F22"));
+                    put(312, new Pair<>(0, "F23"));
+                    put(313, new Pair<>(0, "F24"));
+                    put(314, new Pair<>(0, "F25"));
+                    put(320, new Pair<>(82, "Keypad - 0"));
+                    put(321, new Pair<>(79, "Keypad - 1"));
+                    put(322, new Pair<>(80, "Keypad - 2"));
+                    put(323, new Pair<>(81, "Keypad - 3"));
+                    put(324, new Pair<>(75, "Keypad - 4"));
+                    put(325, new Pair<>(76, "Keypad - 5"));
+                    put(326, new Pair<>(77, "Keypad - 6"));
+                    put(327, new Pair<>(71, "Keypad - 7"));
+                    put(328, new Pair<>(72, "Keypad - 8"));
+                    put(329, new Pair<>(73, "Keypad - 9"));
+                    put(330, new Pair<>(83, "Keypad - Decimal"));
+                    put(331, new Pair<>(181, "Keypad - Divide"));
+                    put(332, new Pair<>(55, "Keypad - Multiply"));
+                    put(333, new Pair<>(74, "Keypad - Subtract"));
+                    put(334, new Pair<>(78, "Keypad - Add"));
+                    put(335, new Pair<>(156, "Keypad - Enter"));
+                    put(336, new Pair<>(141, "Keypad - Equals"));
+                    put(340, new Pair<>(42, "Left Shift"));
+                    put(341, new Pair<>(29, "Left Control"));
+                    put(342, new Pair<>(56, "Left Alt"));
+                    put(343, new Pair<>(219, "Left Meta"));
+                    put(344, new Pair<>(54, "Right Shift"));
+                    put(345, new Pair<>(157, "Right Control"));
+                    put(346, new Pair<>(184, "Right Alt"));
+                    put(347, new Pair<>(220, "Right Meta"));
+                    put(348, new Pair<>(0, "KEY_MENU"));
+                }
+            };
 
     /**
      * Converts a KeyCode using the Specified Conversion Mode, if possible
@@ -328,15 +328,26 @@ public class KeyConverter {
         int resultKey = originalKey;
 
         if (fromGlfw.containsKey(originalKey) || toGlfw.containsKey(originalKey)) {
-            if (mode == ConversionMode.Lwjgl2 || (mode == ConversionMode.None && fromGlfw.containsKey(originalKey) && toGlfw.containsValue(new Pair<>(originalKey, fromGlfw.get(originalKey).getSecond())) && ModUtils.MCProtocolID <= 340)) {
+            if (mode == ConversionMode.Lwjgl2
+                    || (mode == ConversionMode.None
+                            && fromGlfw.containsKey(originalKey)
+                            && toGlfw.containsValue(new Pair<>(
+                                    originalKey, fromGlfw.get(originalKey).getSecond()))
+                            && ModUtils.MCProtocolID <= 340)) {
                 resultKey = fromGlfw.getOrDefault(originalKey, unknownKeyData).getFirst();
-            } else if (mode == ConversionMode.Lwjgl3 || (mode == ConversionMode.None && toGlfw.containsKey(originalKey) && fromGlfw.containsValue(new Pair<>(originalKey, toGlfw.get(originalKey).getSecond())) && ModUtils.MCProtocolID > 340)) {
+            } else if (mode == ConversionMode.Lwjgl3
+                    || (mode == ConversionMode.None
+                            && toGlfw.containsKey(originalKey)
+                            && fromGlfw.containsValue(new Pair<>(
+                                    originalKey, toGlfw.get(originalKey).getSecond()))
+                            && ModUtils.MCProtocolID > 340)) {
                 resultKey = toGlfw.getOrDefault(originalKey, unknownKeyData).getFirst();
             }
         }
 
         if (resultKey == originalKey && mode != ConversionMode.None) {
-            ModUtils.LOG.debugWarn(ModUtils.TRANSLATOR.translate("craftpresence.logger.warning.convert.invalid", Integer.toString(resultKey), mode.name()));
+            ModUtils.LOG.debugWarn(ModUtils.TRANSLATOR.translate(
+                    "craftpresence.logger.warning.convert.invalid", Integer.toString(resultKey), mode.name()));
         }
 
         return resultKey;
@@ -346,7 +357,9 @@ public class KeyConverter {
      * A Mapping storing the possible Conversion Modes for this module
      */
     public enum ConversionMode {
-        Lwjgl2, Lwjgl3, None, Unknown
+        Lwjgl2,
+        Lwjgl3,
+        None,
+        Unknown
     }
-
 }

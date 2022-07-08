@@ -30,9 +30,6 @@ import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.entities.Callback;
 import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.entities.Packet;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import org.newsclub.net.unix.AFUNIXSocket;
-import org.newsclub.net.unix.AFUNIXSocketAddress;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -41,6 +38,8 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import org.newsclub.net.unix.AFUNIXSocket;
+import org.newsclub.net.unix.AFUNIXSocketAddress;
 
 public class UnixPipe extends Pipe {
     private final AFUNIXSocket socket;
@@ -49,7 +48,7 @@ public class UnixPipe extends Pipe {
         super(ipcClient, callbacks);
 
         socket = AFUNIXSocket.newInstance();
-        socket.connect(new AFUNIXSocketAddress(new File(location)));
+        socket.connect(AFUNIXSocketAddress.of(new File(location)));
     }
 
     @Override
@@ -64,11 +63,9 @@ public class UnixPipe extends Pipe {
             }
         }
 
-        if (status == PipeStatus.DISCONNECTED)
-            throw new IOException("Disconnected!");
+        if (status == PipeStatus.DISCONNECTED) throw new IOException("Disconnected!");
 
-        if (status == PipeStatus.CLOSED)
-            return new Packet(Packet.OpCode.CLOSE, null, ipcClient.getEncoding());
+        if (status == PipeStatus.CLOSED) return new Packet(Packet.OpCode.CLOSE, null, ipcClient.getEncoding());
 
         // Read the op and length. Both are signed ints
         byte[] d = new byte[8];
@@ -85,7 +82,8 @@ public class UnixPipe extends Pipe {
         int reversedResult = is.read(d);
 
         if (ipcClient.isDebugMode() && ipcClient.isVerboseLogging()) {
-            ModUtils.LOG.debugInfo(String.format("Read Reversed Byte Data: %s with result %s", new String(d), reversedResult));
+            ModUtils.LOG.debugInfo(
+                    String.format("Read Reversed Byte Data: %s with result %s", new String(d), reversedResult));
         }
 
         return receive(op, d);
@@ -118,8 +116,7 @@ public class UnixPipe extends Pipe {
     public void registerApp(String applicationId, String command) {
         String home = System.getenv("HOME");
 
-        if (home == null)
-            throw new RuntimeException("Unable to find user HOME directory");
+        if (home == null) throw new RuntimeException("Unable to find user HOME directory");
 
         if (command == null) {
             try {
@@ -129,14 +126,13 @@ public class UnixPipe extends Pipe {
             }
         }
 
-        String desktopFile =
-                "[Desktop Entry]\n" +
-                        "Name=Game " + applicationId + "\n" +
-                        "Exec=" + command + " %%u\n" +
-                        "Type=Application\n" +
-                        "NoDisplay=true\n" +
-                        "Categories=Discord;Games;\n" +
-                        "MimeType=x-scheme-handler/discord-" + applicationId + ";\n";
+        String desktopFile = "[Desktop Entry]\n" + "Name=Game "
+                + applicationId + "\n" + "Exec="
+                + command + " %%u\n" + "Type=Application\n"
+                + "NoDisplay=true\n"
+                + "Categories=Discord;Games;\n"
+                + "MimeType=x-scheme-handler/discord-"
+                + applicationId + ";\n";
 
         String desktopFileName = "/discord-" + applicationId + ".desktop";
         String desktopFilePath = home + "/.local";
@@ -162,14 +158,14 @@ public class UnixPipe extends Pipe {
             throw new RuntimeException("Failed to write desktop info into '" + desktopFilePath + "'");
         }
 
-        String xdgMimeCommand = "xdg-mime default discord-" + applicationId + ".desktop x-scheme-handler/discord-" + applicationId;
+        String xdgMimeCommand =
+                "xdg-mime default discord-" + applicationId + ".desktop x-scheme-handler/discord-" + applicationId;
 
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(xdgMimeCommand.split(" "));
             processBuilder.environment();
             int result = processBuilder.start().waitFor();
-            if (result < 0)
-                throw new Exception("xdg-mime returned " + result);
+            if (result < 0) throw new Exception("xdg-mime returned " + result);
         } catch (Exception ex) {
             throw new RuntimeException("Failed to register mime handler", ex);
         }

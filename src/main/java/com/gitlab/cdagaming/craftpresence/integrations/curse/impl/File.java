@@ -32,11 +32,12 @@ public class File {
     @SerializedName("projectID")
     @Expose
     public Integer projectID;
+
     @SerializedName("fileID")
     @Expose
     public Integer fileID;
+
     @SerializedName("required")
     @Expose
     public Boolean required;
-
 }

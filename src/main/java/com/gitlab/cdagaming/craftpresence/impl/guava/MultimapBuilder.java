@@ -16,14 +16,13 @@
 
 package com.gitlab.cdagaming.craftpresence.impl.guava;
 
-import com.google.common.base.Supplier;
-import com.google.common.collect.*;
-
-import java.io.Serializable;
-import java.util.*;
-
 import static com.gitlab.cdagaming.craftpresence.impl.guava.CollectPreconditions.checkNonnegative;
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import com.google.common.base.Supplier;
+import com.google.common.collect.*;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * A builder for a multimap implementation that allows customization of the backing map and value
@@ -59,8 +58,7 @@ public abstract class MultimapBuilder<K0, V0> {
 
     private static final int DEFAULT_EXPECTED_KEYS = 8;
 
-    private MultimapBuilder() {
-    }
+    private MultimapBuilder() {}
 
     /**
      * Uses a {@link HashMap} to map keys to value collections.
@@ -157,8 +155,7 @@ public abstract class MultimapBuilder<K0, V0> {
     /**
      * Uses an {@link EnumMap} to map keys to value collections.
      */
-    public static <K0 extends Enum<K0>> MultimapBuilderWithKeys<K0> enumKeys(
-            final Class<K0> keyClass) {
+    public static <K0 extends Enum<K0>> MultimapBuilderWithKeys<K0> enumKeys(final Class<K0> keyClass) {
         checkNotNull(keyClass);
         return new MultimapBuilderWithKeys<K0>() {
             @Override
@@ -179,8 +176,7 @@ public abstract class MultimapBuilder<K0, V0> {
      * Returns a {@code Multimap} with the specified implementation, initialized with the entries of
      * {@code multimap}.
      */
-    public <K extends K0, V extends V0> Multimap<K, V> build(
-            Multimap<? extends K, ? extends V> multimap) {
+    public <K extends K0, V extends V0> Multimap<K, V> build(Multimap<? extends K, ? extends V> multimap) {
         Multimap<K, V> result = build();
         result.putAll(multimap);
         return result;
@@ -274,8 +270,7 @@ public abstract class MultimapBuilder<K0, V0> {
         }
     }
 
-    private static final class EnumSetSupplier<V extends Enum<V>>
-            implements Supplier<Set<V>>, Serializable {
+    private static final class EnumSetSupplier<V extends Enum<V>> implements Supplier<Set<V>>, Serializable {
         /**
          * The serialized version identifier for this object
          */
@@ -303,8 +298,7 @@ public abstract class MultimapBuilder<K0, V0> {
 
         private static final int DEFAULT_EXPECTED_VALUES_PER_KEY = 2;
 
-        MultimapBuilderWithKeys() {
-        }
+        MultimapBuilderWithKeys() {}
 
         abstract <K extends K0, V> Map<K, Collection<V>> createMap();
 
@@ -327,8 +321,7 @@ public abstract class MultimapBuilder<K0, V0> {
                 @Override
                 public <K extends K0, V> ListMultimap<K, V> build() {
                     return Multimaps.newListMultimap(
-                            MultimapBuilderWithKeys.this.createMap(),
-                            new ArrayListSupplier<>(expectedValuesPerKey));
+                            MultimapBuilderWithKeys.this.createMap(), new ArrayListSupplier<>(expectedValuesPerKey));
                 }
             };
         }
@@ -365,8 +358,7 @@ public abstract class MultimapBuilder<K0, V0> {
                 @Override
                 public <K extends K0, V> SetMultimap<K, V> build() {
                     return Multimaps.newSetMultimap(
-                            MultimapBuilderWithKeys.this.createMap(),
-                            new HashSetSupplier<>(expectedValuesPerKey));
+                            MultimapBuilderWithKeys.this.createMap(), new HashSetSupplier<>(expectedValuesPerKey));
                 }
             };
         }
@@ -424,8 +416,7 @@ public abstract class MultimapBuilder<K0, V0> {
         /**
          * Uses an {@link EnumSet} to store value collections.
          */
-        public <V0 extends Enum<V0>> SetMultimapBuilder<K0, V0> enumSetValues(
-                final Class<V0> valueClass) {
+        public <V0 extends Enum<V0>> SetMultimapBuilder<K0, V0> enumSetValues(final Class<V0> valueClass) {
             checkNotNull(valueClass, "valueClass");
             return new SetMultimapBuilder<K0, V0>() {
                 @Override
@@ -444,15 +435,13 @@ public abstract class MultimapBuilder<K0, V0> {
      * A specialization of {@link MultimapBuilder} that generates {@link ListMultimap} instances.
      */
     public abstract static class ListMultimapBuilder<K0, V0> extends MultimapBuilder<K0, V0> {
-        ListMultimapBuilder() {
-        }
+        ListMultimapBuilder() {}
 
         @Override
         public abstract <K extends K0, V extends V0> ListMultimap<K, V> build();
 
         @Override
-        public <K extends K0, V extends V0> ListMultimap<K, V> build(
-                Multimap<? extends K, ? extends V> multimap) {
+        public <K extends K0, V extends V0> ListMultimap<K, V> build(Multimap<? extends K, ? extends V> multimap) {
             return (ListMultimap<K, V>) super.build(multimap);
         }
     }
@@ -461,15 +450,13 @@ public abstract class MultimapBuilder<K0, V0> {
      * A specialization of {@link MultimapBuilder} that generates {@link SetMultimap} instances.
      */
     public abstract static class SetMultimapBuilder<K0, V0> extends MultimapBuilder<K0, V0> {
-        SetMultimapBuilder() {
-        }
+        SetMultimapBuilder() {}
 
         @Override
         public abstract <K extends K0, V extends V0> SetMultimap<K, V> build();
 
         @Override
-        public <K extends K0, V extends V0> SetMultimap<K, V> build(
-                Multimap<? extends K, ? extends V> multimap) {
+        public <K extends K0, V extends V0> SetMultimap<K, V> build(Multimap<? extends K, ? extends V> multimap) {
             return (SetMultimap<K, V>) super.build(multimap);
         }
     }
@@ -478,15 +465,13 @@ public abstract class MultimapBuilder<K0, V0> {
      * A specialization of {@link MultimapBuilder} that generates {@link SortedSetMultimap} instances.
      */
     public abstract static class SortedSetMultimapBuilder<K0, V0> extends SetMultimapBuilder<K0, V0> {
-        SortedSetMultimapBuilder() {
-        }
+        SortedSetMultimapBuilder() {}
 
         @Override
         public abstract <K extends K0, V extends V0> SortedSetMultimap<K, V> build();
 
         @Override
-        public <K extends K0, V extends V0> SortedSetMultimap<K, V> build(
-                Multimap<? extends K, ? extends V> multimap) {
+        public <K extends K0, V extends V0> SortedSetMultimap<K, V> build(Multimap<? extends K, ? extends V> multimap) {
             return (SortedSetMultimap<K, V>) super.build(multimap);
         }
     }

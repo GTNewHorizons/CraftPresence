@@ -29,15 +29,14 @@ import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.gitlab.cdagaming.craftpresence.utils.TranslationUtils;
 import com.gitlab.cdagaming.craftpresence.utils.updater.ModUpdaterUtils;
 import com.google.common.collect.Lists;
-import net.minecraft.client.ClientBrandRetriever;
-import net.minecraft.client.Minecraft;
-import net.minecraft.launchwrapper.Launch;
-import net.minecraft.realms.RealmsSharedConstants;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
+import net.minecraft.client.ClientBrandRetriever;
+import net.minecraft.client.Minecraft;
+import net.minecraft.launchwrapper.Launch;
+import net.minecraft.realms.RealmsSharedConstants;
 
 /**
  * Constant Variables and Methods used throughout the Application
@@ -49,22 +48,22 @@ public class ModUtils {
     /**
      * The Application's Name
      */
-    public static final String NAME;
+    public static final String NAME = "CraftPresence";
 
     /**
      * The Application's Version ID
      */
-    public static final String VERSION_ID;
+    public static final String VERSION_ID = "vGRADLETOKEN_VERSION";
 
     /**
      * The Application's Version Release Type
      */
-    public static final String VERSION_TYPE;
+    public static final String VERSION_TYPE = "Release";
 
     /**
      * The Application's Version Release Type Display Name
      */
-    public static final String VERSION_LABEL;
+    public static final String VERSION_LABEL = "Release";
 
     /**
      * The Application's Identifier
@@ -114,7 +113,8 @@ public class ModUtils {
     /**
      * The URL to receive Update Information from
      */
-    public static final String UPDATE_JSON = "https://raw.githubusercontent.com/CDAGaming/VersionLibrary/master/CraftPresence/update.json";
+    public static final String UPDATE_JSON =
+            "https://raw.githubusercontent.com/CDAGaming/VersionLibrary/master/CraftPresence/update.json";
 
     /**
      * The Certificate Fingerprint, assigned in CI, to check against for violations
@@ -139,18 +139,18 @@ public class ModUtils {
     /**
      * The Application's Instance of {@link ModUpdaterUtils} for Retrieving if the Application has an update
      */
-    public static final ModUpdaterUtils UPDATER;
+    public static final ModUpdaterUtils UPDATER = new ModUpdaterUtils(MOD_ID, UPDATE_JSON, VERSION_ID, MCVersion);
     /**
      * If this Application is in the Hard Floor of Legacy Mode
      * <p>This variable becomes true only on versions at or before 1.5.2 (Or when critical APIs are missing)
      */
-    public final static boolean IS_LEGACY_HARD = false;
+    public static final boolean IS_LEGACY_HARD = false;
     /**
      * If this Application is within the Soft Floor of Legacy Mode
      * <p>This variable becomes true only on versions before 13w41a (When the protocol number was reset)
      */
     @SuppressWarnings("PointlessBooleanExpression")
-    public final static boolean IS_LEGACY_SOFT = IS_LEGACY_HARD || false;
+    public static final boolean IS_LEGACY_SOFT = IS_LEGACY_HARD || false;
     /**
      * Whether to forcibly block any tooltips related to this Application from rendering
      */
@@ -162,15 +162,10 @@ public class ModUtils {
     /**
      * If this Application is running in a de-obfuscated or Developer environment
      */
-    public static boolean IS_VERBOSE = (Launch.blackboard != null && !Launch.blackboard.isEmpty() && Launch.blackboard.containsKey("fml.deobfuscatedEnvironment")) && (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-
-    static {
-        NAME = "@MOD_NAME@";
-        VERSION_ID = "v@VERSION_ID@";
-        VERSION_TYPE = "@VERSION_TYPE@";
-        VERSION_LABEL = "@VERSION_LABEL@";
-        UPDATER = new ModUpdaterUtils(MOD_ID, UPDATE_JSON, VERSION_ID, MCVersion);
-    }
+    public static boolean IS_VERBOSE = (Launch.blackboard != null
+                    && !Launch.blackboard.isEmpty()
+                    && Launch.blackboard.containsKey("fml.deobfuscatedEnvironment"))
+            && (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
     /**
      * Retrieves and Initializes Character Data<p>
@@ -191,11 +186,13 @@ public class ModUtils {
 
         if (UpdateStatus) {
             // Create Data Directory if non-existent
-            if (!charDataDir.getParentFile().exists() && !charDataDir.getParentFile().mkdirs()) {
+            if (!charDataDir.getParentFile().exists()
+                    && !charDataDir.getParentFile().mkdirs()) {
                 errored = true;
             }
 
-            LOG.debugInfo(TRANSLATOR.translate("craftpresence.logger.info.download.init", fileName, charDataDir.getAbsolutePath(), charDataPath));
+            LOG.debugInfo(TRANSLATOR.translate(
+                    "craftpresence.logger.info.download.init", fileName, charDataDir.getAbsolutePath(), charDataPath));
             inputData = FileUtils.getResourceAsStream(ModUtils.class, charDataPath);
 
             // Write data from local charData to directory if an update is needed
@@ -204,11 +201,17 @@ public class ModUtils {
                     outputData = new FileOutputStream(charDataDir);
 
                     byte[] transferBuffer = new byte[inputData.available()];
-                    for (int readBuffer = inputData.read(transferBuffer); readBuffer != -1; readBuffer = inputData.read(transferBuffer)) {
+                    for (int readBuffer = inputData.read(transferBuffer);
+                            readBuffer != -1;
+                            readBuffer = inputData.read(transferBuffer)) {
                         outputData.write(transferBuffer, 0, readBuffer);
                     }
 
-                    LOG.debugInfo(TRANSLATOR.translate("craftpresence.logger.info.download.loaded", fileName, charDataDir.getAbsolutePath(), charDataPath));
+                    LOG.debugInfo(TRANSLATOR.translate(
+                            "craftpresence.logger.info.download.loaded",
+                            fileName,
+                            charDataDir.getAbsolutePath(),
+                            charDataPath));
                 } catch (Exception ex) {
                     errored = true;
                 }
@@ -232,13 +235,19 @@ public class ModUtils {
                         String[] splitString = currentString.split("=", 2);
 
                         if (splitString[0].equalsIgnoreCase("charWidth")) {
-                            localWidths = splitString[1].replaceAll("\\[", "").replaceAll("]", "").split(", ");
+                            localWidths = splitString[1]
+                                    .replaceAll("\\[", "")
+                                    .replaceAll("]", "")
+                                    .split(", ");
 
                             for (int i = 0; i < localWidths.length && i <= 256; i++) {
                                 StringUtils.MC_CHAR_WIDTH[i] = Integer.parseInt(localWidths[i].trim());
                             }
                         } else if (splitString[0].equalsIgnoreCase("glyphWidth")) {
-                            localWidths = splitString[1].replaceAll("\\[", "").replaceAll("]", "").split(", ");
+                            localWidths = splitString[1]
+                                    .replaceAll("\\[", "")
+                                    .replaceAll("]", "")
+                                    .split(", ");
 
                             for (int i = 0; i < localWidths.length && i <= 65536; i++) {
                                 StringUtils.MC_GLYPH_WIDTH[i] = Byte.parseByte(localWidths[i].trim());
@@ -247,7 +256,8 @@ public class ModUtils {
                     }
                 }
 
-                if (Arrays.equals(StringUtils.MC_CHAR_WIDTH, new int[256]) || Arrays.equals(StringUtils.MC_GLYPH_WIDTH, new byte[65536])) {
+                if (Arrays.equals(StringUtils.MC_CHAR_WIDTH, new int[256])
+                        || Arrays.equals(StringUtils.MC_GLYPH_WIDTH, new byte[65536])) {
                     errored = true;
                 }
             } catch (Exception ex) {

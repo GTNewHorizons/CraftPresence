@@ -30,9 +30,8 @@ import com.gitlab.cdagaming.craftpresence.impl.Pair;
 import com.gitlab.cdagaming.craftpresence.utils.FileUtils;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.google.common.collect.Lists;
-import net.minecraft.world.biome.BiomeGenBase;
-
 import java.util.List;
+import net.minecraft.world.biome.BiomeGenBase;
 
 /**
  * Biome Utilities used to Parse Biome Data and handle related RPC Events
@@ -85,9 +84,7 @@ public class BiomeUtils {
      */
     public void onTick() {
         enabled = !CraftPresence.CONFIG.hasChanged ? CraftPresence.CONFIG.detectBiomeData : enabled;
-        final boolean needsUpdate = enabled && (
-                BIOME_NAMES.isEmpty() || BIOME_TYPES.isEmpty()
-        );
+        final boolean needsUpdate = enabled && (BIOME_NAMES.isEmpty() || BIOME_TYPES.isEmpty());
 
         if (needsUpdate) {
             getBiomes();
@@ -109,7 +106,8 @@ public class BiomeUtils {
      * Synchronizes Data related to this module, if needed
      */
     private void updateBiomeData() {
-        final BiomeGenBase newBiome = CraftPresence.player.worldObj.getBiomeGenForCoords((int) CraftPresence.player.posX, (int) CraftPresence.player.posZ);
+        final BiomeGenBase newBiome = CraftPresence.player.worldObj.getBiomeGenForCoords(
+                (int) CraftPresence.player.posX, (int) CraftPresence.player.posZ);
         final String newBiomeName = newBiome.biomeName;
 
         if (!newBiomeName.equals(CURRENT_BIOME_NAME)) {
@@ -140,16 +138,32 @@ public class BiomeUtils {
             biomeArgs.addAll(CraftPresence.CLIENT.generalArgs);
         }
 
-        final String defaultBiomeMessage = StringUtils.getConfigPart(CraftPresence.CONFIG.biomeMessages, "default", 0, 1, CraftPresence.CONFIG.splitCharacter, null);
-        final String currentBiomeMessage = StringUtils.getConfigPart(CraftPresence.CONFIG.biomeMessages, CURRENT_BIOME_NAME, 0, 1, CraftPresence.CONFIG.splitCharacter, defaultBiomeMessage);
-        final String currentBiomeIcon = StringUtils.getConfigPart(CraftPresence.CONFIG.biomeMessages, CURRENT_BIOME_NAME, 0, 2, CraftPresence.CONFIG.splitCharacter, CURRENT_BIOME_NAME);
+        final String defaultBiomeMessage = StringUtils.getConfigPart(
+                CraftPresence.CONFIG.biomeMessages, "default", 0, 1, CraftPresence.CONFIG.splitCharacter, null);
+        final String currentBiomeMessage = StringUtils.getConfigPart(
+                CraftPresence.CONFIG.biomeMessages,
+                CURRENT_BIOME_NAME,
+                0,
+                1,
+                CraftPresence.CONFIG.splitCharacter,
+                defaultBiomeMessage);
+        final String currentBiomeIcon = StringUtils.getConfigPart(
+                CraftPresence.CONFIG.biomeMessages,
+                CURRENT_BIOME_NAME,
+                0,
+                2,
+                CraftPresence.CONFIG.splitCharacter,
+                CURRENT_BIOME_NAME);
         final String formattedIconKey = StringUtils.formatAsIcon(currentBiomeIcon.replace(" ", "_"));
 
         final String CURRENT_BIOME_ICON = formattedIconKey.replace("&icon&", CraftPresence.CONFIG.defaultBiomeIcon);
         final String CURRENT_BIOME_MESSAGE = StringUtils.sequentialReplaceAnyCase(currentBiomeMessage, biomeArgs);
 
         CraftPresence.CLIENT.syncArgument("&BIOME&", CURRENT_BIOME_MESSAGE, false);
-        CraftPresence.CLIENT.syncArgument("&BIOME&", CraftPresence.CLIENT.imageOf(CURRENT_BIOME_ICON, CraftPresence.CONFIG.defaultBiomeIcon, true), true);
+        CraftPresence.CLIENT.syncArgument(
+                "&BIOME&",
+                CraftPresence.CLIENT.imageOf(CURRENT_BIOME_ICON, CraftPresence.CONFIG.defaultBiomeIcon, true),
+                true);
     }
 
     /**
@@ -170,7 +184,8 @@ public class BiomeUtils {
 
         if (biomeTypes.isEmpty()) {
             // Fallback: Use Manual Class Lookup
-            for (Class<?> classObj : FileUtils.getClassNamesMatchingSuperType(BiomeGenBase.class, true, "net.minecraft", "com.gitlab.cdagaming.craftpresence")) {
+            for (Class<?> classObj : FileUtils.getClassNamesMatchingSuperType(
+                    BiomeGenBase.class, true, "net.minecraft", "com.gitlab.cdagaming.craftpresence")) {
                 if (classObj != null) {
                     try {
                         BiomeGenBase biomeObj = (BiomeGenBase) classObj.newInstance();
