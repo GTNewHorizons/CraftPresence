@@ -556,8 +556,8 @@ public class TileEntityUtils implements Module {
                                 ).getParticleTexture().getIconName()
                         );
                         TILE_ENTITY_RESOURCES.put(blockName,
-                                new ResourceLocation(initialData.getNamespace(),
-                                        "textures/" + initialData.getPath() + ".png"
+                                new ResourceLocation(initialData.getResourceDomain(),
+                                        "textures/" + initialData.getResourcePath() + ".png"
                                 )
                         );
                     } catch (Exception ignored) {
@@ -584,8 +584,8 @@ public class TileEntityUtils implements Module {
                                 ).getParticleTexture().getIconName()
                         );
                         TILE_ENTITY_RESOURCES.put(itemName,
-                                new ResourceLocation(initialData.getNamespace(),
-                                        "textures/" + initialData.getPath() + ".png"
+                                new ResourceLocation(initialData.getResourceDomain(),
+                                        "textures/" + initialData.getResourcePath() + ".png"
                                 )
                         );
                     } catch (Exception ignored) {
