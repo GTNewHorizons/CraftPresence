@@ -186,7 +186,7 @@ public class ExtendedButtonControl extends GuiButton {
 
     @Override
     public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY) {
-        setCurrentFontRender(mc.fontRenderer);
+        setCurrentFontRender(mc.fontRendererObj);
         if (visible) {
             hovered = CraftPresence.GUIS.isMouseOver(mouseX, mouseY, this);
             final int hoverState = getHoverState(hovered);
@@ -255,7 +255,7 @@ public class ExtendedButtonControl extends GuiButton {
      * @return the Current X Position of this Control
      */
     public int getControlPosX() {
-        return x;
+        return xPosition;
     }
 
     /**
@@ -264,7 +264,7 @@ public class ExtendedButtonControl extends GuiButton {
      * @return the Current Y Position of this Control
      */
     public int getControlPosY() {
-        return y;
+        return yPosition;
     }
 
     /**

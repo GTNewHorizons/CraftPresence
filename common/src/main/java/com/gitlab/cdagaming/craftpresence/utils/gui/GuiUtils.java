@@ -114,7 +114,7 @@ public class GuiUtils implements Module {
      * @return The Default/Global Font Renderer
      */
     public static FontRenderer getDefaultFontRenderer() {
-        return CraftPresence.instance.fontRenderer;
+        return CraftPresence.instance.fontRendererObj;
     }
 
     /**

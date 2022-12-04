@@ -282,9 +282,9 @@ public class EntityUtils implements Module {
     @Override
     public void getAllData() {
         if (!EntityList.getEntityNameList().isEmpty()) {
-            for (ResourceLocation entityLocation : EntityList.getEntityNameList()) {
+            for (String entityLocation : EntityList.getEntityNameList()) {
                 if (entityLocation != null) {
-                    final String entityName = StringUtils.getOrDefault(EntityList.getTranslationName(entityLocation), "generic");
+                    final String entityName = StringUtils.getOrDefault(entityLocation, "generic");
                     if (!ENTITY_NAMES.contains(entityName)) {
                         ENTITY_NAMES.add(entityName);
                     }
