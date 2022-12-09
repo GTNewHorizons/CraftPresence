@@ -239,7 +239,7 @@ public class CraftPresence {
             instance = Minecraft.getMinecraft();
             if (initialized) {
                 session = instance.getSession();
-                player = instance.player;
+                player = instance.thePlayer;
                 // Synchronize Developer and Verbose Modes with Config Options, if they were not overridden pre-setup
                 ModUtils.IS_DEV = !isDevStatusOverridden ? CONFIG.advancedSettings.debugMode : ModUtils.IS_DEV;
                 ModUtils.IS_VERBOSE = !isVerboseStatusOverridden ? CONFIG.advancedSettings.verboseMode : ModUtils.IS_VERBOSE;
