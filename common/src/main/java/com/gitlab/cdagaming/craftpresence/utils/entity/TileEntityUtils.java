@@ -30,7 +30,6 @@ import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -99,10 +98,6 @@ public class TileEntityUtils implements Module {
      */
     public List<String> CURRENT_MAIN_HAND_ITEM_TAGS = Lists.newArrayList();
     /**
-     * The Player's Current Off Hand Item's Nbt Tags, if any
-     */
-    public List<String> CURRENT_OFFHAND_ITEM_TAGS = Lists.newArrayList();
-    /**
      * The Player's Currently equipped Helmet's Nbt Tags, if any
      */
     public List<String> CURRENT_HELMET_TAGS = Lists.newArrayList();
@@ -122,10 +117,6 @@ public class TileEntityUtils implements Module {
      * The Player's Current Main Hand Item, if any
      */
     private ItemStack CURRENT_MAIN_HAND_ITEM;
-    /**
-     * The Player's Current Off Hand Item, if any
-     */
-    private ItemStack CURRENT_OFFHAND_ITEM;
     /**
      * The Player's Currently Equipped Helmet, if any
      */
@@ -147,10 +138,6 @@ public class TileEntityUtils implements Module {
      */
     private String CURRENT_MAIN_HAND_ITEM_NAME;
     /**
-     * The Player's Current Off Hand Item Name, if any
-     */
-    private String CURRENT_OFFHAND_ITEM_NAME;
-    /**
      * The Player's Currently Equipped Helmet Name, if any
      */
     private String CURRENT_HELMET_NAME;
@@ -170,10 +157,6 @@ public class TileEntityUtils implements Module {
      * The Player's Current Main Hand Item's Tag, if any
      */
     private NBTTagCompound CURRENT_MAIN_HAND_ITEM_TAG;
-    /**
-     * The Player's Current Off Hand Item's Tag, if any
-     */
-    private NBTTagCompound CURRENT_OFFHAND_ITEM_TAG;
     /**
      * The Player's Currently equipped Helmet's Tag, if any
      */
@@ -207,9 +190,7 @@ public class TileEntityUtils implements Module {
     @Override
     public void clearClientData() {
         CURRENT_MAIN_HAND_ITEM = EMPTY_STACK;
-        CURRENT_OFFHAND_ITEM = EMPTY_STACK;
         CURRENT_MAIN_HAND_ITEM_NAME = null;
-        CURRENT_OFFHAND_ITEM_NAME = null;
 
         CURRENT_HELMET = EMPTY_STACK;
         CURRENT_CHEST = EMPTY_STACK;
@@ -221,14 +202,12 @@ public class TileEntityUtils implements Module {
         CURRENT_BOOTS_NAME = null;
 
         CURRENT_MAIN_HAND_ITEM_TAG = null;
-        CURRENT_OFFHAND_ITEM_TAG = null;
         CURRENT_HELMET_TAG = null;
         CURRENT_CHEST_TAG = null;
         CURRENT_LEGS_TAG = null;
         CURRENT_BOOTS_TAG = null;
 
         CURRENT_MAIN_HAND_ITEM_TAGS.clear();
-        CURRENT_OFFHAND_ITEM_TAGS.clear();
         CURRENT_HELMET_TAGS.clear();
         CURRENT_CHEST_TAGS.clear();
         CURRENT_LEGS_TAGS.clear();
@@ -313,8 +292,7 @@ public class TileEntityUtils implements Module {
 
     @Override
     public void updateData() {
-        final ItemStack NEW_CURRENT_MAIN_HAND_ITEM = CraftPresence.player.getHeldItemMainhand();
-        final ItemStack NEW_CURRENT_OFFHAND_ITEM = CraftPresence.player.getHeldItemOffhand();
+        final ItemStack NEW_CURRENT_MAIN_HAND_ITEM = CraftPresence.player.getHeldItem();
         final ItemStack NEW_CURRENT_HELMET = CraftPresence.player.inventory.armorInventory[3];
         final ItemStack NEW_CURRENT_CHEST = CraftPresence.player.inventory.armorInventory[2];
         final ItemStack NEW_CURRENT_LEGS = CraftPresence.player.inventory.armorInventory[1];
@@ -322,8 +300,6 @@ public class TileEntityUtils implements Module {
 
         final String NEW_CURRENT_MAIN_HAND_ITEM_NAME = !isEmpty(NEW_CURRENT_MAIN_HAND_ITEM) ?
                 StringUtils.stripColors(NEW_CURRENT_MAIN_HAND_ITEM.getDisplayName()) : "";
-        final String NEW_CURRENT_OFFHAND_ITEM_NAME = !isEmpty(NEW_CURRENT_OFFHAND_ITEM) ?
-                StringUtils.stripColors(NEW_CURRENT_OFFHAND_ITEM.getDisplayName()) : "";
         final String NEW_CURRENT_HELMET_NAME = !isEmpty(NEW_CURRENT_HELMET) ?
                 StringUtils.stripColors(NEW_CURRENT_HELMET.getDisplayName()) : "";
         final String NEW_CURRENT_CHEST_NAME = !isEmpty(NEW_CURRENT_CHEST) ?
@@ -336,9 +312,6 @@ public class TileEntityUtils implements Module {
         final boolean hasMainHandChanged = (!isEmpty(NEW_CURRENT_MAIN_HAND_ITEM) &&
                 !NEW_CURRENT_MAIN_HAND_ITEM.equals(CURRENT_MAIN_HAND_ITEM) || !NEW_CURRENT_MAIN_HAND_ITEM_NAME.equals(CURRENT_MAIN_HAND_ITEM_NAME)) ||
                 (isEmpty(NEW_CURRENT_MAIN_HAND_ITEM) && !isEmpty(CURRENT_MAIN_HAND_ITEM));
-        final boolean hasOffHandChanged = (!isEmpty(NEW_CURRENT_OFFHAND_ITEM) &&
-                !NEW_CURRENT_OFFHAND_ITEM.equals(CURRENT_OFFHAND_ITEM) || !NEW_CURRENT_OFFHAND_ITEM_NAME.equals(CURRENT_OFFHAND_ITEM_NAME)) ||
-                (isEmpty(NEW_CURRENT_OFFHAND_ITEM) && !isEmpty(CURRENT_OFFHAND_ITEM));
         final boolean hasHelmetChanged = (!isEmpty(NEW_CURRENT_HELMET) &&
                 !NEW_CURRENT_HELMET.equals(CURRENT_HELMET) || !NEW_CURRENT_HELMET_NAME.equals(CURRENT_HELMET_NAME)) ||
                 (isEmpty(NEW_CURRENT_HELMET) && !isEmpty(CURRENT_HELMET));
@@ -361,17 +334,6 @@ public class TileEntityUtils implements Module {
                 CURRENT_MAIN_HAND_ITEM_TAGS = NEW_CURRENT_MAIN_HAND_ITEM_TAGS;
             }
             CURRENT_MAIN_HAND_ITEM_NAME = NEW_CURRENT_MAIN_HAND_ITEM_NAME;
-        }
-
-        if (hasOffHandChanged) {
-            CURRENT_OFFHAND_ITEM = NEW_CURRENT_OFFHAND_ITEM;
-            CURRENT_OFFHAND_ITEM_TAG = !isEmpty(CURRENT_OFFHAND_ITEM) ? CURRENT_OFFHAND_ITEM.writeToNBT(new NBTTagCompound()) : null;
-            final List<String> NEW_CURRENT_OFFHAND_ITEM_TAGS = CURRENT_OFFHAND_ITEM_TAG != null ? Lists.newArrayList(CURRENT_OFFHAND_ITEM_TAG.getKeySet()) : Lists.newArrayList();
-
-            if (!NEW_CURRENT_OFFHAND_ITEM_TAGS.equals(CURRENT_OFFHAND_ITEM_TAGS)) {
-                CURRENT_OFFHAND_ITEM_TAGS = NEW_CURRENT_OFFHAND_ITEM_TAGS;
-            }
-            CURRENT_OFFHAND_ITEM_NAME = NEW_CURRENT_OFFHAND_ITEM_NAME;
         }
 
         if (hasHelmetChanged) {
@@ -418,7 +380,7 @@ public class TileEntityUtils implements Module {
             CURRENT_BOOTS_NAME = NEW_CURRENT_BOOTS_NAME;
         }
 
-        if (hasMainHandChanged || hasOffHandChanged ||
+        if (hasMainHandChanged ||
                 hasHelmetChanged || hasChestChanged ||
                 hasLegsChanged || hasBootsChanged) {
             updatePresence();
@@ -430,7 +392,6 @@ public class TileEntityUtils implements Module {
         // Retrieve Messages
         final String defaultItemMessage = CraftPresence.CONFIG.advancedSettings.itemMessages.getOrDefault("default", "");
 
-        String offHandItemMessage = CraftPresence.CONFIG.advancedSettings.itemMessages.getOrDefault(CURRENT_OFFHAND_ITEM_NAME, CURRENT_OFFHAND_ITEM_NAME);
         String mainItemMessage = CraftPresence.CONFIG.advancedSettings.itemMessages.getOrDefault(CURRENT_MAIN_HAND_ITEM_NAME, CURRENT_MAIN_HAND_ITEM_NAME);
 
         String helmetMessage = CraftPresence.CONFIG.advancedSettings.itemMessages.getOrDefault(CURRENT_HELMET_NAME, CURRENT_HELMET_NAME);
@@ -441,7 +402,7 @@ public class TileEntityUtils implements Module {
         CraftPresence.CLIENT.syncArgument("item.message.default", defaultItemMessage);
         CraftPresence.CLIENT.syncArgument("item.message.holding", String.format("[%s, %s]",
                 StringUtils.getOrDefault(CURRENT_MAIN_HAND_ITEM_NAME, "N/A"),
-                StringUtils.getOrDefault(CURRENT_OFFHAND_ITEM_NAME, "N/A")
+                "N/A"
         ), true);
         CraftPresence.CLIENT.syncArgument("item.message.equipped", String.format("[%s, %s, %s, %s]",
                 StringUtils.getOrDefault(CURRENT_HELMET_NAME, "N/A"),
@@ -463,20 +424,6 @@ public class TileEntityUtils implements Module {
             }
         } else {
             CraftPresence.CLIENT.removeArguments("item.main_hand", "data.item.main_hand");
-        }
-
-        if (!isEmpty(CURRENT_OFFHAND_ITEM)) {
-            CraftPresence.CLIENT.syncArgument("data.item.off_hand.instance", CURRENT_OFFHAND_ITEM);
-            CraftPresence.CLIENT.syncArgument("data.item.off_hand.class", CURRENT_OFFHAND_ITEM.getClass());
-            CraftPresence.CLIENT.syncArgument("item.off_hand.name", CURRENT_OFFHAND_ITEM_NAME);
-            CraftPresence.CLIENT.syncArgument("item.off_hand.message", offHandItemMessage);
-            if (!CURRENT_OFFHAND_ITEM_TAGS.isEmpty()) {
-                for (String tagName : CURRENT_OFFHAND_ITEM_TAGS) {
-                    CraftPresence.CLIENT.syncArgument("data.item.off_hand." + tagName, CURRENT_OFFHAND_ITEM_TAG.getTag(tagName).toString(), true);
-                }
-            }
-        } else {
-            CraftPresence.CLIENT.removeArguments("item.off_hand", "data.item.off_hand");
         }
 
         if (!isEmpty(CURRENT_HELMET)) {
@@ -538,7 +485,7 @@ public class TileEntityUtils implements Module {
 
     @Override
     public void getAllData() {
-        for (Block block : Block.REGISTRY) {
+        for (Block block : Block.blockRegistry) {
             if (!isEmpty(block)) {
                 final String blockName = block.getLocalizedName();
                 if (!BLOCK_NAMES.contains(blockName)) {
@@ -551,8 +498,8 @@ public class TileEntityUtils implements Module {
                 if (!TILE_ENTITY_RESOURCES.containsKey(blockName)) {
                     try {
                         final ResourceLocation initialData = new ResourceLocation(
-                                CraftPresence.instance.getBlockRendererDispatcher().getModelForState(
-                                        block.getDefaultState()
+                                CraftPresence.instance.getBlockRendererDispatcher().getModelFromBlockState(
+                                        block.getDefaultState(), null, null
                                 ).getParticleTexture().getIconName()
                         );
                         TILE_ENTITY_RESOURCES.put(blockName,
@@ -566,7 +513,7 @@ public class TileEntityUtils implements Module {
             }
         }
 
-        for (Item item : Item.REGISTRY) {
+        for (Item item : Item.itemRegistry) {
             if (!isEmpty(item)) {
                 final String itemName = item.getItemStackDisplayName(getDefaultInstance(item));
                 if (!ITEM_NAMES.contains(itemName)) {

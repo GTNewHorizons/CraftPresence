@@ -36,7 +36,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 
 import java.util.List;
 import java.util.Map;
@@ -153,7 +152,7 @@ public class EntityUtils implements Module {
     @Override
     public void updateData() {
         final Entity NEW_CURRENT_TARGET = CraftPresence.instance.objectMouseOver != null && CraftPresence.instance.objectMouseOver.entityHit != null ? CraftPresence.instance.objectMouseOver.entityHit : null;
-        final Entity NEW_CURRENT_RIDING = CraftPresence.player.getRidingEntity();
+        final Entity NEW_CURRENT_RIDING = CraftPresence.player.ridingEntity;
 
         String NEW_CURRENT_TARGET_NAME, NEW_CURRENT_RIDING_NAME;
 
@@ -184,7 +183,7 @@ public class EntityUtils implements Module {
 
         if (hasTargetChanged) {
             CURRENT_TARGET = NEW_CURRENT_TARGET;
-            CURRENT_TARGET_TAG = CURRENT_TARGET != null ? CURRENT_TARGET.writeToNBT(new NBTTagCompound()) : null;
+            CURRENT_TARGET_TAG = CURRENT_TARGET != null ? serializeNBT(CURRENT_TARGET) : null;
             final List<String> NEW_CURRENT_TARGET_TAGS = CURRENT_TARGET_TAG != null ? Lists.newArrayList(CURRENT_TARGET_TAG.getKeySet()) : Lists.newArrayList();
 
             if (!NEW_CURRENT_TARGET_TAGS.equals(CURRENT_TARGET_TAGS)) {
@@ -195,7 +194,7 @@ public class EntityUtils implements Module {
 
         if (hasRidingChanged) {
             CURRENT_RIDING = NEW_CURRENT_RIDING;
-            CURRENT_RIDING_TAG = CURRENT_RIDING != null ? CURRENT_RIDING.writeToNBT(new NBTTagCompound()) : null;
+            CURRENT_RIDING_TAG = CURRENT_RIDING != null ? serializeNBT(CURRENT_RIDING) : null;
             final List<String> NEW_CURRENT_RIDING_TAGS = CURRENT_RIDING_TAG != null ? Lists.newArrayList(CURRENT_RIDING_TAG.getKeySet()) : Lists.newArrayList();
 
             if (!NEW_CURRENT_RIDING_TAGS.equals(CURRENT_RIDING_TAGS)) {
@@ -347,5 +346,12 @@ public class EntityUtils implements Module {
      */
     private void verifyEntities() {
         // Add Verification here as needed
+    }
+
+    private NBTTagCompound serializeNBT(Entity entity) {
+        NBTTagCompound ret = new NBTTagCompound();
+        ret.setString("id", EntityList.getEntityString(entity));
+        entity.writeToNBT(ret);
+        return ret;
     }
 }

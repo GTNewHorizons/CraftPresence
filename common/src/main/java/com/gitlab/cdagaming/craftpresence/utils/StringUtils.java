@@ -31,7 +31,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.ChatComponentText;
 
 import java.awt.*;
 import java.lang.reflect.Field;
@@ -1060,7 +1060,7 @@ public class StringUtils {
             final List<String> lines = splitTextByNewLine(message);
             if (!lines.isEmpty()) {
                 for (String line : lines) {
-                    player.addChatMessage(new TextComponentString(line));
+                    player.addChatMessage(new ChatComponentText(line));
                 }
             }
         }
