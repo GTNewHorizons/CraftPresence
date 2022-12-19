@@ -31,7 +31,7 @@ import com.gitlab.cdagaming.craftpresence.impl.Module;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.client.gui.GuiPlayerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -163,7 +163,7 @@ public class EntityUtils implements Module {
             NEW_CURRENT_TARGET_NAME = StringUtils.stripColors(NEW_CURRENT_PLAYER_TARGET.getGameProfile().getId().toString());
         } else {
             NEW_CURRENT_TARGET_NAME = NEW_CURRENT_TARGET != null ?
-                    StringUtils.stripColors(NEW_CURRENT_TARGET.getDisplayName().getFormattedText()) : "";
+                    StringUtils.stripColors(NEW_CURRENT_TARGET.getFormattedCommandSenderName().getFormattedText()) : "";
         }
 
         if (NEW_CURRENT_RIDING instanceof EntityPlayer) {
@@ -171,7 +171,7 @@ public class EntityUtils implements Module {
             NEW_CURRENT_RIDING_NAME = StringUtils.stripColors(NEW_CURRENT_PLAYER_RIDING.getGameProfile().getId().toString());
         } else {
             NEW_CURRENT_RIDING_NAME = NEW_CURRENT_RIDING != null ?
-                    StringUtils.stripColors(NEW_CURRENT_RIDING.getDisplayName().getFormattedText()) : "";
+                    StringUtils.stripColors(NEW_CURRENT_RIDING.getFormattedCommandSenderName().getFormattedText()) : "";
         }
 
         final boolean hasTargetChanged = (NEW_CURRENT_TARGET != null &&
@@ -275,13 +275,14 @@ public class EntityUtils implements Module {
      * @return The formatted entity display name to use
      */
     public String getEntityName(final Entity entity, final String original) {
-        return StringUtils.isValidUuid(original) ? entity.getName() : original;
+        return StringUtils.isValidUuid(original) ? entity.getCommandSenderName() : original;
     }
 
     @Override
     public void getAllData() {
-        if (!EntityList.getEntityNameList().isEmpty()) {
-            for (String entityLocation : EntityList.getEntityNameList()) {
+        if (!EntityList.method_8367().isEmpty()) {
+            for (Object entityLocationObj : EntityList.method_8367()) {
+                final String entityLocation = (String) entityLocationObj;
                 if (entityLocation != null) {
                     final String entityName = StringUtils.getOrDefault(entityLocation, "generic");
                     if (!ENTITY_NAMES.contains(entityName)) {
@@ -293,14 +294,14 @@ public class EntityUtils implements Module {
 
         // If Server Data is enabled, allow Uuid's to count as entities
         if (CraftPresence.SERVER.enabled) {
-            for (NetworkPlayerInfo playerInfo : CraftPresence.SERVER.currentPlayerList) {
-                final String uuidString = playerInfo.getGameProfile().getId().toString();
+            for (GuiPlayerInfo playerInfo : CraftPresence.SERVER.currentPlayerList) {
+                final String uuidString = playerInfo.name;
                 if (!StringUtils.isNullOrEmpty(uuidString)) {
                     if (!ENTITY_NAMES.contains(uuidString)) {
                         ENTITY_NAMES.add(uuidString);
                     }
                     if (!PLAYER_BINDINGS.containsKey(uuidString)) {
-                        PLAYER_BINDINGS.put(uuidString, playerInfo.getGameProfile().getName());
+                        PLAYER_BINDINGS.put(uuidString, uuidString);
                     }
                 }
             }

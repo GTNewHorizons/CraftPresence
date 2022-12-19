@@ -156,9 +156,9 @@ public class ExtendedScreen extends GuiScreen {
      * @param h    The New Screen Height
      */
     @Override
-    public void onResize(@Nonnull Minecraft mcIn, int w, int h) {
+    public void setWorldAndResolution(@Nonnull Minecraft mcIn, int w, int h) {
         initialized = false;
-        super.onResize(mcIn, w, h);
+        super.setWorldAndResolution(mcIn, w, h);
     }
 
     /**
@@ -274,9 +274,6 @@ public class ExtendedScreen extends GuiScreen {
     @Override
     public void handleMouseInput() {
         if (initialized) {
-            for (ScrollableListControl listControl : extendedLists) {
-                listControl.handleMouseInput();
-            }
             super.handleMouseInput();
         }
     }
@@ -409,7 +406,7 @@ public class ExtendedScreen extends GuiScreen {
      * @param color The color to render the text in
      */
     public void renderString(String text, float xPos, float yPos, int color) {
-        getFontRenderer().drawStringWithShadow(text, xPos, yPos, color);
+        getFontRenderer().drawStringWithShadow(text, Math.round(xPos), Math.round(yPos), color);
     }
 
     /**

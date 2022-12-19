@@ -38,11 +38,11 @@ import com.gitlab.cdagaming.craftpresence.utils.discord.assets.DiscordAssetUtils
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiPlayerInfo;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.client.network.NetworkPlayerInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -69,7 +69,7 @@ public class ServerUtils implements Module {
     /**
      * The Current Player Map, if available
      */
-    public List<NetworkPlayerInfo> currentPlayerList = Lists.newArrayList();
+    public List<GuiPlayerInfo> currentPlayerList = Lists.newArrayList();
     /**
      * A List of the detected Server Addresses
      */
@@ -249,10 +249,10 @@ public class ServerUtils implements Module {
         final NetHandlerPlayClient newConnection = CraftPresence.instance.getNetHandler();
 
         if (!joinInProgress) {
-            final List<NetworkPlayerInfo> newPlayerList = newConnection != null ? Lists.newArrayList(newConnection.getPlayerInfoMap()) : Lists.newArrayList();
-            final int newCurrentPlayers = newConnection != null ? newConnection.getPlayerInfoMap().size() : 1;
+            final List<GuiPlayerInfo> newPlayerList = newConnection != null ? Lists.newArrayList(newConnection.playerInfoList) : Lists.newArrayList();
+            final int newCurrentPlayers = newConnection != null ? newConnection.playerInfoList.size() : 1;
             final int newMaxPlayers = newConnection != null && newConnection.currentServerMaxPlayers >= newCurrentPlayers ? newConnection.currentServerMaxPlayers : newCurrentPlayers + 1;
-            final boolean newLANStatus = (CraftPresence.instance.isSingleplayer() && newCurrentPlayers > 1) || (newServerData != null && newServerData.isOnLAN());
+            final boolean newLANStatus = (CraftPresence.instance.isSingleplayer() && newCurrentPlayers > 1) || (newServerData != null && newServerData.isLanServer());
 
             final String newServer_IP = newServerData != null && !StringUtils.isNullOrEmpty(newServerData.serverIP) ? newServerData.serverIP : "127.0.0.1";
             final String newServer_Name = newServerData != null && !StringUtils.isNullOrEmpty(newServerData.serverName) ? newServerData.serverName : CraftPresence.CONFIG.serverSettings.fallbackServerName;
@@ -318,7 +318,7 @@ public class ServerUtils implements Module {
 
             // 'world.difficulty' Argument = Current Difficulty of the World
             final String newDifficulty = CraftPresence.player != null ?
-                    (CraftPresence.player.worldObj.getWorldInfo().isHardcoreModeEnabled() ? ModUtils.TRANSLATOR.translate("craftpresence.defaults.mode.hardcore") : CraftPresence.player.worldObj.getDifficulty().name()) :
+                    (CraftPresence.player.worldObj.getWorldInfo().isHardcoreModeEnabled() ? ModUtils.TRANSLATOR.translate("craftpresence.defaults.mode.hardcore") : CraftPresence.player.worldObj.difficultySetting.name()) :
                     "";
             if (!newDifficulty.equals(currentDifficulty)) {
                 currentDifficulty = newDifficulty;

@@ -287,7 +287,7 @@ public class CommandsGui extends ExtendedScreen {
                                         ModUtils.TRANSLATOR.translate("gui.config.title.selector.view.items"),
                                         CraftPresence.TILE_ENTITIES.TILE_ENTITY_NAMES,
                                         null, null,
-                                        false, false, RenderType.ItemData,
+                                        false, false, RenderType.None,
                                         null, null
                                 ));
                             } else {

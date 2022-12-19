@@ -26,18 +26,15 @@ package com.gitlab.cdagaming.craftpresence.forge;
 
 import com.gitlab.cdagaming.craftpresence.CraftPresence;
 import com.gitlab.cdagaming.craftpresence.ModUtils;
-import com.gitlab.cdagaming.craftpresence.forge.integrations.replaymod.ReplayModUtils;
-import com.gitlab.cdagaming.craftpresence.utils.CommandUtils;
-import com.gitlab.cdagaming.craftpresence.utils.FileUtils;
 import com.gitlab.cdagaming.craftpresence.utils.MappingUtils;
-import net.minecraftforge.fml.common.Mod;
+import cpw.mods.fml.common.Mod;
 
 /**
  * The Primary Application Class and Utilities
  *
  * @author CDAGaming
  */
-@Mod(modid = ModUtils.MOD_ID, name = "@MOD_NAME@", version = "@VERSION_ID@", clientSideOnly = true, guiFactory = "com.gitlab.cdagaming.craftpresence.forge.config.ConfigGuiDataFactory", canBeDeactivated = true, updateJSON = ModUtils.UPDATE_JSON, acceptedMinecraftVersions = "*")
+@Mod(modid = ModUtils.MOD_ID, name = "@MOD_NAME@", version = "@VERSION_ID@", guiFactory = "com.gitlab.cdagaming.craftpresence.forge.config.ConfigGuiDataFactory", canBeDeactivated = true, acceptedMinecraftVersions = "*")
 public class CraftPresenceForge {
     /**
      * Begins Scheduling Ticks on Class Initialization
@@ -52,8 +49,6 @@ public class CraftPresenceForge {
     }
 
     public void setupIntegrations() {
-        if (FileUtils.findValidClass("com.replaymod.core.ReplayMod") != null) {
-            CommandUtils.modules.put("integration.replaymod", new ReplayModUtils());
-        }
+        // N/A
     }
 }
