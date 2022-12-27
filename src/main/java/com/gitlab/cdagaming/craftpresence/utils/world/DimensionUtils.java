@@ -30,8 +30,10 @@ import com.gitlab.cdagaming.craftpresence.impl.Pair;
 import com.gitlab.cdagaming.craftpresence.utils.FileUtils;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.google.common.collect.Lists;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
 
@@ -41,10 +43,6 @@ import net.minecraftforge.common.DimensionManager;
  * @author CDAGaming
  */
 public class DimensionUtils {
-    /**
-     * A List of the detected Dimension Type's
-     */
-    private final List<WorldProvider> DIMENSION_TYPES = Lists.newArrayList();
     /**
      * Whether this module is active and currently in use
      */
@@ -71,7 +69,6 @@ public class DimensionUtils {
      */
     private void emptyData() {
         DIMENSION_NAMES.clear();
-        DIMENSION_TYPES.clear();
         clearClientData();
     }
 
@@ -93,7 +90,7 @@ public class DimensionUtils {
                 ? CraftPresence.CONFIG.detectDimensionData
                         && (!CraftPresence.BIOMES.enabled || !CraftPresence.BIOMES.BIOME_NAMES.isEmpty())
                 : enabled;
-        final boolean needsUpdate = enabled && (DIMENSION_NAMES.isEmpty() || DIMENSION_TYPES.isEmpty());
+        final boolean needsUpdate = enabled && (DIMENSION_NAMES.isEmpty());
 
         if (needsUpdate) {
             getDimensions();
@@ -135,9 +132,6 @@ public class DimensionUtils {
 
             if (!DIMENSION_NAMES.contains(newDimension_Identifier)) {
                 DIMENSION_NAMES.add(newDimension_Identifier);
-            }
-            if (!DIMENSION_TYPES.contains(newProvider)) {
-                DIMENSION_TYPES.add(newProvider);
             }
 
             updateDimensionPresence();
@@ -193,35 +187,31 @@ public class DimensionUtils {
      *
      * @return The detected Dimension Types found
      */
-    private List<WorldProvider> getDimensionTypes() {
-        List<WorldProvider> dimensionTypes = Lists.newArrayList();
+    private Set<WorldProvider> getDimensionTypes() {
+        Set<WorldProvider> dimensionTypes = new HashSet<>();
         Map<?, ?> reflectedDimensionTypes =
                 (Map<?, ?>) StringUtils.lookupObject(DimensionManager.class, null, "providers");
 
-        if (dimensionTypes.isEmpty()) {
-            // Fallback 1: Use Reflected Dimension Types
-            if (reflectedDimensionTypes != null) {
-                for (Object objectType : reflectedDimensionTypes.values()) {
-                    WorldProvider type = (objectType instanceof WorldProvider) ? (WorldProvider) objectType : null;
+        // Fallback 1: Use Reflected Dimension Types
+        if (reflectedDimensionTypes != null) {
+            for (Object objectType : reflectedDimensionTypes.values()) {
+                WorldProvider type = (objectType instanceof WorldProvider) ? (WorldProvider) objectType : null;
 
-                    if (type != null && !dimensionTypes.contains(type)) {
-                        dimensionTypes.add(type);
-                    }
+                if (type != null) {
+                    dimensionTypes.add(type);
                 }
-            } else {
-                // Fallback 2: Use Manual Class Lookup
-                for (Class<?> classObj : FileUtils.getClassNamesMatchingSuperType(
-                        WorldProvider.class, true, "net.minecraft", "com.gitlab.cdagaming.craftpresence")) {
-                    if (classObj != null) {
-                        try {
-                            WorldProvider providerObj = (WorldProvider) classObj.newInstance();
-                            if (providerObj != null && !dimensionTypes.contains(providerObj)) {
-                                dimensionTypes.add(providerObj);
-                            }
-                        } catch (Exception | Error ex) {
-                            if (ModUtils.IS_VERBOSE) {
-                                ex.printStackTrace();
-                            }
+            }
+        } else {
+            // Fallback 2: Use Manual Class Lookup
+            for (Class<?> classObj : FileUtils.getClassNamesMatchingSuperType(
+                    WorldProvider.class, true, "net.minecraft", "com.gitlab.cdagaming.craftpresence")) {
+                if (classObj != null) {
+                    try {
+                        WorldProvider providerObj = (WorldProvider) classObj.newInstance();
+                        dimensionTypes.add(providerObj);
+                    } catch (Exception | Error ex) {
+                        if (ModUtils.IS_VERBOSE) {
+                            ex.printStackTrace();
                         }
                     }
                 }
@@ -235,15 +225,12 @@ public class DimensionUtils {
      * Updates and Initializes Module Data, based on found Information
      */
     public void getDimensions() {
-        for (WorldProvider TYPE : getDimensionTypes()) {
-            if (TYPE != null) {
-                if (!DIMENSION_NAMES.contains(StringUtils.formatIdentifier(
-                        TYPE.getDimensionName(), true, !CraftPresence.CONFIG.formatWords))) {
-                    DIMENSION_NAMES.add(StringUtils.formatIdentifier(
-                            TYPE.getDimensionName(), true, !CraftPresence.CONFIG.formatWords));
-                }
-                if (!DIMENSION_TYPES.contains(TYPE)) {
-                    DIMENSION_TYPES.add(TYPE);
+        for (WorldProvider type : getDimensionTypes()) {
+            if (type != null) {
+                String dimensionName =
+                        StringUtils.formatIdentifier(type.getDimensionName(), true, !CraftPresence.CONFIG.formatWords);
+                if (!DIMENSION_NAMES.contains(dimensionName)) {
+                    DIMENSION_NAMES.add(dimensionName);
                 }
             }
         }
@@ -251,10 +238,12 @@ public class DimensionUtils {
         for (String dimensionMessage : CraftPresence.CONFIG.dimensionMessages) {
             if (!StringUtils.isNullOrEmpty(dimensionMessage)) {
                 final String[] part = dimensionMessage.split(CraftPresence.CONFIG.splitCharacter);
-                if (!StringUtils.isNullOrEmpty(part[0])
-                        && !DIMENSION_NAMES.contains(
-                                StringUtils.formatIdentifier(part[0], true, !CraftPresence.CONFIG.formatWords))) {
-                    DIMENSION_NAMES.add(StringUtils.formatIdentifier(part[0], true, !CraftPresence.CONFIG.formatWords));
+
+                if (!StringUtils.isNullOrEmpty(part[0])) {
+                    String name = StringUtils.formatIdentifier(part[0], true, !CraftPresence.CONFIG.formatWords);
+                    if (!DIMENSION_NAMES.contains(name)) {
+                        DIMENSION_NAMES.add(name);
+                    }
                 }
             }
         }
