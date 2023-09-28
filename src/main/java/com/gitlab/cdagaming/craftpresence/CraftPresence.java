@@ -30,6 +30,7 @@ import com.gitlab.cdagaming.craftpresence.utils.CommandUtils;
 import com.gitlab.cdagaming.craftpresence.utils.KeyUtils;
 import com.gitlab.cdagaming.craftpresence.utils.StringUtils;
 import com.gitlab.cdagaming.craftpresence.utils.SystemUtils;
+import com.gitlab.cdagaming.craftpresence.utils.commands.OpenGuiCommand;
 import com.gitlab.cdagaming.craftpresence.utils.discord.DiscordUtils;
 import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.IPCClient;
 import com.gitlab.cdagaming.craftpresence.utils.discord.rpc.entities.DiscordStatus;
@@ -46,6 +47,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.client.ClientCommandHandler;
 
 /**
  * The Primary Application Class and Utilities
@@ -204,6 +206,7 @@ public class CraftPresence {
         ModUtils.loadCharData(!CP_DIR.exists() || CP_DIR.listFiles() == null, "UTF-8");
 
         CommandUtils.init();
+        ClientCommandHandler.instance.registerCommand(new OpenGuiCommand());
 
         // Synchronize Developer and Verbose Modes with Config Options, if they were not already true
         // If it is true (IE Modified from their Default Value), set the overridden flag to remember later

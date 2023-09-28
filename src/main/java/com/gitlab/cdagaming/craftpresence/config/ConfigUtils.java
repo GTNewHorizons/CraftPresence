@@ -41,6 +41,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import org.lwjgl.input.Keyboard;
 
 /**
  * Properties and Configuration Data for CraftPresence
@@ -524,7 +525,7 @@ public class ConfigUtils {
         stripTranslationColors = false;
         showLoggingInChat = false;
         stripExtraGuiElements = ModUtils.IS_LEGACY_HARD;
-        configKeyCode = ModUtils.MCProtocolID > 340 ? 96 : 41;
+        configKeyCode = Keyboard.KEY_NONE;
         // DISPLAY MESSAGES
         NAME_gameStateMessage_FORMAT = ModUtils.TRANSLATOR
                 .translate(true, "gui.config.name.display.game_state_message")
